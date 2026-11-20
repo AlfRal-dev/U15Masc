@@ -199,7 +199,10 @@ equipes_liens = ''.join(
     f'<span class="chip">{esc(short(o["libelle"]))}</span>'
     for o in data['competitions---poule-selector']['equipe_options'])
 
-maj = '19 novembre 2026'
+maj_raw = data['competitions---poule-selector']['selected_poule'].get(
+    'dateDernierUpdateEnfants') or ''
+maj_date = datetime.date.fromisoformat(maj_raw.strip()[:10]) if maj_raw.strip() else None
+maj = f"{maj_date.day} {MOIS[str(maj_date.month)]} {maj_date.year}" if maj_date else 'inconnue'
 
 note_adv = (
     f"Sur ses {adv_row['joue']} derniers matchs, {esc(short(adv_nom))} marque en moyenne "
