@@ -90,7 +90,7 @@
     "ext_phaseId": "109924",
     "competitionId": "30813",
     "libelle": "U15 MASCULINS DELAYAGE PRE-REGION : FINALITES 1 A 6 (19/09/26)",
-    "dateDernierUpdateEnfants": "2026-09-20 00:02:11.000",
+    "dateDernierUpdateEnfants": "2026-11-20 15:22:38.000",
     "classement": "1"
    },
    {
@@ -98,7 +98,7 @@
     "ext_phaseId": "109925",
     "competitionId": "30813",
     "libelle": "U15 MASCULINS PHASE 3 : DELAYAGE DEPARTEMENTAL HAUT NIVEAU",
-    "dateDernierUpdateEnfants": "2026-11-03 09:36:22.000",
+    "dateDernierUpdateEnfants": "2026-11-20 16:29:28.000",
     "classement": "1"
    },
    {
@@ -249,7 +249,7 @@
     "phaseId": "87395",
     "libelle": "U15M DHN POULE 9",
     "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-09-26\",\"date_fin\":\"2026-09-27\"}]",
-    "dateDernierUpdateEnfants": "2026-11-03 09:36:22.000",
+    "dateDernierUpdateEnfants": "2026-11-20 16:29:28.000",
     "phase_competitionId": "30813"
    },
    {
@@ -267,7 +267,7 @@
     "phaseId": "87394",
     "libelle": "U15M DPR FINALITES PLACE 1 A 4 - MATCH 1",
     "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-09-19\",\"date_fin\":\"2026-09-19\"}]",
-    "dateDernierUpdateEnfants": "2026-09-19 16:40:23.000",
+    "dateDernierUpdateEnfants": "2026-11-20 15:22:37.000",
     "phase_competitionId": "30813"
    },
    {
@@ -276,7 +276,7 @@
     "phaseId": "87394",
     "libelle": "U15M DPR FINALITES PLACE 1 A 4 - MATCH 2",
     "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-09-19\",\"date_fin\":\"2026-09-19\"}]",
-    "dateDernierUpdateEnfants": "2026-09-20 00:02:11.000",
+    "dateDernierUpdateEnfants": "2026-11-20 15:22:37.000",
     "phase_competitionId": "30813"
    },
    {
@@ -285,7 +285,7 @@
     "phaseId": "87394",
     "libelle": "U15M DPR FINALITES PLACE 5 A 6 - MATCH 3",
     "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-09-19\",\"date_fin\":\"2026-09-19\"}]",
-    "dateDernierUpdateEnfants": "2026-09-19 23:48:03.000",
+    "dateDernierUpdateEnfants": "2026-11-20 15:22:38.000",
     "phase_competitionId": "30813"
    },
    {
@@ -294,7 +294,7 @@
     "phaseId": "87394",
     "libelle": "U15M DPR FINALITES PLACE 5 A 6 - MATCH 4",
     "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-09-19\",\"date_fin\":\"2026-09-19\"}]",
-    "dateDernierUpdateEnfants": "2026-09-19 16:17:31.000",
+    "dateDernierUpdateEnfants": "2026-11-20 15:22:38.000",
     "phase_competitionId": "30813"
    },
    {
