@@ -1,262 +1,356 @@
 #!/usr/bin/env python3
 """Génère index.html (rapport de match) à partir des données FFHB de la poule."""
-import json, os, datetime
+import json, os, re, datetime, unicodedata
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 DD = os.path.join(HERE, 'data')
 
 data = json.load(open(os.path.join(DD, 'blocks.json')))
 rencontres = json.load(open(os.path.join(DD, 'rencontres.json')))
+hist_json = os.path.join(DD, 'history.json')
+history = json.load(open(hist_json)) if os.path.exists(hist_json) else {}
 
-TEAM_ID = '1846931'   # USC MAISONS-LAFFITTE HB (identifiant interne FFHB)
+TEAM_ID = '1846931'   # USC MAISONS-LAFFITTE HB (identifiant interne FFHB, poule actuelle)
 MOIS = {'1':'janvier','2':'février','3':'mars','4':'avril','5':'mai','6':'juin','7':'juillet',
         '8':'août','9':'septembre','10':'octobre','11':'novembre','12':'décembre'}
 JOURS = {0:'lundi',1:'mardi',2:'mercredi',3:'jeudi',4:'vendredi',5:'samedi',6:'dimanche'}
 
+SHORT = {
+    'USC MAISONS-LAFFITTE HB': 'USC Maisons-Laffitte',
+    'SUD YVELINES HB LE PERRAY RAMBOUILLET (U15M)': 'Sud Yvelines HB',
+    'CA MANTES LA VILLE / HBC ROSNY (U15M)': 'CA Mantes/Rosny',
+    'VERSAILLES HBC (3)': 'Versailles HBC (3)',
+    'VERSAILLES HBC (2)': 'Versailles HBC (2)',
+    'VERSAILLES HBC': 'Versailles HBC',
+    'CO GARGENVILLE': 'CO Gargenville',
+    'SQY HB TRAPPES MONTIGNY (U15M3)': 'SQY HB Trappes (3)',
+    'SQY HB MONTIGNY TRAPPES (U15M2)': 'SQY HB Trappes (2)',
+    'LE CHESNAY / VERSAILLES GP 78': 'Le Chesnay/Versailles',
+    'LE CHESNAY / VERSAILLES GP 78 (U15M PRE REGION)': 'Le Chesnay/Versailles',
+    'HB ACHERES CONFLANS (U15M PRE REGION)': 'Achères-Conflans',
+    'HB ACHERES CONFLANS': 'Achères-Conflans',
+    'AS HB LES MUREAUX': 'AS Les Mureaux',
+    'AS POISSY HB': 'AS Poissy',
+    'AS ST-CYR/FONTENAY HB 78': 'St-Cyr/Fontenay',
+    'TRIEL CHANTELOUP VERNOUILLET VERNEUIL HB': 'Triel-Chanteloup-Vern.',
+    'TRIEL CHANTELOUP VERNOUILLET VERNEUIL HB (2)': 'Triel-Chanteloup-Vern. (2)',
+    'ELANCOURT-MAUREPAS HB': 'Élancourt-Maurepas',
+    'ELANCOURT-MAUREPAS HB U15M.1': 'Élancourt-Maurepas 1',
+    'PLAISIR -\u00a0LES CLAYES HB': 'Plaisir-Les Clayes',
+    'GUYANCOURT HB': 'Guyancourt',
+    'US HOUDAN HB': 'US Houdan',
+    "HB BOIS-D'ARCY": 'Bois-d\'Arcy',
+    'HB BOUCLE DE SEINE 78': 'Boucle de Seine 78',
+    'HB BOUCLE DE SEINE 78  (2)': 'Boucle de Seine 78 (2)',
+    'HBC CONFLANS (2)': 'HBC Conflans (2)',
+    'LE CHESNAY 78 HB (2)': 'Le Chesnay (2)',
+    'CLOC ACHERES': 'CLOC Achères',
+    'CLOC ACHERES (2)': 'CLOC Achères (2)',
+    'CELLOIS HB': 'Cellois HB',
+    'U15 MASCULINS': 'Championnat U15M',
+    'U15 MASCULINS COUPE DES YVELINES': 'Coupe des Yvelines',
+    'U15 MASCULINS DELAYAGE PRE-REGION : POULES': 'Délaage pré-région',
+    'U15 MASCULINS DELAYAGE PRE-REGION : BARRAGES': 'Délaage pré-région · barrages',
+    'U15 MASCULINS DELAYAGE PRE-REGION : FINALITES 1 A 6 (19/09/26)': 'Délaage pré-région · finalités',
+    'U15 MASCULINS PHASE 3 : DELAYAGE DEPARTEMENTAL HAUT NIVEAU': 'Phase 3 · délaage haut niveau',
+    'U15 MASCULINS PHASE 4 : DELAYAGE DEPARTEMENTAL HAUT NIVEAU': 'Phase 4 · délaage haut niveau',
+    'U15 MASCULINS PHASE 5 : DELAYAGE DEPARTEMENTAL 1ERE A 6EME DIVISION': 'Phase 5 · délaage départemental',
+    'U15M DHN POULE 8': 'U15M DHN · Poule 8',
+    'U15M DHN POULE E': 'U15M DHN · Poule E',
+    'U15M DHN POULE 10': 'U15M DHN · Poule 10',
+    'U15M DHN POULE C': 'U15M DHN · Poule C',
+    'U15M DHN POULE 7': 'U15M DHN · Poule 7',
+    'U15M DHN POULE F': 'U15M DHN · Poule F',
+    'U15M DPR POULE A': 'U15M Pré-région · Poule A',
+    'U15M DPR FINALITES PLACE 1 A 4 - MATCH 1': 'Pré-région · Finalité places 1-4',
+    'U15M DPR FINALITES PLACE 1/2 - V1/V2 (20/09/26)': 'Pré-région · Finalité 1/2',
+    'U15M DEL 3° / 4° DIV POULE 3': 'U15M DEL 3°/4° DIV · Poule 3',
+    'U15M DEL 1° / 2° DIV POULE 1': 'U15M DEL 1°/2° DIV · Poule 1',
+    'U15M CDY 16EME DE FINALE': 'Coupe des Yvelines · 16e de finale',
+}
+
+def esc(s):
+    return str(s).replace('&','&amp;').replace('<','&lt;').replace('>','&gt;')
+
+def short(t):
+    return SHORT.get(t, t.title())
+
 def fmt_date(iso):
+    d = datetime.date.fromisoformat(iso[:10])
+    return f"{JOURS[d.weekday()]} {d.day} {MOIS[str(d.month)]}"
+
+def fmt_date_long(iso):
     d = datetime.date.fromisoformat(iso[:10])
     return f"{JOURS[d.weekday()]} {d.day} {MOIS[str(d.month)]} {d.year}"
 
 def fmt_time(iso):
     return iso[11:16].replace(':', 'h')
 
-def label(team_id):
-    for r in rencontres:
-        for side in ('1', '2'):
-            if str(r[f'equipe{side}Id']) == str(team_id):
-                return r[f'equipe{side}Libelle']
-    return str(team_id)
+def played(r):
+    s1, s2 = r.get('equipe1Score'), r.get('equipe2Score')
+    return s1 not in (None, '') and s2 not in (None, '')
 
-def short(t):
-    t = {'USC MAISONS-LAFFITTE HB': 'USC Maisons-Laffitte',
-         'SUD YVELINES HB LE PERRAY RAMBOUILLET (U15M)': 'Sud Yvelines HB',
-         'CA MANTES LA VILLE / HBC ROSNY (U15M)': 'CA Mantes/Rosny',
-         'VERSAILLES HBC (3)': 'Versailles HBC (3)',
-         'CO GARGENVILLE': 'CO Gargenville',
-         'SQY HB TRAPPES MONTIGNY (U15M3)': 'SQY HB Trappes'}.get(t, t)
-    return t
+def nd(r):
+    return played(r) and str(r['equipe1Score']) == '0' and str(r['equipe2Score']) == '0'
 
-# ---- classement ----
+def res_from_team_view(marked, dom, s_me, s_opp):
+    if s_me is None:
+        return None
+    if s_me == 0 and s_opp == 0:
+        return 'ND'
+    return 'V' if s_me > s_opp else 'N' if s_me == s_opp else 'D'
+
+# ---------------------------------------------------------------- classement
 classements = sorted(data['competitions---mini-classement-or-ads']['classements'],
                      key=lambda c: int(c['place']))
+stand_usc = next(c for c in classements if str(c['equipeId']) == TEAM_ID)
+adv_nom = 'VERSAILLES HBC (3)'
+adv_row = next(c for c in classements if c['equipe_libelle'] == adv_nom)
 
 def form_icons(s):
-    out = []
-    for v in s.strip().split(';'):
-        out.append({'1': 'V', '0': 'N', '-1': 'D'}.get(v, '?'))
-    return out
+    return [{'1':'V','0':'N','-1':'D'}.get(v,'?') for v in str(s).strip().split(';')]
 
-rows = []
+def form_html(xs):
+    return ''.join(f'<span class="form {"f-v" if x=="V" else "f-n" if x=="N" else "f-d"}">{x}</span>' for x in xs)
+
+stand_rows = ''
 for c in classements:
     nous = str(c['equipeId']) == TEAM_ID
-    rows.append({
-        'place': c['place'], 'nom': c['equipe_libelle'], ' joue': c['joue'],
-        'pts': c['point'], 'j': c['joue'], 'g': c['gagne'], 'n': c['nul'], 'p': c['perdu'],
-        'bp': c['butPlus'], 'bc': c['butMoins'], 'diff': int(c['diff']),
-        'form': form_icons(c['dernieresRencontres']), 'nous': nous,
-    })
+    nom = 'USC Maisons-Laffitte HB' if nous else esc(short(c['equipe_libelle']))
+    cls = ' class="nous-row"' if nous else ''
+    d = int(c['diff'])
+    diff = f'{d:+d}' if d else '0'
+    stand_rows += (f'<tr{cls}><td class="place">{c["place"]}</td><td class="team">{nom}</td>'
+                   f'<td>{c["point"]}</td><td>{c["joue"]}</td><td>{c["gagne"]}</td><td>{c["nul"]}</td>'
+                   f'<td>{c["perdu"]}</td><td>{c["butPlus"]}</td><td>{c["butMoins"]}</td>'
+                   f'<td class="diff {"pos" if d>0 else "neg" if d<0 else ""}">{diff}</td>'
+                   f'<td class="formcell">{form_html(form_icons(c["dernieresRencontres"]))}</td></tr>')
 
-# ---- matches ----
+# ------------------------------------------------- poule actuelle (blocs FFHB)
 def outcome(s1, s2):
-    if s1 is None or s2 is None or s1 == '' or s2 == '':
+    if not played({'equipe1Score': s1, 'equipe2Score': s2}):
         return None
     a, b = int(s1), int(s2)
-    if a > b: return 'H'
-    if a < b: return 'A'
-    return 'N'
+    return 'H' if a > b else 'A' if a < b else 'N'
+
+def perspective(r):
+    """(domicile, adversaire, notre_score, score_adv) si le match concerne l'USC."""
+    e1, e2 = r['equipe1Libelle'], r['equipe2Libelle']
+    usc1 = e1 == stand_usc['equipe_libelle']
+    usc2 = e2 == stand_usc['equipe_libelle']
+    if not (usc1 or usc2):
+        return None
+    dom = usc1
+    s_me = r.get('equipe1Score') if dom else r.get('equipe2Score')
+    s_adv = r.get('equipe2Score') if dom else r.get('equipe1Score')
+    return dom, (e2 if dom else e1), s_me, s_adv
 
 matches = []
 for r in rencontres:
-    matches.append({
-        'journee': int(r['journeeNumero']), 'date': fmt_date(r['date']),
-        'heure': fmt_time(r['date']),
-        'e1': r['equipe1Libelle'], 'e2': r['equipe2Libelle'],
-        's1': str(r['equipe1Score']) if r['equipe1Score'] is not None else '–',
-        's2': str(r['equipe2Score']) if r['equipe2Score'] is not None else '–',
-        'res': outcome(r['equipe1Score'], r['equipe2Score']),
-        'v_points': TEAM_ID in (str(r['equipe1Id']), str(r['equipe2Id'])),
-    })
-
-# ---- équipe : résultats joués ----
-mes = [m for m in matches if m['v_points']]
-joues = [m for m in mes if m['res']]
-stand_usc = next(c for c in classements if str(c['equipeId']) == TEAM_ID)
-
-def res_usc(m):
-    dom = m['e1'] == stand_usc['equipe_libelle']
-    na, nb = int(m['s1']) if m['s1'] != '–' else 0, int(m['s2']) if m['s2'] != '–' else 0
-    mf, ca = (na, nb) if dom else (nb, na)
-    return ('V' if mf > ca else 'N' if mf == ca else 'D'), mf, ca, m
-
-stats_usc = [res_usc(m) for m in joues]
-
-# ---- prochain match / adversaire ----
-prochain = next(m for m in mes if m['res'] is None)
-adv_nom = prochain['e2'] if prochain['e1'] == stand_usc['equipe_libelle'] else prochain['e1']
-adv_dom = prochain['e1'] == stand_usc['equipe_libelle']
-adv_row = next(c for c in classements if c['equipe_libelle'] == adv_nom)
-adv_matches = [res_usc({'e1': m['e1'], 'e2': m['e2'], 's1': m['s1'], 's2': m['s2']})
-               for m in joues if adv_nom in (m['e1'], m['e2'])]
-
-def date_de(m):
-    for r in rencontres:
-        if r['equipe1Libelle'] == m['e1'] and r['equipe2Libelle'] == m['e2']:
-            return r['date']
-    return ''
-
-adv_joues = []
-for r in rencontres:
-    if adv_nom in (r['equipe1Libelle'], r['equipe2Libelle']) and outcome(r['equipe1Score'], r['equipe2Score']):
-        dom = r['equipe1Libelle'] == adv_nom
-        a, b = int(r['equipe1Score']), int(r['equipe2Score'])
-        mf, ca = (a, b) if dom else (b, a)
-        adv_joues.append((r['journeeNumero'], fmt_date(r['date']), dom,
-                          r['equipe1Libelle'], r['equipe2Libelle'], mf, ca,
-                          'V' if mf > ca else 'N' if mf == ca else 'D'))
-
-daynames = {'USC MAISONS-LAFFITTE HB': 'USC', adv_nom: 'Adv'}
-TP = environ = None  # (placeholder, unused)
-
-def esc(s):
-    return str(s).replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
-
-# ---- assemblage HTML ----
-def badge(res):
-    return f'<span class="badge badge-{res.lower()}">{res}</span>'
-
-def diff_cell(d):
-    cls = 'pos' if d > 0 else 'neg' if d < 0 else ''
-    return f'<td class="diff {cls}">{d:+d}</td>' if d else '<td class="diff">0</td>'
-
-stand_rows = ''.join(
-    f'<tr class="{"nous" if r["nous"] else ""}">'
-    f'<td class="place">{r["place"]}</td>'
-    f'<td class="team">{"USC Maisons-Laffitte HB"}</td>' if r['nous'] else
-    '' for r in rows)
-# reconstruction simple
-stand_rows = ''
-for r in rows:
-    nom = 'USC Maisons-Laffitte HB' if r['nous'] else esc(short(r['nom']))
-    cls = ' class="nous-row"' if r['nous'] else ''
-    fmb = ''.join(f'<span class="form {"f-v" if x=="V" else "f-n" if x=="N" else "f-d"}">{x}</span>' for x in r['form'])
-    stand_rows += (f'<tr{cls}><td class="place">{r["place"]}</td><td class="team">{nom}</td>'
-                   f'<td>{r["pts"]}</td><td>{r["j"]}</td><td>{r["g"]}</td><td>{r["n"]}</td>'
-                   f'<td>{r["p"]}</td><td>{r["bp"]}</td><td>{r["bc"]}</td>'
-                   f'<td class="diff {"pos" if r["diff"]>0 else "neg" if r["diff"]<0 else ""}">{r["diff"]:+d}</td>'
-                   f'<td class="formcell">{fmb}</td></tr>')
-
-uscar = []
-for res, mf, ca, m in stats_usc:
-    dom = m['e1'] == stand_usc['equipe_libelle']
-    advn = m['e2'] if dom else m['e1']
-    uscar.append(
-        f'<li class="resline"><span class="badge badge-{res.lower()}">{res}</span>'
-        f'<span class="scoreline"><strong>{mf}</strong> – <strong>{ca}</strong></span>'
-        f'<span class="vs">{"à domicile" if dom else "à l’extérieur"} vs {esc(short(advn))} '
-        f'<em class="meta">J{m["journee"]} · {m["date"]}</em></span></li>')
+    matches.append({'raw': r, 'ordre': (int(r['journeeNumero']), r['date'])})
 
 sched_rows = ''
-for m in matches:
-    pt = ' class="pt"' if m['v_points'] and False else ''
-    e1cls = ' team usc' if m['e1'] == stand_usc['equipe_libelle'] else (' team opp2' if m['e1'] == adv_nom else ' team')
-    e2cls = ' team usc' if m['e2'] == stand_usc['equipe_libelle'] else (' team opp2' if m['e2'] == adv_nom else ' team')
-    hl = ' class="next-row"' if m is prochain else ''
-    done = m['res'] is not None
-    if done:
-        score = (f'<span class="score win">{m["s1"]} – {m["s2"]}</span>'
-                 if (m['res'] == 'H' and m['e1'] == stand_usc['equipe_libelle']) or
-                    (m['res'] == 'A' and m['e2'] == stand_usc['equipe_libelle'])
-                 else f'<span class="score">{m["s1"]} – {m["s2"]}</span>')
-        resb = ''
-        if m['v_points']:
-            dom = m['e1'] == stand_usc['equipe_libelle']
-            r2, _, _, _ = res_usc({'e1': m['e1'], 'e2': m['e2'],
-                                   's1': m['s1'] if m['s1'] != '–' else 0,
-                                   's2': m['s2'] if m['s2'] != '–' else 0})
-            resb = badge(r2)
+for m in sorted(matches, key=lambda x: x['ordre']):
+    r = m['raw']
+    dp = perspective(r)
+    e1cls = 'team usc' if r['equipe1Libelle'] == stand_usc['equipe_libelle'] else ('team opp2' if r['equipe1Libelle'] == adv_nom else 'team')
+    e2cls = 'team usc' if r['equipe2Libelle'] == stand_usc['equipe_libelle'] else ('team opp2' if r['equipe2Libelle'] == adv_nom else 'team')
+    nxt = not played(r) and dp is not None and r['date'][:10] <= '2026-11-30'
+    hl = ' class="next-row"' if nxt else ''
+    if dp:
+        dom, advn, s_me, s_adv = dp
+        if not played(r):
+            score = '<span class="score tbd">à jouer</span>'
+            resb = '<span class="badge badge-next res-mini">à venir</span>'
         else:
-            resb = ''
+            me, ad = int(s_me), int(s_adv)
+            win = me > ad
+            score = (f'<span class="score win">{dom and me or ad} – {dom and ad or me}</span>'
+                     if win else f'<span class="score">{dom and me or ad} – {dom and ad or me}</span>')
+            res = 'V' if win else ('N' if me == ad and me != 0 else 'D')
+            resb = (f'<span class="badge badge-{res.lower()}">{res}</span>'
+                    if not (me == 0 and ad == 0) else
+                    '<span class="badge badge-next res-mini">n.d.</span>')
     else:
-        score = f'<span class="score tbd">à jouer</span>'
-        resb = '<span class="badge badge-next res-mini">à venir</span>'
-    sched_rows += (f'<tr{hl}><td class="jrn">J{m["journee"]}</td><td class="date">{m["date"]}<span class="heure">{m["heure"]}</span></td>'
-                   f'<td class="{e1cls.strip()}">{esc(short(m["e1"]))}</td>'
+        res_ = outcome(r.get('equipe1Score'), r.get('equipe2Score'))
+        score = (f'<span class="score">{r["equipe1Score"]} – {r["equipe2Score"]}</span>'
+                 if played(r) else '<span class="score tbd">à jouer</span>')
+        resb = ''
+    sched_rows += (f'<tr{hl}><td class="jrn">J{r["journeeNumero"]}</td>'
+                   f'<td class="date">{fmt_date(r["date"])}<span class="heure">{fmt_time(r["date"])}</span></td>'
+                   f'<td class="{e1cls}">{esc(short(r["equipe1Libelle"]))}</td>'
                    f'<td class="scorecell">{score}</td>'
-                   f'<td class="{e2cls.strip()}">{esc(short(m["e2"]))}</td>'
+                   f'<td class="{e2cls}">{esc(short(r["equipe2Libelle"]))}</td>'
                    f'<td class="rescell">{resb}</td></tr>')
 
-uscar_tot = stand_usc
-adv_form = ''.join(f'<span class="form {"f-v" if x=="V" else "f-n" if x=="N" else "f-d"}">{x}</span>'
-                   for x in form_icons(adv_row['dernieresRencontres']))
-adv_res_html = ''
-for (jn, dt, dom, e1, e2, mf, ca, res) in adv_joues:
-    adv_res_html += (f'<li class="resline"><span class="badge badge-{res.lower()}">{res}</span>'
-                     f'<span class="scoreline"><strong>{mf}</strong> – <strong>{ca}</strong></span>'
-                     f'<span class="vs">{"à domicile" if dom else "à l’extérieur"} vs '
-                     f'{esc(short(e2 if dom else e1))} <em class="meta">J{jn} · {dt}</em></span></li>')
+# ----------------------------------------------------------------- historique
+USC_RE = re.compile(r'USC MAISONS', re.I)
+VER_RE = re.compile(r'VERSAILLES|LE CHESNAY', re.I)
 
-equipes_liens = ''.join(
-    f'<span class="chip">{esc(short(o["libelle"]))}</span>'
-    for o in data['competitions---poule-selector']['equipe_options'])
+def matched_libelle(r):
+    for k in ('equipe1Libelle', 'equipe2Libelle'):
+        v = r[k]
+        if USC_RE.search(v) or VER_RE.search(v):
+            return v
+    return None
 
-maj_raw = data['competitions---poule-selector']['selected_poule'].get(
-    'dateDernierUpdateEnfants') or ''
+def keep_opp(r):
+    ml = matched_libelle(r)
+    if ml is None:
+        return False
+    if '(2)' in ml or 'LE CHESNAY 78 HB' in ml or ml.startswith('ELANCOURT'):
+        return False
+    return True
+
+def group_render(rows, css_class=''):
+    out = []
+    last_g = None
+    for item in rows:
+        dp = item['dp']
+        r = item['r']
+        dom, advn, s_me, s_adv = dp
+        g = (item['competition'], item['phase'], item['poule'])
+        if g != last_g:
+            last_g = g
+            tag = 'Coupe des Yvelines' if 'COUPE' in g[0].upper() else 'Championnat'
+            tv = []
+            for v in (short(g[0]), short(g[1]), tag):
+                if v and v not in tv and v != 'Championnat':
+                    tv.append(v)
+            tags = ''.join(f'<span class="gtag">{esc(v)}</span>' for v in tv)
+            out.append(f'<div class="ghead"><b>{esc(short(g[2]))}</b>'
+                       f'{tags}</div>')
+        if played(r):
+            if nd(r):
+                badge = '<span class="badge badge-next">n.d.</span>'
+                score = '<span class="scoreline"><strong>n.d.</strong></span>'
+            else:
+                res = 'V' if s_me > s_adv else 'N' if s_me == s_adv else 'D'
+                badge = f'<span class="badge badge-{res.lower()}">{res}</span>'
+                score = (f'<span class="scoreline"><strong>{s_me}</strong> – <strong>{s_adv}</strong></span>')
+        else:
+            badge = '<span class="badge badge-next">à venir</span>'
+            score = '<span class="scoreline tbd">–</span>'
+        out.append(
+            f'<li class="resline">{badge}{score}'
+            f'<span class="vs">{"à domicile" if dom else "à l’extérieur"} vs {esc(short(advn))} '
+            f'<em class="meta">{fmt_date_long(r["date"])} · {fmt_time(r["date"])}</em></span></li>')
+    return ''.join(out)
+
+usc_hist, opp_hist, next_items = [], [], []
+_seen = set()
+for team, ms in history.items():
+    for r in sorted(ms, key=lambda x: x.get('date') or '9999'):
+        _key = ('c', str(r.get('ext_rencontreId') or r.get('id')), str(r.get('ext_pouleId') or r.get('pouleId')))
+        if _key in _seen:
+            continue
+        _seen.add(_key)
+        ml = matched_libelle(r)
+        usc = USC_RE.search(ml or '')
+        if usc:
+            e1, e2 = r['equipe1Libelle'], r['equipe2Libelle']
+            dom = bool(USC_RE.search(e1))
+            advn = e2 if dom else e1
+            dp = (dom, advn, r.get('equipe1Score') if dom else r.get('equipe2Score'),
+                  r.get('equipe2Score') if dom else r.get('equipe1Score'))
+            s_me, s_adv = dp[2], dp[3]
+            try:
+                dp = (dom, advn, int(s_me) if s_me not in (None,'') else None,
+                      int(s_adv) if s_adv not in (None,'') else None)
+            except (TypeError, ValueError):
+                dp = (dom, advn, None, None)
+            item = {'r': r, 'dp': dp, 'competition': r.get('competition',''),
+                    'phase': '', 'poule': r.get('poule','')}
+            usc_hist.append(item)
+            if not played(r) and r.get('date','9999') >= '2026-11-01':
+                next_items.append((r['date'], 'COUPE DES YVELINES' if 'COUPE' in r.get('competition','').upper() else 'CHAMPIONNAT', advn, dom, r))
+        elif VER_RE.search(ml or '') and keep_opp(r):
+            e1, e2 = r['equipe1Libelle'], r['equipe2Libelle']
+            dom = VER_RE.search(e1) is not None and USC_RE.search(e1) is None
+            advn = e2 if dom else e1
+            dp = (dom, advn, r.get('equipe1Score') if dom else r.get('equipe2Score'),
+                  r.get('equipe2Score') if dom else r.get('equipe1Score'))
+            s_me, s_adv = dp[2], dp[3]
+            try:
+                dp = (dom, advn, int(s_me) if s_me not in (None,'') else None,
+                      int(s_adv) if s_adv not in (None,'') else None)
+            except (TypeError, ValueError):
+                dp = (dom, advn, None, None)
+            item = {'r': r, 'dp': dp, 'competition': r.get('competition',''),
+                    'phase': '', 'poule': r.get('poule','')}
+            opp_hist.append(item)
+
+usc_hist.sort(key=lambda it: it['r'].get('date') or '9999')
+opp_hist.sort(key=lambda it: it['r'].get('date') or '9999')
+next_items.sort(key=lambda x: x[0])
+
+next_rows = []
+for dt, tag, advn, dom, r in next_items[:3]:
+    ncls = 'tag-coupe' if 'COUPE' in tag else ''
+    next_rows.append(
+        f'<div class="nrow"><span class="ntag {ncls}">{"Coupe des Yvelines" if "COUPE" in tag else "Championnat J" + str(r.get("journeeNumero",""))}</span>'
+        f'<span class="nwho">{"vs" if not dom else "recevra"} {esc(short(advn))}</span>'
+        f'<span class="nwhen">{"@" if dom else "@ "}{fmt_date_long(dt)}<br>{fmt_time(dt)} · {"à domicile" if dom else "à l’extérieur"}</span></div>')
+next_list = ''.join(next_rows) or '<div class="nrow">Plus de rencontre programmée</div>'
+
+usc_tot = stand_usc
+adv_tot = adv_row
+
+note_adv = (
+    f"Bilan adversaire (championnat 3°/4° division) : {adv_row['gagne']} victoire(s), "
+    f"{adv_row['nul']} nul(s), {adv_row['perdu']} défaite(s), {adv_row['butPlus']} buts marqués, "
+    f"{adv_row['butMoins']} encaissés. Le club de Versailles engage plusieurs équipes (2) et (3) ; "
+    f"les rencontres de l’équipe entente Le Chesnay/Versailles (pré-région) et de l’équipe (3) figurent ci-dessous."
+)
+
+maj_raw = data['competitions---poule-selector']['selected_poule'].get('dateDernierUpdateEnfants') or ''
 maj_date = datetime.date.fromisoformat(maj_raw.strip()[:10]) if maj_raw.strip() else None
 maj = f"{maj_date.day} {MOIS[str(maj_date.month)]} {maj_date.year}" if maj_date else 'inconnue'
 
-note_adv = (
-    f"Sur ses {adv_row['joue']} derniers matchs, {esc(short(adv_nom))} marque en moyenne "
-    f"{int(adv_row['butPlus'])/int(adv_row['joue']):.1f} buts et en concède "
-    f"{int(adv_row['butMoins'])/int(adv_row['joue']):.1f}. "
-    f"Moyennes USC : {int(uscar_tot['butPlus'])/int(uscar_tot['joue']):.1f} marqués / "
-    f"{int(uscar_tot['butMoins'])/int(uscar_tot['joue']):.1f} encaissés. "
-    f"Le match se joue {('à domicile' if adv_dom else 'à l’extérieur')}."
-)
+equipes_liens = ''.join(f'<span class="chip">{esc(short(o["libelle"]))}</span>'
+                        for o in data['competitions---poule-selector']['equipe_options'])
+
+def badge(res):
+    return f'<span class="badge badge-{res.lower()}">{res}</span>'
 
 html = open(os.path.join(HERE, 'template.html')).read()
-for k, v in list(locals().items()):
-    pass  # placeholders remplacés explicitement ci-dessous
-
 html = (html
-  .replace('/*__DATA__*/', '')
   .replace('__STAND_ROWS__', stand_rows)
-  .replace('__USC_RES__', ''.join(uscar))
-  .replace('__USC_PTS__', uscar_tot['point'])
-  .replace('__USC_J__', uscar_tot['joue'])
-  .replace('__USC_G__', uscar_tot['gagne'])
-  .replace('__USC_N__', uscar_tot['nul'])
-  .replace('__USC_P__', uscar_tot['perdu'])
-  .replace('__USC_BP__', uscar_tot['butPlus'])
-  .replace('__USC_BC__', uscar_tot['butMoins'])
-  .replace('__USC_DIFF__', uscar_tot['diff'])
-  .replace('__USC_PLACE__', uscar_tot['place'])
-  .replace('__AVG_MARQUE__', f"{int(uscar_tot['butPlus'])/int(uscar_tot['joue']):.1f}")
-  .replace('__AVG_ENCAISSE__', f"{int(uscar_tot['butMoins'])/int(uscar_tot['joue']):.1f}")
-  .replace('__NEXT_J__', f"J{prochain['journee']}")
-  .replace('__NEXT_DATE__', prochain['date'])
-  .replace('__NEXT_HEURE__', prochain['heure'])
-  .replace('__NEXT_DOM__', 'à domicile' if adv_dom else 'à l’extérieur')
-  .replace('__ADV_NOM__', esc(short(adv_nom)))
-  .replace('__ADV_NOM_FULL__', esc(adv_nom))
+  .replace('__SCHED_ROWS__', sched_rows)
+  .replace('__NEXT_LIST__', next_list)
+  .replace('__USC_HIST__', group_render(usc_hist))
+  .replace('__ADV_HIST__', group_render(opp_hist))
+  .replace('__USC_HIST_N__', str(len(usc_hist)))
+  .replace('__ADV_HIST_N__', str(len(opp_hist)))
+  .replace('__USC_PTS__', usc_tot['point'])
+  .replace('__USC_J__', usc_tot['joue'])
+  .replace('__USC_G__', usc_tot['gagne'])
+  .replace('__USC_N__', usc_tot['nul'])
+  .replace('__USC_P__', usc_tot['perdu'])
+  .replace('__USC_BP__', usc_tot['butPlus'])
+  .replace('__USC_BC__', usc_tot['butMoins'])
+  .replace('__USC_DIFF__', usc_tot['diff'])
+  .replace('__USC_PLACE__', usc_tot['place'])
+  .replace('__AVG_MARQUE__', f"{int(usc_tot['butPlus'])/int(usc_tot['joue']):.1f}")
+  .replace('__AVG_ENCAISSE__', f"{int(usc_tot['butMoins'])/int(usc_tot['joue']):.1f}")
   .replace('__ADV_PLACE__', adv_row['place'])
   .replace('__ADV_PTS__', adv_row['point'])
-  .replace('__ADV_J__', adv_row['joue'])
   .replace('__ADV_G__', adv_row['gagne'])
   .replace('__ADV_N__', adv_row['nul'])
   .replace('__ADV_P__', adv_row['perdu'])
+  .replace('__ADV_TOT__', str(len(opp_hist)))
   .replace('__ADV_BP__', adv_row['butPlus'])
   .replace('__ADV_BC__', adv_row['butMoins'])
   .replace('__ADV_DIFF__', adv_row['diff'])
-  .replace('__ADV_RES__', adv_res_html)
-  .replace('__ADV_FORM__', adv_form)
-  .replace('__NOTE_ADV__', note_adv)
+  .replace('__ADV_FORM__', form_html(form_icons(adv_row['dernieresRencontres'])))
   .replace('__AVG_ADV_MARQUE__', f"{int(adv_row['butPlus'])/int(adv_row['joue']):.1f}")
   .replace('__AVG_ADV_ENCAISSE__', f"{int(adv_row['butMoins'])/int(adv_row['joue']):.1f}")
-  .replace('__SCHED_ROWS__', sched_rows)
+  .replace('__NOTE_ADV__', note_adv)
   .replace('__POULE__', 'U15M DEL 3°/4° DIV POULE 3')
   .replace('__MAJ__', maj)
   .replace('__EQUIPES_CHIPS__', equipes_liens)
 )
 
-open(os.path.join(os.path.dirname(HERE), 'index.html'), 'w').write(html)
+out_path = os.path.join(os.path.dirname(HERE), 'index.html')
+open(out_path, 'w').write(html)
 print('index.html généré,', len(html), 'octets')

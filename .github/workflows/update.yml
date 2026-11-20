@@ -23,6 +23,7 @@ jobs:
           cd tools
           python3 fetch_blocks.py
           python3 fetch_matches.py
+          python3 fetch_history.py || echo "historique non actualisé (les données de la poule restent à jour)"
           python3 build.py
 
       - name: Commit si changement

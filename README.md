@@ -8,6 +8,8 @@ générée à partir des données officielles de [ffhandball.fr](https://www.ffh
 
 - `index.html` — la page de rapport (autonome, aucun serveur requis : double-cliquer pour l'ouvrir).
 - `tools/build.py` — régénère `index.html` depuis les données (`tools/data/`).
+- `tools/fetch_history.py` — récupère l'historique complet (délaage + Coupe des Yvelines)
+  de l'USC et de Versailles HBC via la recherche club de ffhandball.fr.
 - `tools/fetch_blocks.py` / `tools/fetch_matches.py` — récupèrent classement et calendrier
   depuis la route publique `wp-json/competitions/v1/computeBlockAttributes` de ffhandball.fr,
   décodés comme le navigateur le fait (base64 + XOR avec la clé `data-cfk` de la page).

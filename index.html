@@ -9,7 +9,7 @@
   --bg:#f4f6fa; --card:#ffffff; --ink:#16233b; --muted:#5b6b85; --line:#e3e8f0;
   --primary:#0f4c81; --primary-dark:#0a355e; --accent:#ff8a3d;
   --win:#1a9e5c; --win-bg:#e6f7ee; --draw:#c98a00; --draw-bg:#fff6df;
-  --loss:#d23c3c; --loss-bg:#fdeaea; --next:#0f4c81; --next-bg:#e8f0fa;
+  --loss:#d23c3c; --loss-bg:#fdeaea; --next-bg:#e8f0fa;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Segoe UI',system-ui,-apple-system,Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5}
@@ -26,42 +26,48 @@ header.hero{background:linear-gradient(135deg,var(--primary-dark),var(--primary)
 .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px;box-shadow:0 2px 10px rgba(22,35,59,.05)}
 .card h2{font-size:1.05rem;text-transform:uppercase;letter-spacing:.06em;color:var(--primary);margin-bottom:14px;display:flex;align-items:center;gap:8px}
 .card h2::before{content:"";display:inline-block;width:4px;height:1em;background:var(--accent);border-radius:2px}
-/* Next match */
+/* agenda */
 .next-card{background:linear-gradient(135deg,#0a355e,#0f4c81);color:#fff;border-radius:14px;padding:26px;box-shadow:0 8px 24px rgba(10,53,94,.25)}
 .next-card .nkicker{text-transform:uppercase;letter-spacing:.12em;font-size:.72rem;opacity:.8;font-weight:700}
-.next-card h2{font-size:1.5rem;margin:.35em 0}
-.next-teams{display:flex;align-items:center;justify-content:center;gap:14px;margin:14px 0;font-weight:700;font-size:1.25rem;flex-wrap:wrap;text-align:center}
-.next-teams .vs{font-size:.8rem;background:rgba(255,255,255,.15);padding:4px 10px;border-radius:99px;letter-spacing:.1em}
-.next-meta{display:flex;justify-content:center;gap:18px;flex-wrap:wrap;opacity:.9;font-size:.95rem}
-.next-meta span{white-space:nowrap}
-.opp-facts{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
-.opp-facts div{flex:1;min-width:90px;background:rgba(255,255,255,.1);border-radius:10px;padding:10px;text-align:center}
+.next-card h2{font-size:1.35rem;margin:.35em 0 .6em;color:#fff}
+.nrow{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.15);flex-wrap:wrap}
+.nrow:last-child{border-bottom:none}
+.ntag{font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;background:rgba(255,255,255,.18);padding:3px 9px;border-radius:999px;white-space:nowrap}
+.nwho{font-weight:700;font-size:1.05rem}
+.nwhen{margin-left:auto;font-size:.85rem;opacity:.9;text-align:right;white-space:nowrap}
+.opp-facts{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+.opp-facts div{flex:1;min-width:80px;background:rgba(255,255,255,.1);border-radius:10px;padding:10px;text-align:center}
 .opp-facts b{display:block;font-size:1.25rem}
-.opp-facts small{opacity:.8;font-size:.7rem;text-transform:uppercase;letter-spacing:.05em}
+.opp-facts small{opacity:.8;font-size:.65rem;text-transform:uppercase;letter-spacing:.04em;line-height:1.3;display:block}
+.opp-label{font-size:.68rem;text-transform:uppercase;letter-spacing:.09em;opacity:.75;margin-top:4px}
 /* stats */
-.stats-row{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+.stats-row{display:flex;gap:10px;margin-top:6px;flex-wrap:wrap}
 .stat{flex:1;min-width:88px;background:var(--bg);border-radius:10px;padding:10px;text-align:center;border:1px solid var(--line)}
 .stat b{display:block;font-size:1.3rem;color:var(--primary)}
 .stat.pos b{color:var(--win)} .stat.neg b{color:var(--loss)}
-.stat small{color:var(--muted);font-size:.68rem;text-transform:uppercase;letter-spacing:.04em}
-.resline{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px dashed var(--line);flex-wrap:wrap}
+.stat small{color:var(--muted);font-size:.66rem;text-transform:uppercase;letter-spacing:.04em;line-height:1.3;display:block}
+/* history */
+.ghead{margin:16px 0 4px;display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.ghead:first-child{margin-top:4px}
+.ghead b{font-size:.86rem;color:var(--primary)}
+.ghead .gtag{font-size:.62rem;text-transform:uppercase;letter-spacing:.06em;background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:2px 8px;color:var(--muted)}
+.resline{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px dashed var(--line);flex-wrap:wrap;font-size:.92rem}
 .resline:last-child{border-bottom:none}
 .scoreline{min-width:70px;text-align:center;font-variant-numeric:tabular-nums}
 .vs{color:var(--muted);font-size:.9rem}
-.meta{color:var(--muted);font-size:.75rem;font-style:normal;display:block;width:100%;padding-left:2px}
+.meta{color:var(--muted);font-size:.74rem;font-style:normal;display:block;width:100%;padding-left:2px}
 /* badges */
 .badge{display:inline-flex;align-items:center;justify-content:center;min-width:26px;height:26px;border-radius:8px;font-weight:800;font-size:.8rem}
 .badge-v{background:var(--win-bg);color:var(--win)}
 .badge-n{background:var(--draw-bg);color:var(--draw)}
 .badge-d{background:var(--loss-bg);color:var(--loss)}
-.badge-neutral{background:#eef1f6;color:var(--muted);font-weight:600;font-size:.65rem}
-.badge-next{background:var(--next-bg);color:var(--next);font-weight:700;font-size:.6rem;padding:0 8px}
+.badge-next{background:var(--next-bg);color:var(--primary);font-weight:700;font-size:.6rem;padding:0 8px}
 .form{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:6px;font-size:.7rem;font-weight:800;margin-right:3px}
 .f-v{background:var(--win-bg);color:var(--win)} .f-n{background:var(--draw-bg);color:var(--draw)} .f-d{background:var(--loss-bg);color:var(--loss)}
 .formcell{white-space:nowrap}
 /* tables */
 table{width:100%;border-collapse:collapse;font-size:.92rem}
-th{font-size:.68rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);padding:8px 8px;border-bottom:2px solid var(--line);text-align:center}
+th{font-size:.68rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);padding:8px;border-bottom:2px solid var(--line);text-align:center}
 th:first-child{text-align:left} th.team-h{text-align:left}
 td{padding:9px 8px;border-bottom:1px solid var(--line);text-align:center}
 td.team{text-align:left;font-weight:600}
@@ -94,6 +100,7 @@ footer a{color:var(--primary)}
 .rank-big{font-size:2.6rem;font-weight:800;color:var(--primary);line-height:1}
 .rank-sub{color:var(--muted);font-size:.8rem;text-transform:uppercase;letter-spacing:.08em}
 .rank-flex{display:flex;align-items:center;gap:16px;margin-bottom:6px}
+.small-h{font-size:.74rem;text-transform:uppercase;letter-spacing:.08em;color:var(--primary);font-weight:800;margin-bottom:6px}
 </style>
 </head>
 <body>
@@ -108,23 +115,15 @@ footer a{color:var(--primary)}
 
   <div class="grid cols2">
     <section class="next-card">
-      <div class="nkicker">Prochain match · J3</div>
-      <h2>Rendez-vous de la semaine</h2>
-      <div class="next-teams">
-        <span>USC Maisons-Laffitte</span>
-        <span class="vs">VS</span>
-        <span>Versailles HBC (3)</span>
-      </div>
-      <div class="next-meta">
-        <span>📅 dimanche 29 novembre 2026</span>
-        <span>⏰ 09h30</span>
-        <span>📍 à domicile</span>
-      </div>
+      <div class="nkicker">Prochains rendez-vous</div>
+      <h2>Agenda U15 Masculins</h2>
+<div class="nrow"><span class="ntag tag-coupe">Coupe des Yvelines</span><span class="nwho">vs Boucle de Seine 78 (2)</span><span class="nwhen">@ dimanche 22 novembre 2026<br>14h00 · à l’extérieur</span></div><div class="nrow"><span class="ntag ">Championnat J3</span><span class="nwho">recevra Versailles HBC (3)</span><span class="nwhen">@dimanche 29 novembre 2026<br>09h30 · à domicile</span></div><div class="nrow"><span class="ntag ">Championnat J4</span><span class="nwho">vs Sud Yvelines HB</span><span class="nwhen">@ dimanche 6 décembre 2026<br>11h00 · à l’extérieur</span></div>
+      <div class="opp-label">Adversaire de championnat (J3)</div>
       <div class="opp-facts">
         <div><small>Classement</small><b>5ᵉ</b></div>
         <div><small>Points</small><b>3</b></div>
         <div><small>Diff</small><b>-13</b></div>
-        <div><small>Forme</small><b><span class="form f-n">N</span><span class="form f-d">D</span></b></div>
+        <div><small>Forme (champ.)</small><b><span class="form f-n">N</span><span class="form f-d">D</span></b></div>
       </div>
     </section>
 
@@ -139,35 +138,38 @@ footer a{color:var(--primary)}
       </div>
       <div class="stats-row">
         <div class="stat"><b>68</b><small>Buts marqués</small></div>
-        <div class="stat"><b>34.0</b><small>Par match</small></div>
+        <div class="stat"><b>34.0</b><small>Nous, par match</small></div>
         <div class="stat"><b>46</b><small>Buts encaissés</small></div>
-        <div class="stat"><b>23.0</b><small>Par match</small></div>
+        <div class="stat"><b>23.0</b><small>Concédés / match</small></div>
         <div class="stat pos"><b>+22</b><small>Différence</small></div>
       </div>
-      <h2 style="margin-top:18px">Résultats joués</h2>
-      <ul style="list-style:none">
-<li class="resline"><span class="badge badge-v">V</span><span class="scoreline"><strong>34</strong> – <strong>24</strong></span><span class="vs">à l’extérieur vs CA Mantes/Rosny <em class="meta">J1 · dimanche 8 novembre 2026</em></span></li><li class="resline"><span class="badge badge-v">V</span><span class="scoreline"><strong>34</strong> – <strong>22</strong></span><span class="vs">à domicile vs CO Gargenville <em class="meta">J2 · dimanche 15 novembre 2026</em></span></li>
-      </ul>
+      <p class="note">Statistiques sur le championnat 3°/4° division (2 journées jouées). Le bilan complet — délaage et Coupe des Yvelines inclus — est ci-dessous.</p>
+    </section>
+  </div>
+
+  <div class="grid" style="margin-top:20px">
+    <section class="card">
+      <h2>Historique complet — toutes rencontres (délaage + coupe)</h2>
+      <div class="grid cols2eq" style="margin-top:6px">
+        <div>
+          <div class="small-h">USC Maisons-Laffitte HB — 10 rencontres</div>
+<div class="ghead"><b>U15M DHN · Poule 8</b><span class="gtag">Championnat U15M</span></div><li class="resline"><span class="badge badge-v">V</span><span class="scoreline"><strong>32</strong> – <strong>17</strong></span><span class="vs">à domicile vs Cellois HB <em class="meta">dimanche 27 septembre 2026 · 11h30</em></span></li><div class="ghead"><b>U15M DHN · Poule E</b><span class="gtag">Championnat U15M</span></div><li class="resline"><span class="badge badge-d">D</span><span class="scoreline"><strong>28</strong> – <strong>29</strong></span><span class="vs">à l’extérieur vs CLOC Achères (2) <em class="meta">dimanche 4 octobre 2026 · 14h00</em></span></li><li class="resline"><span class="badge badge-d">D</span><span class="scoreline"><strong>32</strong> – <strong>37</strong></span><span class="vs">à domicile vs Plaisir-Les Clayes <em class="meta">dimanche 11 octobre 2026 · 09h30</em></span></li><li class="resline"><span class="badge badge-v">V</span><span class="scoreline"><strong>49</strong> – <strong>25</strong></span><span class="vs">à domicile vs Bois-d'Arcy <em class="meta">dimanche 18 octobre 2026 · 11h30</em></span></li><div class="ghead"><b>U15M DEL 3°/4° DIV · Poule 3</b><span class="gtag">Championnat U15M</span></div><li class="resline"><span class="badge badge-v">V</span><span class="scoreline"><strong>34</strong> – <strong>24</strong></span><span class="vs">à l’extérieur vs CA Mantes/Rosny <em class="meta">dimanche 8 novembre 2026 · 11h00</em></span></li><li class="resline"><span class="badge badge-v">V</span><span class="scoreline"><strong>34</strong> – <strong>22</strong></span><span class="vs">à domicile vs CO Gargenville <em class="meta">dimanche 15 novembre 2026 · 16h00</em></span></li><div class="ghead"><b>Coupe des Yvelines · 16e de finale</b><span class="gtag">Coupe des Yvelines</span></div><li class="resline"><span class="badge badge-next">à venir</span><span class="scoreline tbd">–</span><span class="vs">à l’extérieur vs Boucle de Seine 78 (2) <em class="meta">dimanche 22 novembre 2026 · 14h00</em></span></li><div class="ghead"><b>U15M DEL 3°/4° DIV · Poule 3</b><span class="gtag">Championnat U15M</span></div><li class="resline"><span class="badge badge-next">à venir</span><span class="scoreline tbd">–</span><span class="vs">à domicile vs Versailles HBC (3) <em class="meta">dimanche 29 novembre 2026 · 09h30</em></span></li><li class="resline"><span class="badge badge-next">à venir</span><span class="scoreline tbd">–</span><span class="vs">à l’extérieur vs Sud Yvelines HB <em class="meta">dimanche 6 décembre 2026 · 11h00</em></span></li><li class="resline"><span class="badge badge-next">à venir</span><span class="scoreline tbd">–</span><span class="vs">à domicile vs SQY HB Trappes (3) <em class="meta">dimanche 13 décembre 2026 · 14h00</em></span></li>
+        </div>
+        <div>
+          <div class="small-h">Versailles HBC — 16 rencontres</div>
+          <div class="stats-row" style="margin-bottom:6px">
+            <div class="stat"><b>16</b><small>Matchs de référence</small></div>
+            <div class="stat"><b>23.5</b><small>Marqués / match</small></div>
+            <div class="stat"><b>30.0</b><small>Encaissés / match</small></div>
+          </div>
+          <p class="note">Bilan adversaire (championnat 3°/4° division) : 0 victoire(s), 1 nul(s), 1 défaite(s), 47 buts marqués, 60 encaissés. Le club de Versailles engage plusieurs équipes (2) et (3) ; les rencontres de l’équipe entente Le Chesnay/Versailles (pré-région) et de l’équipe (3) figurent ci-dessous.</p>
+<div class="ghead"><b>U15M Pré-région · Poule A</b><span class="gtag">Championnat U15M</span></div><li class="resline"><span class="badge badge-v">V</span><span class="scoreline"><strong>24</strong> – <strong>14</strong></span><span class="vs">à l’extérieur vs Achères-Conflans <em class="meta">dimanche 13 septembre 2026 · 10h00</em></span></li><li class="resline"><span class="badge badge-n">N</span><span class="scoreline"><strong>15</strong> – <strong>15</strong></span><span class="vs">à domicile vs AS Les Mureaux <em class="meta">dimanche 13 septembre 2026 · 10h00</em></span></li><li class="resline"><span class="badge badge-v">V</span><span class="scoreline"><strong>21</strong> – <strong>12</strong></span><span class="vs">à l’extérieur vs AS Poissy <em class="meta">dimanche 13 septembre 2026 · 10h00</em></span></li><div class="ghead"><b>Pré-région · Finalité places 1-4</b><span class="gtag">Championnat U15M</span></div><li class="resline"><span class="badge badge-d">D</span><span class="scoreline"><strong>31</strong> – <strong>35</strong></span><span class="vs">à domicile vs Triel-Chanteloup-Vern. <em class="meta">samedi 19 septembre 2026 · 13h15</em></span></li><div class="ghead"><b>Pré-région · Finalité 1/2</b><span class="gtag">Championnat U15M</span></div><li class="resline"><span class="badge badge-next">n.d.</span><span class="scoreline"><strong>n.d.</strong></span><span class="vs">à domicile vs Boucle de Seine 78 <em class="meta">dimanche 20 septembre 2026 · 12h00</em></span></li><li class="resline"><span class="badge badge-next">n.d.</span><span class="scoreline"><strong>n.d.</strong></span><span class="vs">à domicile vs Achères-Conflans <em class="meta">dimanche 20 septembre 2026 · 12h00</em></span></li><div class="ghead"><b>U15M DHN · Poule 10</b><span class="gtag">Championnat U15M</span></div><li class="resline"><span class="badge badge-d">D</span><span class="scoreline"><strong>8</strong> – <strong>27</strong></span><span class="vs">à domicile vs SQY HB Trappes (2) <em class="meta">samedi 26 septembre 2026 · 17h00</em></span></li><li class="resline"><span class="badge badge-d">D</span><span class="scoreline"><strong>7</strong> – <strong>26</strong></span><span class="vs">à domicile vs Le Chesnay (2) <em class="meta">samedi 26 septembre 2026 · 17h00</em></span></li><div class="ghead"><b>U15M DHN · Poule C</b><span class="gtag">Championnat U15M</span></div><li class="resline"><span class="badge badge-d">D</span><span class="scoreline"><strong>3</strong> – <strong>46</strong></span><span class="vs">à l’extérieur vs St-Cyr/Fontenay <em class="meta">dimanche 4 octobre 2026 · 16h00</em></span></li><li class="resline"><span class="badge badge-d">D</span><span class="scoreline"><strong>22</strong> – <strong>33</strong></span><span class="vs">à domicile vs Triel-Chanteloup-Vern. (2) <em class="meta">dimanche 11 octobre 2026 · 11h45</em></span></li><li class="resline"><span class="badge badge-d">D</span><span class="scoreline"><strong>11</strong> – <strong>52</strong></span><span class="vs">à l’extérieur vs SQY HB Trappes (2) <em class="meta">samedi 17 octobre 2026 · 15h00</em></span></li><div class="ghead"><b>U15M DEL 3°/4° DIV · Poule 3</b><span class="gtag">Championnat U15M</span></div><li class="resline"><span class="badge badge-n">N</span><span class="scoreline"><strong>26</strong> – <strong>26</strong></span><span class="vs">à l’extérieur vs CO Gargenville <em class="meta">samedi 7 novembre 2026 · 17h00</em></span></li><li class="resline"><span class="badge badge-d">D</span><span class="scoreline"><strong>21</strong> – <strong>34</strong></span><span class="vs">à domicile vs Sud Yvelines HB <em class="meta">dimanche 15 novembre 2026 · 14h00</em></span></li><div class="ghead"><b>Coupe des Yvelines · 16e de finale</b><span class="gtag">Coupe des Yvelines</span></div><li class="resline"><span class="badge badge-next">à venir</span><span class="scoreline tbd">–</span><span class="vs">à l’extérieur vs HBC Conflans (2) <em class="meta">dimanche 22 novembre 2026 · 11h30</em></span></li><div class="ghead"><b>U15M DEL 3°/4° DIV · Poule 3</b><span class="gtag">Championnat U15M</span></div><li class="resline"><span class="badge badge-next">à venir</span><span class="scoreline tbd">–</span><span class="vs">à l’extérieur vs SQY HB Trappes (3) <em class="meta">samedi 5 décembre 2026 · 14h00</em></span></li><li class="resline"><span class="badge badge-next">à venir</span><span class="scoreline tbd">–</span><span class="vs">à domicile vs CA Mantes/Rosny <em class="meta">samedi 12 décembre 2026 · 14h30</em></span></li>
+        </div>
+      </div>
     </section>
   </div>
 
   <div class="grid cols2" style="margin-top:20px">
-    <section class="card">
-      <h2>Report adverse · VERSAILLES HBC (3)</h2>
-      <div class="stats-row" style="margin-top:2px;margin-bottom:12px">
-        <div class="stat"><b>3</b><small>Points</small></div>
-        <div class="stat"><b>0</b><small>V</small></div>
-        <div class="stat"><b>1</b><small>N</small></div>
-        <div class="stat"><b>1</b><small>D</small></div>
-        <div class="stat"><b>23.5</b><small>Marqués / match</small></div>
-        <div class="stat"><b>30.0</b><small>Encaissés / match</small></div>
-      </div>
-      <ul style="list-style:none">
-<li class="resline"><span class="badge badge-n">N</span><span class="scoreline"><strong>26</strong> – <strong>26</strong></span><span class="vs">à l’extérieur vs CO Gargenville <em class="meta">J1 · samedi 7 novembre 2026</em></span></li><li class="resline"><span class="badge badge-d">D</span><span class="scoreline"><strong>21</strong> – <strong>34</strong></span><span class="vs">à domicile vs Sud Yvelines HB <em class="meta">J2 · dimanche 15 novembre 2026</em></span></li>
-      </ul>
-      <p class="note">Sur ses 2 derniers matchs, Versailles HBC (3) marque en moyenne 23.5 buts et en concède 30.0. Moyennes USC : 34.0 marqués / 23.0 encaissés. Le match se joue à domicile.</p>
-    </section>
-
     <section class="card">
       <h2>Classement de la poule</h2>
       <div class="table-scroll">
@@ -177,7 +179,7 @@ footer a{color:var(--primary)}
           <th>BP</th><th>BC</th><th>Diff</th><th>Forme</th>
         </tr></thead>
         <tbody>
-<tr class="nous-row"><td class="place">1</td><td class="team">USC Maisons-Laffitte HB</td><td>6</td><td>2</td><td>2</td><td>0</td><td>0</td><td>68</td><td>46</td><td class="diff pos">+22</td><td class="formcell"><span class="form f-v">V</span><span class="form f-v">V</span><span class="form f-v">V</span></td></tr><tr><td class="place">2</td><td class="team">Sud Yvelines HB</td><td>6</td><td>2</td><td>2</td><td>0</td><td>0</td><td>76</td><td>58</td><td class="diff pos">+18</td><td class="formcell"><span class="form f-v">V</span><span class="form f-v">V</span></td></tr><tr><td class="place">3</td><td class="team">SQY HB Trappes</td><td>4</td><td>2</td><td>1</td><td>0</td><td>1</td><td>73</td><td>67</td><td class="diff pos">+6</td><td class="formcell"><span class="form f-d">D</span><span class="form f-v">V</span></td></tr><tr><td class="place">4</td><td class="team">CO Gargenville</td><td>3</td><td>2</td><td>0</td><td>1</td><td>1</td><td>48</td><td>60</td><td class="diff neg">-12</td><td class="formcell"><span class="form f-n">N</span><span class="form f-d">D</span></td></tr><tr><td class="place">5</td><td class="team">Versailles HBC (3)</td><td>3</td><td>2</td><td>0</td><td>1</td><td>1</td><td>47</td><td>60</td><td class="diff neg">-13</td><td class="formcell"><span class="form f-n">N</span><span class="form f-d">D</span></td></tr><tr><td class="place">6</td><td class="team">CA Mantes/Rosny</td><td>2</td><td>2</td><td>0</td><td>0</td><td>2</td><td>49</td><td>70</td><td class="diff neg">-21</td><td class="formcell"><span class="form f-d">D</span><span class="form f-d">D</span><span class="form f-d">D</span></td></tr>
+<tr class="nous-row"><td class="place">1</td><td class="team">USC Maisons-Laffitte HB</td><td>6</td><td>2</td><td>2</td><td>0</td><td>0</td><td>68</td><td>46</td><td class="diff pos">+22</td><td class="formcell"><span class="form f-v">V</span><span class="form f-v">V</span><span class="form f-v">V</span></td></tr><tr><td class="place">2</td><td class="team">Sud Yvelines HB</td><td>6</td><td>2</td><td>2</td><td>0</td><td>0</td><td>76</td><td>58</td><td class="diff pos">+18</td><td class="formcell"><span class="form f-v">V</span><span class="form f-v">V</span></td></tr><tr><td class="place">3</td><td class="team">SQY HB Trappes (3)</td><td>4</td><td>2</td><td>1</td><td>0</td><td>1</td><td>73</td><td>67</td><td class="diff pos">+6</td><td class="formcell"><span class="form f-d">D</span><span class="form f-v">V</span></td></tr><tr><td class="place">4</td><td class="team">CO Gargenville</td><td>3</td><td>2</td><td>0</td><td>1</td><td>1</td><td>48</td><td>60</td><td class="diff neg">-12</td><td class="formcell"><span class="form f-n">N</span><span class="form f-d">D</span></td></tr><tr><td class="place">5</td><td class="team">Versailles HBC (3)</td><td>3</td><td>2</td><td>0</td><td>1</td><td>1</td><td>47</td><td>60</td><td class="diff neg">-13</td><td class="formcell"><span class="form f-n">N</span><span class="form f-d">D</span></td></tr><tr><td class="place">6</td><td class="team">CA Mantes/Rosny</td><td>2</td><td>2</td><td>0</td><td>0</td><td>2</td><td>49</td><td>70</td><td class="diff neg">-21</td><td class="formcell"><span class="form f-d">D</span><span class="form f-d">D</span><span class="form f-d">D</span></td></tr>
         </tbody>
       </table>
       </div>
@@ -187,28 +189,26 @@ footer a{color:var(--primary)}
         <span><span class="form f-d">D</span>Défaite</span>
       </div>
     </section>
-  </div>
 
-  <div class="grid" style="margin-top:20px">
     <section class="card">
-      <h2>Calendrier complet de la poule</h2>
+      <h2>Calendrier de la poule actuelle</h2>
       <div class="table-scroll">
       <table>
         <thead><tr>
           <th>Jrn</th><th>Date</th><th class="team-h">Domicile</th><th>Score</th><th class="team-h">Extérieur</th><th>Nous</th>
         </tr></thead>
         <tbody>
-<tr><td class="jrn">J1</td><td class="date">samedi 7 novembre 2026<span class="heure">16h15</span></td><td class="team">Sud Yvelines HB</td><td class="scorecell"><span class="score">42 – 37</span></td><td class="team">SQY HB Trappes</td><td class="rescell"></td></tr><tr><td class="jrn">J1</td><td class="date">samedi 7 novembre 2026<span class="heure">17h00</span></td><td class="team">CO Gargenville</td><td class="scorecell"><span class="score">26 – 26</span></td><td class="team opp2">Versailles HBC (3)</td><td class="rescell"></td></tr><tr><td class="jrn">J1</td><td class="date">dimanche 8 novembre 2026<span class="heure">11h00</span></td><td class="team">CA Mantes/Rosny</td><td class="scorecell"><span class="score win">24 – 34</span></td><td class="team usc">USC Maisons-Laffitte</td><td class="rescell"><span class="badge badge-v">V</span></td></tr><tr><td class="jrn">J2</td><td class="date">samedi 14 novembre 2026<span class="heure">16h30</span></td><td class="team">SQY HB Trappes</td><td class="scorecell"><span class="score">36 – 25</span></td><td class="team">CA Mantes/Rosny</td><td class="rescell"></td></tr><tr><td class="jrn">J2</td><td class="date">dimanche 15 novembre 2026<span class="heure">14h00</span></td><td class="team opp2">Versailles HBC (3)</td><td class="scorecell"><span class="score">21 – 34</span></td><td class="team">Sud Yvelines HB</td><td class="rescell"></td></tr><tr><td class="jrn">J2</td><td class="date">dimanche 15 novembre 2026<span class="heure">16h00</span></td><td class="team usc">USC Maisons-Laffitte</td><td class="scorecell"><span class="score win">34 – 22</span></td><td class="team">CO Gargenville</td><td class="rescell"><span class="badge badge-v">V</span></td></tr><tr class="next-row"><td class="jrn">J3</td><td class="date">dimanche 29 novembre 2026<span class="heure">09h30</span></td><td class="team usc">USC Maisons-Laffitte</td><td class="scorecell"><span class="score tbd">à jouer</span></td><td class="team opp2">Versailles HBC (3)</td><td class="rescell"><span class="badge badge-next res-mini">à venir</span></td></tr><tr><td class="jrn">J3</td><td class="date">dimanche 29 novembre 2026<span class="heure">11h30</span></td><td class="team">CO Gargenville</td><td class="scorecell"><span class="score tbd">à jouer</span></td><td class="team">SQY HB Trappes</td><td class="rescell"><span class="badge badge-next res-mini">à venir</span></td></tr><tr><td class="jrn">J3</td><td class="date">dimanche 29 novembre 2026<span class="heure">16h00</span></td><td class="team">Sud Yvelines HB</td><td class="scorecell"><span class="score tbd">à jouer</span></td><td class="team">CA Mantes/Rosny</td><td class="rescell"><span class="badge badge-next res-mini">à venir</span></td></tr><tr><td class="jrn">J4</td><td class="date">samedi 5 décembre 2026<span class="heure">14h00</span></td><td class="team">SQY HB Trappes</td><td class="scorecell"><span class="score tbd">à jouer</span></td><td class="team opp2">Versailles HBC (3)</td><td class="rescell"><span class="badge badge-next res-mini">à venir</span></td></tr><tr><td class="jrn">J4</td><td class="date">dimanche 6 décembre 2026<span class="heure">11h00</span></td><td class="team">Sud Yvelines HB</td><td class="scorecell"><span class="score tbd">à jouer</span></td><td class="team usc">USC Maisons-Laffitte</td><td class="rescell"><span class="badge badge-next res-mini">à venir</span></td></tr><tr><td class="jrn">J4</td><td class="date">dimanche 6 décembre 2026<span class="heure">16h00</span></td><td class="team">CA Mantes/Rosny</td><td class="scorecell"><span class="score tbd">à jouer</span></td><td class="team">CO Gargenville</td><td class="rescell"><span class="badge badge-next res-mini">à venir</span></td></tr><tr><td class="jrn">J5</td><td class="date">samedi 12 décembre 2026<span class="heure">14h30</span></td><td class="team opp2">Versailles HBC (3)</td><td class="scorecell"><span class="score tbd">à jouer</span></td><td class="team">CA Mantes/Rosny</td><td class="rescell"><span class="badge badge-next res-mini">à venir</span></td></tr><tr><td class="jrn">J5</td><td class="date">dimanche 13 décembre 2026<span class="heure">14h00</span></td><td class="team">CO Gargenville</td><td class="scorecell"><span class="score tbd">à jouer</span></td><td class="team">Sud Yvelines HB</td><td class="rescell"><span class="badge badge-next res-mini">à venir</span></td></tr><tr><td class="jrn">J5</td><td class="date">dimanche 13 décembre 2026<span class="heure">14h00</span></td><td class="team usc">USC Maisons-Laffitte</td><td class="scorecell"><span class="score tbd">à jouer</span></td><td class="team">SQY HB Trappes</td><td class="rescell"><span class="badge badge-next res-mini">à venir</span></td></tr>
+<tr><td class="jrn">J1</td><td class="date">samedi 7 novembre<span class="heure">16h15</span></td><td class="team">Sud Yvelines HB</td><td class="scorecell"><span class="score">42 – 37</span></td><td class="team">SQY HB Trappes (3)</td><td class="rescell"></td></tr><tr><td class="jrn">J1</td><td class="date">samedi 7 novembre<span class="heure">17h00</span></td><td class="team">CO Gargenville</td><td class="scorecell"><span class="score">26 – 26</span></td><td class="team opp2">Versailles HBC (3)</td><td class="rescell"></td></tr><tr><td class="jrn">J1</td><td class="date">dimanche 8 novembre<span class="heure">11h00</span></td><td class="team">CA Mantes/Rosny</td><td class="scorecell"><span class="score win">24 – 34</span></td><td class="team usc">USC Maisons-Laffitte</td><td class="rescell"><span class="badge badge-v">V</span></td></tr><tr><td class="jrn">J2</td><td class="date">samedi 14 novembre<span class="heure">16h30</span></td><td class="team">SQY HB Trappes (3)</td><td class="scorecell"><span class="score">36 – 25</span></td><td class="team">CA Mantes/Rosny</td><td class="rescell"></td></tr><tr><td class="jrn">J2</td><td class="date">dimanche 15 novembre<span class="heure">14h00</span></td><td class="team opp2">Versailles HBC (3)</td><td class="scorecell"><span class="score">21 – 34</span></td><td class="team">Sud Yvelines HB</td><td class="rescell"></td></tr><tr><td class="jrn">J2</td><td class="date">dimanche 15 novembre<span class="heure">16h00</span></td><td class="team usc">USC Maisons-Laffitte</td><td class="scorecell"><span class="score win">34 – 22</span></td><td class="team">CO Gargenville</td><td class="rescell"><span class="badge badge-v">V</span></td></tr><tr class="next-row"><td class="jrn">J3</td><td class="date">dimanche 29 novembre<span class="heure">09h30</span></td><td class="team usc">USC Maisons-Laffitte</td><td class="scorecell"><span class="score tbd">à jouer</span></td><td class="team opp2">Versailles HBC (3)</td><td class="rescell"><span class="badge badge-next res-mini">à venir</span></td></tr><tr><td class="jrn">J3</td><td class="date">dimanche 29 novembre<span class="heure">11h30</span></td><td class="team">CO Gargenville</td><td class="scorecell"><span class="score tbd">à jouer</span></td><td class="team">SQY HB Trappes (3)</td><td class="rescell"></td></tr><tr><td class="jrn">J3</td><td class="date">dimanche 29 novembre<span class="heure">16h00</span></td><td class="team">Sud Yvelines HB</td><td class="scorecell"><span class="score tbd">à jouer</span></td><td class="team">CA Mantes/Rosny</td><td class="rescell"></td></tr><tr><td class="jrn">J4</td><td class="date">samedi 5 décembre<span class="heure">14h00</span></td><td class="team">SQY HB Trappes (3)</td><td class="scorecell"><span class="score tbd">à jouer</span></td><td class="team opp2">Versailles HBC (3)</td><td class="rescell"></td></tr><tr><td class="jrn">J4</td><td class="date">dimanche 6 décembre<span class="heure">11h00</span></td><td class="team">Sud Yvelines HB</td><td class="scorecell"><span class="score tbd">à jouer</span></td><td class="team usc">USC Maisons-Laffitte</td><td class="rescell"><span class="badge badge-next res-mini">à venir</span></td></tr><tr><td class="jrn">J4</td><td class="date">dimanche 6 décembre<span class="heure">16h00</span></td><td class="team">CA Mantes/Rosny</td><td class="scorecell"><span class="score tbd">à jouer</span></td><td class="team">CO Gargenville</td><td class="rescell"></td></tr><tr><td class="jrn">J5</td><td class="date">samedi 12 décembre<span class="heure">14h30</span></td><td class="team opp2">Versailles HBC (3)</td><td class="scorecell"><span class="score tbd">à jouer</span></td><td class="team">CA Mantes/Rosny</td><td class="rescell"></td></tr><tr><td class="jrn">J5</td><td class="date">dimanche 13 décembre<span class="heure">14h00</span></td><td class="team">CO Gargenville</td><td class="scorecell"><span class="score tbd">à jouer</span></td><td class="team">Sud Yvelines HB</td><td class="rescell"></td></tr><tr><td class="jrn">J5</td><td class="date">dimanche 13 décembre<span class="heure">14h00</span></td><td class="team usc">USC Maisons-Laffitte</td><td class="scorecell"><span class="score tbd">à jouer</span></td><td class="team">SQY HB Trappes (3)</td><td class="rescell"><span class="badge badge-next res-mini">à venir</span></td></tr>
         </tbody>
       </table>
       </div>
-      <p class="note">Ligne surlignée = prochaine rencontre de l’USC. Équipes de la poule : <span class="chip">CO Gargenville</span><span class="chip">Sud Yvelines HB</span><span class="chip">CA Mantes/Rosny</span><span class="chip">Versailles HBC (3)</span><span class="chip">USC Maisons-Laffitte</span><span class="chip">SQY HB Trappes</span></p>
+      <p class="note">Ligne surlignée = prochaine rencontre de championnat de l’USC. Équipes de la poule : <span class="chip">CO Gargenville</span><span class="chip">Sud Yvelines HB</span><span class="chip">CA Mantes/Rosny</span><span class="chip">Versailles HBC (3)</span><span class="chip">USC Maisons-Laffitte</span><span class="chip">SQY HB Trappes (3)</span></p>
     </section>
   </div>
 
   <footer>
-    Source : <a href="https://www.ffhandball.fr/competitions/saison-2026-2027-22/departemental/u15-masculins-32350/poule-199625/">ffhandball.fr — calendrier &amp; résultats de la poule</a> (FFB — Fédération Française de Handball).<br>
-    Rapport généré pour les coachs de l’USC Maisons-Laffitte HB · données arrêtées au 19 novembre 2026.
+    Source : <a href="https://www.ffhandball.fr/competitions/saison-2026-2027-22/departemental/u15-masculins-32350/poule-199625/">ffhandball.fr — calendrier &amp; résultats</a> (Fédération Française de Handball).<br>
+    Historiques : délaage (phases 3 à 5) et Coupe des Yvelines, mêmes données officielles · rapport généré pour les coachs de l’USC Maisons-Laffitte HB · données arrêtées au 19 novembre 2026.
   </footer>
 
 </div>
