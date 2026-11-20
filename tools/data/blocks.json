@@ -1,0 +1,682 @@
+{
+ "competitions---poule-selector": {
+  "ext_saison_id": "22",
+  "url_competition_type": "departemental",
+  "url_structure": "",
+  "url_competition": "u15-masculins-32350",
+  "ext_poule_id": "199625",
+  "numero_journee": "",
+  "ext_equipe_id": "",
+  "ext_rencontre_id": "",
+  "selected_equipe": null,
+  "selected_poule": {
+   "id": "248311",
+   "ext_pouleId": "199625",
+   "phaseId": "89074",
+   "libelle": "U15M DEL 3° / 4° DIV POULE 3",
+   "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-11-07\",\"date_fin\":\"2026-11-08\"},{\"journee_numero\":2,\"date_debut\":\"2026-11-14\",\"date_fin\":\"2026-11-15\"},{\"journee_numero\":3,\"date_debut\":\"2026-11-28\",\"date_fin\":\"2026-11-29\"},{\"journee_numero\":4,\"date_debut\":\"2026-12-05\",\"date_fin\":\"2026-12-06\"},{\"journee_numero\":5,\"date_debut\":\"2026-12-12\",\"date_fin\":\"2026-12-13\"}]",
+   "dateDernierUpdateEnfants": "2026-11-19 14:57:37.000",
+   "phase_competitionId": "30813"
+  },
+  "equipe_options": [
+   {
+    "id": "1846927",
+    "ext_equipeId": "2224052",
+    "pouleId": "248311",
+    "structureId": "1961",
+    "libelle": "CO GARGENVILLE",
+    "logoActif": "1"
+   },
+   {
+    "id": "1846928",
+    "ext_equipeId": "2224053",
+    "pouleId": "248311",
+    "structureId": "1974",
+    "libelle": "SUD YVELINES HB LE PERRAY RAMBOUILLET (U15M)",
+    "logoActif": "0"
+   },
+   {
+    "id": "1846929",
+    "ext_equipeId": "2224054",
+    "pouleId": "248311",
+    "structureId": "1950",
+    "libelle": "CA MANTES LA VILLE / HBC ROSNY (U15M)",
+    "logoActif": "0"
+   },
+   {
+    "id": "1846930",
+    "ext_equipeId": "2224055",
+    "pouleId": "248311",
+    "structureId": "1973",
+    "libelle": "VERSAILLES HBC (3)",
+    "logoActif": "1"
+   },
+   {
+    "id": "1846931",
+    "ext_equipeId": "2224056",
+    "pouleId": "248311",
+    "structureId": "1965",
+    "libelle": "USC MAISONS-LAFFITTE HB",
+    "logoActif": "1"
+   },
+   {
+    "id": "1846932",
+    "ext_equipeId": "2224057",
+    "pouleId": "248311",
+    "structureId": "1987",
+    "libelle": "SQY HB TRAPPES MONTIGNY (U15M3)",
+    "logoActif": "0"
+   }
+  ],
+  "phases": [
+   {
+    "id": "87392",
+    "ext_phaseId": "109549",
+    "competitionId": "30813",
+    "libelle": "U15 MASCULINS DELAYAGE PRE-REGION : BARRAGES",
+    "dateDernierUpdateEnfants": "2026-09-06 11:50:30.000",
+    "classement": "1"
+   },
+   {
+    "id": "87393",
+    "ext_phaseId": "109551",
+    "competitionId": "30813",
+    "libelle": "U15 MASCULINS DELAYAGE PRE-REGION : POULES",
+    "dateDernierUpdateEnfants": "2026-09-18 14:43:52.000",
+    "classement": "1"
+   },
+   {
+    "id": "87394",
+    "ext_phaseId": "109924",
+    "competitionId": "30813",
+    "libelle": "U15 MASCULINS DELAYAGE PRE-REGION : FINALITES 1 A 6 (19/09/26)",
+    "dateDernierUpdateEnfants": "2026-09-20 00:02:11.000",
+    "classement": "1"
+   },
+   {
+    "id": "87395",
+    "ext_phaseId": "109925",
+    "competitionId": "30813",
+    "libelle": "U15 MASCULINS PHASE 3 : DELAYAGE DEPARTEMENTAL HAUT NIVEAU",
+    "dateDernierUpdateEnfants": "2026-11-03 09:36:22.000",
+    "classement": "1"
+   },
+   {
+    "id": "87396",
+    "ext_phaseId": "113004",
+    "competitionId": "30813",
+    "libelle": "U15 MASCULINS DELAYAGE PRE-REGION : FINALITES 1 A 4 (20/09/26)",
+    "dateDernierUpdateEnfants": "2026-10-05 10:02:34.000",
+    "classement": "1"
+   },
+   {
+    "id": "87397",
+    "ext_phaseId": "113006",
+    "competitionId": "30813",
+    "libelle": "U15 MASCULINS DELAYAGE PRE-REGION : FINALITES 5 A 6 (20/09/26)",
+    "dateDernierUpdateEnfants": "2026-10-05 10:01:58.000",
+    "classement": "1"
+   },
+   {
+    "id": "88572",
+    "ext_phaseId": "113869",
+    "competitionId": "30813",
+    "libelle": "U15 MASCULINS PHASE 4 : DELAYAGE DEPARTEMENTAL HAUT NIVEAU",
+    "dateDernierUpdateEnfants": "2026-10-18 17:28:26.000",
+    "classement": "1"
+   },
+   {
+    "id": "89074",
+    "ext_phaseId": "114665",
+    "competitionId": "30813",
+    "libelle": "U15 MASCULINS PHASE 5 : DELAYAGE DEPARTEMENTAL 1ERE A 6EME DIVISION",
+    "dateDernierUpdateEnfants": "2026-11-20 09:40:42.000",
+    "classement": "1"
+   }
+  ],
+  "poules": [
+   {
+    "id": "243818",
+    "ext_pouleId": "190373",
+    "phaseId": "87392",
+    "libelle": "U15M DPR MATCH DE BARRAGE 1",
+    "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-09-05\",\"date_fin\":\"2026-09-06\"}]",
+    "dateDernierUpdateEnfants": "2026-09-06 11:50:30.000",
+    "phase_competitionId": "30813"
+   },
+   {
+    "id": "243819",
+    "ext_pouleId": "190374",
+    "phaseId": "87392",
+    "libelle": "U15M DPR MATCH DE BARRAGE 2",
+    "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-09-05\",\"date_fin\":\"2026-09-06\"}]",
+    "dateDernierUpdateEnfants": "2026-09-05 17:35:28.000",
+    "phase_competitionId": "30813"
+   },
+   {
+    "id": "243820",
+    "ext_pouleId": "190401",
+    "phaseId": "87393",
+    "libelle": "U15M DPR POULE A",
+    "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-09-12\",\"date_fin\":\"2026-09-13\"}]",
+    "dateDernierUpdateEnfants": "2026-09-13 14:40:34.000",
+    "phase_competitionId": "30813"
+   },
+   {
+    "id": "243821",
+    "ext_pouleId": "190403",
+    "phaseId": "87393",
+    "libelle": "U15M DPR POULE B",
+    "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-09-12\",\"date_fin\":\"2026-09-13\"}]",
+    "dateDernierUpdateEnfants": "2026-09-18 14:43:52.000",
+    "phase_competitionId": "30813"
+   },
+   {
+    "id": "243826",
+    "ext_pouleId": "191067",
+    "phaseId": "87395",
+    "libelle": "U15M DHN POULE 1",
+    "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-09-26\",\"date_fin\":\"2026-09-27\"}]",
+    "dateDernierUpdateEnfants": "2026-11-02 15:14:10.000",
+    "phase_competitionId": "30813"
+   },
+   {
+    "id": "243827",
+    "ext_pouleId": "191068",
+    "phaseId": "87395",
+    "libelle": "U15M DHN POULE 2",
+    "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-09-26\",\"date_fin\":\"2026-09-27\"}]",
+    "dateDernierUpdateEnfants": "2026-09-28 14:31:59.000",
+    "phase_competitionId": "30813"
+   },
+   {
+    "id": "243828",
+    "ext_pouleId": "191069",
+    "phaseId": "87395",
+    "libelle": "U15M DHN POULE 3",
+    "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-09-26\",\"date_fin\":\"2026-09-27\"}]",
+    "dateDernierUpdateEnfants": "2026-09-28 14:31:59.000",
+    "phase_competitionId": "30813"
+   },
+   {
+    "id": "243829",
+    "ext_pouleId": "191070",
+    "phaseId": "87395",
+    "libelle": "U15M DHN POULE 4",
+    "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-09-26\",\"date_fin\":\"2026-09-27\"}]",
+    "dateDernierUpdateEnfants": "2026-09-28 14:31:59.000",
+    "phase_competitionId": "30813"
+   },
+   {
+    "id": "243830",
+    "ext_pouleId": "191071",
+    "phaseId": "87395",
+    "libelle": "U15M DHN POULE 5",
+    "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-09-26\",\"date_fin\":\"2026-09-27\"}]",
+    "dateDernierUpdateEnfants": "2026-09-28 14:31:59.000",
+    "phase_competitionId": "30813"
+   },
+   {
+    "id": "243831",
+    "ext_pouleId": "191072",
+    "phaseId": "87395",
+    "libelle": "U15M DHN POULE 6",
+    "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-09-26\",\"date_fin\":\"2026-09-27\"}]",
+    "dateDernierUpdateEnfants": "2026-11-02 16:39:43.000",
+    "phase_competitionId": "30813"
+   },
+   {
+    "id": "243832",
+    "ext_pouleId": "191073",
+    "phaseId": "87395",
+    "libelle": "U15M DHN POULE 7",
+    "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-09-26\",\"date_fin\":\"2026-09-27\"}]",
+    "dateDernierUpdateEnfants": "2026-09-28 14:31:59.000",
+    "phase_competitionId": "30813"
+   },
+   {
+    "id": "243833",
+    "ext_pouleId": "191074",
+    "phaseId": "87395",
+    "libelle": "U15M DHN POULE 8",
+    "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-09-26\",\"date_fin\":\"2026-09-27\"}]",
+    "dateDernierUpdateEnfants": "2026-10-06 15:03:52.000",
+    "phase_competitionId": "30813"
+   },
+   {
+    "id": "243834",
+    "ext_pouleId": "191075",
+    "phaseId": "87395",
+    "libelle": "U15M DHN POULE 9",
+    "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-09-26\",\"date_fin\":\"2026-09-27\"}]",
+    "dateDernierUpdateEnfants": "2026-11-03 09:36:22.000",
+    "phase_competitionId": "30813"
+   },
+   {
+    "id": "243835",
+    "ext_pouleId": "191076",
+    "phaseId": "87395",
+    "libelle": "U15M DHN POULE 10",
+    "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-09-26\",\"date_fin\":\"2026-09-27\"}]",
+    "dateDernierUpdateEnfants": "2026-09-28 14:31:59.000",
+    "phase_competitionId": "30813"
+   },
+   {
+    "id": "243822",
+    "ext_pouleId": "195660",
+    "phaseId": "87394",
+    "libelle": "U15M DPR FINALITES PLACE 1 A 4 - MATCH 1",
+    "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-09-19\",\"date_fin\":\"2026-09-19\"}]",
+    "dateDernierUpdateEnfants": "2026-09-19 16:40:23.000",
+    "phase_competitionId": "30813"
+   },
+   {
+    "id": "243823",
+    "ext_pouleId": "195663",
+    "phaseId": "87394",
+    "libelle": "U15M DPR FINALITES PLACE 1 A 4 - MATCH 2",
+    "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-09-19\",\"date_fin\":\"2026-09-19\"}]",
+    "dateDernierUpdateEnfants": "2026-09-20 00:02:11.000",
+    "phase_competitionId": "30813"
+   },
+   {
+    "id": "243824",
+    "ext_pouleId": "195666",
+    "phaseId": "87394",
+    "libelle": "U15M DPR FINALITES PLACE 5 A 6 - MATCH 3",
+    "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-09-19\",\"date_fin\":\"2026-09-19\"}]",
+    "dateDernierUpdateEnfants": "2026-09-19 23:48:03.000",
+    "phase_competitionId": "30813"
+   },
+   {
+    "id": "243825",
+    "ext_pouleId": "195667",
+    "phaseId": "87394",
+    "libelle": "U15M DPR FINALITES PLACE 5 A 6 - MATCH 4",
+    "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-09-19\",\"date_fin\":\"2026-09-19\"}]",
+    "dateDernierUpdateEnfants": "2026-09-19 16:17:31.000",
+    "phase_competitionId": "30813"
+   },
+   {
+    "id": "243836",
+    "ext_pouleId": "195680",
+    "phaseId": "87396",
+    "libelle": "U15M DPR FINALITES PLACE 1/2 - V1/V2 (20/09/26)",
+    "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-09-20\",\"date_fin\":\"2026-09-20\"}]",
+    "dateDernierUpdateEnfants": "2026-10-05 10:01:04.000",
+    "phase_competitionId": "30813"
+   },
+   {
+    "id": "243837",
+    "ext_pouleId": "195682",
+    "phaseId": "87396",
+    "libelle": "U15M DPR FINALITES PLACE 3/4 - P1/P2 (20/09/26)",
+    "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-09-20\",\"date_fin\":\"2026-09-20\"}]",
+    "dateDernierUpdateEnfants": "2026-10-05 10:02:34.000",
+    "phase_competitionId": "30813"
+   },
+   {
+    "id": "243838",
+    "ext_pouleId": "195684",
+    "phaseId": "87397",
+    "libelle": "U15M DPR FINALITES PLACE 5/6 - V3/V4 (20/09/26)",
+    "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-09-20\",\"date_fin\":\"2026-09-20\"}]",
+    "dateDernierUpdateEnfants": "2026-10-05 10:01:58.000",
+    "phase_competitionId": "30813"
+   },
+   {
+    "id": "246892",
+    "ext_pouleId": "197857",
+    "phaseId": "88572",
+    "libelle": "U15M DHN POULE A",
+    "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-10-03\",\"date_fin\":\"2026-10-04\"},{\"journee_numero\":2,\"date_debut\":\"2026-10-10\",\"date_fin\":\"2026-10-11\"},{\"journee_numero\":3,\"date_debut\":\"2026-10-17\",\"date_fin\":\"2026-10-18\"}]",
+    "dateDernierUpdateEnfants": "2026-10-18 11:45:09.000",
+    "phase_competitionId": "30813"
+   },
+   {
+    "id": "246893",
+    "ext_pouleId": "197860",
+    "phaseId": "88572",
+    "libelle": "U15M DHN POULE B",
+    "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-10-03\",\"date_fin\":\"2026-10-04\"},{\"journee_numero\":2,\"date_debut\":\"2026-10-10\",\"date_fin\":\"2026-10-11\"},{\"journee_numero\":3,\"date_debut\":\"2026-10-17\",\"date_fin\":\"2026-10-18\"}]",
+    "dateDernierUpdateEnfants": "2026-10-17 16:56:17.000",
+    "phase_competitionId": "30813"
+   },
+   {
+    "id": "246894",
+    "ext_pouleId": "197861",
+    "phaseId": "88572",
+    "libelle": "U15M DHN POULE C",
+    "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-10-03\",\"date_fin\":\"2026-10-04\"},{\"journee_numero\":2,\"date_debut\":\"2026-10-10\",\"date_fin\":\"2026-10-11\"},{\"journee_numero\":3,\"date_debut\":\"2026-10-17\",\"date_fin\":\"2026-10-18\"}]",
+    "dateDernierUpdateEnfants": "2026-10-18 14:57:25.000",
+    "phase_competitionId": "30813"
+   },
+   {
+    "id": "246895",
+    "ext_pouleId": "197862",
+    "phaseId": "88572",
+    "libelle": "U15M DHN POULE D",
+    "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-10-03\",\"date_fin\":\"2026-10-04\"},{\"journee_numero\":2,\"date_debut\":\"2026-10-10\",\"date_fin\":\"2026-10-11\"},{\"journee_numero\":3,\"date_debut\":\"2026-10-17\",\"date_fin\":\"2026-10-18\"}]",
+    "dateDernierUpdateEnfants": "2026-10-18 13:00:10.000",
+    "phase_competitionId": "30813"
+   },
+   {
+    "id": "246896",
+    "ext_pouleId": "197863",
+    "phaseId": "88572",
+    "libelle": "U15M DHN POULE E",
+    "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-10-03\",\"date_fin\":\"2026-10-04\"},{\"journee_numero\":2,\"date_debut\":\"2026-10-10\",\"date_fin\":\"2026-10-11\"},{\"journee_numero\":3,\"date_debut\":\"2026-10-17\",\"date_fin\":\"2026-10-18\"}]",
+    "dateDernierUpdateEnfants": "2026-10-18 12:52:05.000",
+    "phase_competitionId": "30813"
+   },
+   {
+    "id": "246897",
+    "ext_pouleId": "197864",
+    "phaseId": "88572",
+    "libelle": "U15M DHN POULE F",
+    "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-10-03\",\"date_fin\":\"2026-10-04\"},{\"journee_numero\":2,\"date_debut\":\"2026-10-10\",\"date_fin\":\"2026-10-11\"},{\"journee_numero\":3,\"date_debut\":\"2026-10-17\",\"date_fin\":\"2026-10-18\"}]",
+    "dateDernierUpdateEnfants": "2026-10-18 17:28:26.000",
+    "phase_competitionId": "30813"
+   },
+   {
+    "id": "248309",
+    "ext_pouleId": "199622",
+    "phaseId": "89074",
+    "libelle": "U15M DEL 1° / 2° DIV POULE 1",
+    "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-11-07\",\"date_fin\":\"2026-11-08\"},{\"journee_numero\":2,\"date_debut\":\"2026-11-14\",\"date_fin\":\"2026-11-15\"},{\"journee_numero\":3,\"date_debut\":\"2026-11-28\",\"date_fin\":\"2026-11-29\"},{\"journee_numero\":4,\"date_debut\":\"2026-12-05\",\"date_fin\":\"2026-12-06\"},{\"journee_numero\":5,\"date_debut\":\"2026-12-12\",\"date_fin\":\"2026-12-13\"}]",
+    "dateDernierUpdateEnfants": "2026-11-19 14:57:37.000",
+    "phase_competitionId": "30813"
+   },
+   {
+    "id": "248310",
+    "ext_pouleId": "199624",
+    "phaseId": "89074",
+    "libelle": "U15M DEL 1° / 2° DIV POULE 2",
+    "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-11-07\",\"date_fin\":\"2026-11-08\"},{\"journee_numero\":2,\"date_debut\":\"2026-11-14\",\"date_fin\":\"2026-11-15\"},{\"journee_numero\":3,\"date_debut\":\"2026-11-28\",\"date_fin\":\"2026-11-29\"},{\"journee_numero\":4,\"date_debut\":\"2026-12-05\",\"date_fin\":\"2026-12-06\"},{\"journee_numero\":5,\"date_debut\":\"2026-12-12\",\"date_fin\":\"2026-12-13\"}]",
+    "dateDernierUpdateEnfants": "2026-11-20 09:40:42.000",
+    "phase_competitionId": "30813"
+   },
+   {
+    "id": "248311",
+    "ext_pouleId": "199625",
+    "phaseId": "89074",
+    "libelle": "U15M DEL 3° / 4° DIV POULE 3",
+    "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-11-07\",\"date_fin\":\"2026-11-08\"},{\"journee_numero\":2,\"date_debut\":\"2026-11-14\",\"date_fin\":\"2026-11-15\"},{\"journee_numero\":3,\"date_debut\":\"2026-11-28\",\"date_fin\":\"2026-11-29\"},{\"journee_numero\":4,\"date_debut\":\"2026-12-05\",\"date_fin\":\"2026-12-06\"},{\"journee_numero\":5,\"date_debut\":\"2026-12-12\",\"date_fin\":\"2026-12-13\"}]",
+    "dateDernierUpdateEnfants": "2026-11-19 14:57:37.000",
+    "phase_competitionId": "30813"
+   },
+   {
+    "id": "248312",
+    "ext_pouleId": "199626",
+    "phaseId": "89074",
+    "libelle": "U15M DEL 3° / 4° DIV POULE 4",
+    "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-11-07\",\"date_fin\":\"2026-11-08\"},{\"journee_numero\":2,\"date_debut\":\"2026-11-14\",\"date_fin\":\"2026-11-15\"},{\"journee_numero\":3,\"date_debut\":\"2026-11-28\",\"date_fin\":\"2026-11-29\"},{\"journee_numero\":4,\"date_debut\":\"2026-12-05\",\"date_fin\":\"2026-12-06\"},{\"journee_numero\":5,\"date_debut\":\"2026-12-12\",\"date_fin\":\"2026-12-13\"}]",
+    "dateDernierUpdateEnfants": "2026-11-20 07:38:37.000",
+    "phase_competitionId": "30813"
+   },
+   {
+    "id": "248313",
+    "ext_pouleId": "199633",
+    "phaseId": "89074",
+    "libelle": "U15M DEL 5° / 6° DIV POULE 5",
+    "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-11-07\",\"date_fin\":\"2026-11-08\"},{\"journee_numero\":2,\"date_debut\":\"2026-11-14\",\"date_fin\":\"2026-11-15\"},{\"journee_numero\":3,\"date_debut\":\"2026-11-28\",\"date_fin\":\"2026-11-29\"},{\"journee_numero\":4,\"date_debut\":\"2026-12-05\",\"date_fin\":\"2026-12-06\"},{\"journee_numero\":5,\"date_debut\":\"2026-12-12\",\"date_fin\":\"2026-12-13\"}]",
+    "dateDernierUpdateEnfants": "2026-11-20 09:39:59.000",
+    "phase_competitionId": "30813"
+   },
+   {
+    "id": "248314",
+    "ext_pouleId": "199635",
+    "phaseId": "89074",
+    "libelle": "U15M DEL 5° / 6° DIV POULE 6",
+    "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-11-07\",\"date_fin\":\"2026-11-08\"},{\"journee_numero\":2,\"date_debut\":\"2026-11-14\",\"date_fin\":\"2026-11-15\"},{\"journee_numero\":3,\"date_debut\":\"2026-11-28\",\"date_fin\":\"2026-11-29\"},{\"journee_numero\":4,\"date_debut\":\"2026-12-05\",\"date_fin\":\"2026-12-06\"},{\"journee_numero\":5,\"date_debut\":\"2026-12-12\",\"date_fin\":\"2026-12-13\"}]",
+    "dateDernierUpdateEnfants": "2026-11-19 14:57:37.000",
+    "phase_competitionId": "30813"
+   }
+  ]
+ },
+ "competitions---rencontre-list": {
+  "ext_saison_id": "22",
+  "url_competition_type": "departemental",
+  "url_structure": "",
+  "url_competition": "u15-masculins-32350",
+  "ext_poule_id": "199625",
+  "numero_journee": "",
+  "ext_equipe_id": "",
+  "ext_rencontre_id": "",
+  "poule": {
+   "id": "248311",
+   "ext_pouleId": "199625",
+   "phaseId": "89074",
+   "libelle": "U15M DEL 3° / 4° DIV POULE 3",
+   "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-11-07\",\"date_fin\":\"2026-11-08\"},{\"journee_numero\":2,\"date_debut\":\"2026-11-14\",\"date_fin\":\"2026-11-15\"},{\"journee_numero\":3,\"date_debut\":\"2026-11-28\",\"date_fin\":\"2026-11-29\"},{\"journee_numero\":4,\"date_debut\":\"2026-12-05\",\"date_fin\":\"2026-12-06\"},{\"journee_numero\":5,\"date_debut\":\"2026-12-12\",\"date_fin\":\"2026-12-13\"}]",
+   "dateDernierUpdateEnfants": "2026-11-19 14:57:37.000"
+  },
+  "selected_numero_journee": "3",
+  "rencontres": [
+   {
+    "id": "3071153",
+    "ext_rencontreId": "2761030",
+    "pouleId": "248311",
+    "equipe1Id": "1846928",
+    "equipe2Id": "1846929",
+    "equipe1Score": null,
+    "equipe2Score": null,
+    "equipe1ScoreMT": null,
+    "equipe2ScoreMT": null,
+    "date": "2026-11-29T16:00:00+01:00",
+    "fdmCode": "WAGZBOX",
+    "equipementId": "777",
+    "arbitre1": null,
+    "arbitre1Id": null,
+    "arbitre2": null,
+    "arbitre2Id": null,
+    "dateDernierUpdateEnfants": "2023-05-31 19:00:00.000",
+    "journeeNumero": "3",
+    "equipe1Libelle": "SUD YVELINES HB LE PERRAY RAMBOUILLET (U15M)",
+    "equipe2Libelle": "CA MANTES LA VILLE / HBC ROSNY (U15M)",
+    "equipe1ShowLogo": "0",
+    "equipe2ShowLogo": "0",
+    "structure1Logo": "2023-08-30-eb5e7b4e-c104-4d64-8a56-d513fab8dc8d.png",
+    "structure2Logo": "2018-10-14-901dce46-11a6-4c0c-a50d-ea559611dce9.png",
+    "extPouleId": "199625",
+    "rematchDispo": "0"
+   },
+   {
+    "id": "3071154",
+    "ext_rencontreId": "2761031",
+    "pouleId": "248311",
+    "equipe1Id": "1846931",
+    "equipe2Id": "1846930",
+    "equipe1Score": null,
+    "equipe2Score": null,
+    "equipe1ScoreMT": null,
+    "equipe2ScoreMT": null,
+    "date": "2026-11-29T09:30:00+01:00",
+    "fdmCode": "WAGZBOY",
+    "equipementId": "744",
+    "arbitre1": null,
+    "arbitre1Id": null,
+    "arbitre2": null,
+    "arbitre2Id": null,
+    "dateDernierUpdateEnfants": "2023-05-31 19:00:00.000",
+    "journeeNumero": "3",
+    "equipe1Libelle": "USC MAISONS-LAFFITTE HB",
+    "equipe2Libelle": "VERSAILLES HBC (3)",
+    "equipe1ShowLogo": "1",
+    "equipe2ShowLogo": "1",
+    "structure1Logo": "2026-09-14-8c9ee5bf-9d22-41fe-96ae-3977663e754b.png",
+    "structure2Logo": "2015-06-28-2baed354-7e46-4ea6-960f-59e456e8ba2e.gif",
+    "extPouleId": "199625",
+    "rematchDispo": "0"
+   },
+   {
+    "id": "3071155",
+    "ext_rencontreId": "2761032",
+    "pouleId": "248311",
+    "equipe1Id": "1846927",
+    "equipe2Id": "1846932",
+    "equipe1Score": null,
+    "equipe2Score": null,
+    "equipe1ScoreMT": null,
+    "equipe2ScoreMT": null,
+    "date": "2026-11-29T11:30:00+01:00",
+    "fdmCode": "WAGZBOZ",
+    "equipementId": "563",
+    "arbitre1": null,
+    "arbitre1Id": null,
+    "arbitre2": null,
+    "arbitre2Id": null,
+    "dateDernierUpdateEnfants": "2023-05-31 19:00:00.000",
+    "journeeNumero": "3",
+    "equipe1Libelle": "CO GARGENVILLE",
+    "equipe2Libelle": "SQY HB TRAPPES MONTIGNY (U15M3)",
+    "equipe1ShowLogo": "1",
+    "equipe2ShowLogo": "0",
+    "structure1Logo": "2025-01-29-09252d98-54b2-418a-98fc-7bc726adbafd.png",
+    "structure2Logo": "2021-01-15-c0d79c28-ca67-4112-94cc-dbc2017a918f.png",
+    "extPouleId": "199625",
+    "rematchDispo": "0"
+   }
+  ]
+ },
+ "competitions---mini-classement-or-ads": {
+  "ext_saison_id": "22",
+  "url_competition_type": "departemental",
+  "url_structure": "",
+  "url_competition": "u15-masculins-32350",
+  "ext_poule_id": "199625",
+  "numero_journee": "",
+  "ext_equipe_id": "",
+  "ext_rencontre_id": "",
+  "classements": [
+   {
+    "id": "10630958",
+    "ext_classementId": "59751612",
+    "pouleId": "248311",
+    "equipeId": "1846931",
+    "place": "1",
+    "point": "6",
+    "joue": "2",
+    "gagne": "2",
+    "nul": "0",
+    "perdu": "0",
+    "butPlus": "68",
+    "butMoins": "46",
+    "diff": "22",
+    "dernieresRencontres": "1;1;1",
+    "equipe_libelle": "USC MAISONS-LAFFITTE HB",
+    "equipe_logoActif": "1",
+    "structure_logo": "2026-09-14-8c9ee5bf-9d22-41fe-96ae-3977663e754b.png",
+    "ext_structureId": "3234"
+   },
+   {
+    "id": "10630955",
+    "ext_classementId": "59751614",
+    "pouleId": "248311",
+    "equipeId": "1846928",
+    "place": "2",
+    "point": "6",
+    "joue": "2",
+    "gagne": "2",
+    "nul": "0",
+    "perdu": "0",
+    "butPlus": "76",
+    "butMoins": "58",
+    "diff": "18",
+    "dernieresRencontres": "1;1",
+    "equipe_libelle": "SUD YVELINES HB LE PERRAY RAMBOUILLET (U15M)",
+    "equipe_logoActif": "0",
+    "structure_logo": "2023-08-30-eb5e7b4e-c104-4d64-8a56-d513fab8dc8d.png",
+    "ext_structureId": "3243"
+   },
+   {
+    "id": "10630959",
+    "ext_classementId": "59751613",
+    "pouleId": "248311",
+    "equipeId": "1846932",
+    "place": "3",
+    "point": "4",
+    "joue": "2",
+    "gagne": "1",
+    "nul": "0",
+    "perdu": "1",
+    "butPlus": "73",
+    "butMoins": "67",
+    "diff": "6",
+    "dernieresRencontres": "-1;1",
+    "equipe_libelle": "SQY HB TRAPPES MONTIGNY (U15M3)",
+    "equipe_logoActif": "0",
+    "structure_logo": "2021-01-15-c0d79c28-ca67-4112-94cc-dbc2017a918f.png",
+    "ext_structureId": "3256"
+   },
+   {
+    "id": "10630954",
+    "ext_classementId": "59751615",
+    "pouleId": "248311",
+    "equipeId": "1846927",
+    "place": "4",
+    "point": "3",
+    "joue": "2",
+    "gagne": "0",
+    "nul": "1",
+    "perdu": "1",
+    "butPlus": "48",
+    "butMoins": "60",
+    "diff": "-12",
+    "dernieresRencontres": "0;-1",
+    "equipe_libelle": "CO GARGENVILLE",
+    "equipe_logoActif": "1",
+    "structure_logo": "2025-01-29-09252d98-54b2-418a-98fc-7bc726adbafd.png",
+    "ext_structureId": "3230"
+   },
+   {
+    "id": "10630957",
+    "ext_classementId": "59751611",
+    "pouleId": "248311",
+    "equipeId": "1846930",
+    "place": "5",
+    "point": "3",
+    "joue": "2",
+    "gagne": "0",
+    "nul": "1",
+    "perdu": "1",
+    "butPlus": "47",
+    "butMoins": "60",
+    "diff": "-13",
+    "dernieresRencontres": "0;-1",
+    "equipe_libelle": "VERSAILLES HBC (3)",
+    "equipe_logoActif": "1",
+    "structure_logo": "2015-06-28-2baed354-7e46-4ea6-960f-59e456e8ba2e.gif",
+    "ext_structureId": "3242"
+   },
+   {
+    "id": "10630956",
+    "ext_classementId": "59751616",
+    "pouleId": "248311",
+    "equipeId": "1846929",
+    "place": "6",
+    "point": "2",
+    "joue": "2",
+    "gagne": "0",
+    "nul": "0",
+    "perdu": "2",
+    "butPlus": "49",
+    "butMoins": "70",
+    "diff": "-21",
+    "dernieresRencontres": "-1;-1;-1",
+    "equipe_libelle": "CA MANTES LA VILLE / HBC ROSNY (U15M)",
+    "equipe_logoActif": "0",
+    "structure_logo": "2018-10-14-901dce46-11a6-4c0c-a50d-ea559611dce9.png",
+    "ext_structureId": "3219"
+   }
+  ],
+  "adLocationSlug": "ffh-competition-side",
+  "ads": [],
+  "dimensions": {
+   "mobile_h": 430,
+   "mobile_w": 375,
+   "desktop_h": 600,
+   "desktop_w": 300
+  }
+ }
+}
