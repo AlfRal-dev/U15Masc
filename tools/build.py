@@ -202,39 +202,20 @@ def keep_opp(r):
         return False
     return True
 
-def group_render(rows, css_class=''):
+def last_five_rows(rows):
     out = []
-    last_g = None
     for item in rows:
-        dp = item['dp']
         r = item['r']
-        dom, advn, s_me, s_adv = dp
-        g = (item['competition'], item['phase'], item['poule'])
-        if g != last_g:
-            last_g = g
-            tag = 'Coupe des Yvelines' if 'COUPE' in g[0].upper() else 'Championnat'
-            tv = []
-            for v in (short(g[0]), short(g[1]), tag):
-                if v and v not in tv and v != 'Championnat':
-                    tv.append(v)
-            tags = ''.join(f'<span class="gtag">{esc(v)}</span>' for v in tv)
-            out.append(f'<div class="ghead"><b>{esc(short(g[2]))}</b>'
-                       f'{tags}</div>')
-        if played(r):
-            if nd(r):
-                badge = '<span class="badge badge-next">n.d.</span>'
-                score = '<span class="scoreline"><strong>n.d.</strong></span>'
-            else:
-                res = 'V' if s_me > s_adv else 'N' if s_me == s_adv else 'D'
-                badge = f'<span class="badge badge-{res.lower()}">{res}</span>'
-                score = (f'<span class="scoreline"><strong>{s_me}</strong> – <strong>{s_adv}</strong></span>')
-        else:
-            badge = '<span class="badge badge-next">à venir</span>'
-            score = '<span class="scoreline tbd">–</span>'
+        dom, advn, s_me, s_adv = item['dp']
+        if not played(r) or nd(r):
+            continue
+        res = 'V' if s_me > s_adv else 'N' if s_me == s_adv else 'D'
+        badge = f'<span class="badge badge-{res.lower()}">{res}</span>'
         out.append(
-            f'<li class="resline">{badge}{score}'
-            f'<span class="vs">{"à domicile" if dom else "à l’extérieur"} vs {esc(short(advn))} '
-            f'<em class="meta">{fmt_date_long(r["date"])} · {fmt_time(r["date"])}</em></span></li>')
+            f'<li class="resline">{badge}'
+            f'<span class="scoreline"><strong>{s_me}</strong> – <strong>{s_adv}</strong></span>'
+            f'<span class="vs">{"à domicile" if dom else "à l’extérieur"} vs {esc(short(advn))}'
+            f'<em class="meta">{esc(short(r.get("poule","")))} · {fmt_date_long(r["date"])} · {fmt_time(r["date"])}</em></span></li>')
     return ''.join(out)
 
 usc_hist, opp_hist, next_items = [], [], []
@@ -282,6 +263,8 @@ for team, ms in history.items():
 
 usc_hist.sort(key=lambda it: it['r'].get('date') or '9999')
 opp_hist.sort(key=lambda it: it['r'].get('date') or '9999')
+usc_five = [it for it in usc_hist if played(it['r']) and not nd(it['r'])][-5:][::-1]
+opp_five = [it for it in opp_hist if played(it['r']) and not nd(it['r'])][-5:][::-1]
 next_items.sort(key=lambda x: x[0])
 
 next_rows = []
@@ -297,10 +280,9 @@ usc_tot = stand_usc
 adv_tot = adv_row
 
 note_adv = (
-    f"Bilan adversaire (championnat 3°/4° division) : {adv_row['gagne']} victoire(s), "
-    f"{adv_row['nul']} nul(s), {adv_row['perdu']} défaite(s), {adv_row['butPlus']} buts marqués, "
-    f"{adv_row['butMoins']} encaissés. Le club de Versailles engage plusieurs équipes (2) et (3) ; "
-    f"les rencontres de l’équipe entente Le Chesnay/Versailles (pré-région) et de l’équipe (3) figurent ci-dessous."
+    f"Bilan en championnat 3°/4° division : {adv_row['gagne']} victoire(s), {adv_row['nul']} nul(s), "
+    f"{adv_row['perdu']} défaite(s). Le club de Versailles aligne plusieurs équipes ((2), (3)) ; "
+    f"les 5 derniers matchs listés ici concernent l’équipe (3) et l’entente Le Chesnay/Versailles."
 )
 
 maj_raw = data['competitions---poule-selector']['selected_poule'].get('dateDernierUpdateEnfants') or ''
@@ -318,10 +300,8 @@ html = (html
   .replace('__STAND_ROWS__', stand_rows)
   .replace('__SCHED_ROWS__', sched_rows)
   .replace('__NEXT_LIST__', next_list)
-  .replace('__USC_HIST__', group_render(usc_hist))
-  .replace('__ADV_HIST__', group_render(opp_hist))
-  .replace('__USC_HIST_N__', str(len(usc_hist)))
-  .replace('__ADV_HIST_N__', str(len(opp_hist)))
+  .replace('__USC_HIST__', last_five_rows(usc_five))
+  .replace('__ADV_HIST__', last_five_rows(opp_five))
   .replace('__USC_PTS__', usc_tot['point'])
   .replace('__USC_J__', usc_tot['joue'])
   .replace('__USC_G__', usc_tot['gagne'])
