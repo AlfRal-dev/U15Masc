@@ -279,9 +279,9 @@ def comp_row(label, vu, va, hint=''):
             f'<span class="val">{fr(va)}</span><span class="name">Boucle (2)</span></div>'
             f'</div></div>')
 
-comp_rows = (comp_row('Buts marqués par match', avg(TOT_U, 'buts_marques', N_U), avg(TOT_A, 'buts_marques', N_A))
-             + comp_row('Buts encaissés par match (plus bas = mieux)', avg(TOT_U, 'buts_encaisses', N_U), avg(TOT_A, 'buts_encaisses', N_A))
-             + comp_row('Arrêts du gardien par match', avg(TOT_U, 'arrets', N_U), avg(TOT_A, 'arrets', N_A)))
+comp_rows = (comp_row('Buts marqués', avg(TOT_U, 'buts_marques', N_U), avg(TOT_A, 'buts_marques', N_A))
+             + comp_row('Buts encaissés', avg(TOT_U, 'buts_encaisses', N_U), avg(TOT_A, 'buts_encaisses', N_A))
+             + comp_row('Arrêts du gardien', avg(TOT_U, 'arrets', N_U), avg(TOT_A, 'arrets', N_A)))
 
 # ---- forme
 def res_letter(dp):
@@ -319,7 +319,7 @@ def hist_rows(five):
         out.append(
             f'<li class="resline"><span class="badge badge-{res.lower()}">{res}</span>'
             f'<span class="scoreline"><strong>{s_me}</strong> – <strong>{s_adv}</strong></span>'
-            f'<span class="vs2">{"à domicile" if dom else "à l’extérieur"} vs {esc(short(advn))}'
+            f'<span class="vs2">{"Domicile" if dom else "Extérieur"} vs {esc(short(advn))}'
             f'<em class="meta">{esc(short(r.get("poule","")))} · {fmt_date_long(r["date"])} · {fmt_time(r["date"])}</em></span></li>')
     return ''.join(out)
 
@@ -374,9 +374,7 @@ disc_rows = (disc_row("2' reçues", 'deux_reçues')
 
 u2, a2 = avg(TOT_U, 'deux_reçues', N_U), avg(TOT_A, 'deux_reçues', N_A)
 p2_u = "L'USML se pénalise plus que son adversaire" if u2 > a2 else "L'USML est plus disciplinée que son adversaire"
-disc_note = (f"{p2_u} ({fr(u2)} contre {fr(a2)} sanctions de 2' reçues par match). "
-             f"Pour les 7 m, la fédération ne publie pas les essais manqués : seul le nombre de buts "
-             f"sur 7 m est disponible.")
+disc_note = f"{p2_u} ({fr(u2)} contre {fr(a2)} sanctions de 2' reçues par match)."
 
 # ---- joueurs clés
 def players_rows(buters, n, start=1):
@@ -500,7 +498,7 @@ if next_items:
         match_line1, match_line2 = 'Championnat', f'Journée {r["journeeNumero"]}'
     else:
         match_line1, match_line2 = 'Championnat', 'À venir'
-    match_meta = f'{fmt_date_long(dt)} · {fmt_time(dt)} · {"à domicile" if dom else "à l’extérieur"}'
+    match_meta = f'{fmt_date_long(dt)} · {fmt_time(dt)} · {"Domicile" if dom else "Extérieur"}'
 else:
     match_line1, match_line2 = 'Championnat', 'À venir'
     match_meta = 'Aucun match programmé dans les données'
