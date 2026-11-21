@@ -407,8 +407,11 @@ def gk_top(sheets, gk_key, be_key):
 def srow(label, u, a):
     return f'<tr><td class="team">{esc(label)}</td><td>{u}</td><td>{a}</td></tr>'
 
-bu_top = max(BUT_U.items(), key=lambda kv: kv[1])
-ba_top = max(BUT_A.items(), key=lambda kv: kv[1])
+def top_buteur(buters, n):
+    if not buters:
+        return '—'
+    nmn, b = max(buters.items(), key=lambda kv: kv[1])
+    return f"{esc(nom(nmn))} — {b} buts ({fr(b/n)}/m.)" if n else f"{esc(nom(nmn))} — {b} buts"
 
 situation_rows = (
     srow('Poule', esc(poule_usc_info), esc(poule_adv_info or '3°/4° div'))
@@ -421,8 +424,7 @@ situation_rows = (
     + srow("2' reçues / match", fr(u2), fr(a2))
     + srow('Gardien le plus utilisé', esc(gk_top(USC_SHEETS, 'gk_our', 'buts_encaisses')),
            esc(gk_top(ADV_SHEETS, 'gk_our', 'buts_encaisses')))
-    + srow('Meilleur buteur', f"{esc(nom(bu_top[0]))} — {bu_top[1]} buts ({fr(bu_top[1]/N_U)}/m.)",
-           f"{esc(nom(ba_top[0]))} — {ba_top[1]} buts ({fr(ba_top[1]/N_A)}/m.)")
+    + srow('Meilleur buteur', top_buteur(BUT_U, N_U), top_buteur(BUT_A, N_A))
 )
 
 # ---- rythme par tranches de 5'

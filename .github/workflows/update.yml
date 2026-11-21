@@ -25,7 +25,7 @@ jobs:
           cd tools
           python3 fetch_blocks.py
           python3 fetch_matches.py
-          python3 -m pip install pypdf --quiet 2>/dev/null || echo "pypdf absent"
+          python3 -m pip install pypdf cryptography --quiet 2>/dev/null || echo "pypdf absent"
           python3 fetch_fdms.py || echo "feuilles FDME non actualisées (les statistiques de la dernière exécution restent utilisées)"
           python3 fetch_history.py || echo "historique non actualisé (les données de la poule restent à jour)"
           python3 build.py
