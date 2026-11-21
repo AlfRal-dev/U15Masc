@@ -11,7 +11,7 @@ générée à partir des données officielles de [ffhandball.fr](https://www.ffh
 - `tools/fetch_history.py` — récupère l'historique complet (délaage + Coupe des Yvelines)
   de l'USC et de Versailles HBC via la recherche club de ffhandball.fr.
 - `tools/fetch_fdms.py` — télécharge et analyse les feuilles de match électroniques (FDME)
-  de l'USC et de Versailles HBC : moyennes de buts/arrêts/2 min/écarts en supériorité et
+  de l'USC et de HB Boucle de Seine 78 (2) : moyennes de buts/arrêts/2 min/écarts en supériorité et
   infériorité numérique, écarts de buts par tranche de 5 min, top 5 buteurs (dépend de `pypdf`).
 - `tools/fetch_blocks.py` / `tools/fetch_matches.py` — récupèrent classement et calendrier
   depuis la route publique `wp-json/competitions/v1/computeBlockAttributes` de ffhandball.fr,

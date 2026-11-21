@@ -67,6 +67,9 @@ SHORT = {
     'U15M DEL 3° / 4° DIV POULE 3': 'U15M DEL 3°/4° DIV · Poule 3',
     'U15M DEL 1° / 2° DIV POULE 1': 'U15M DEL 1°/2° DIV · Poule 1',
     'U15M CDY 16EME DE FINALE': 'Coupe des Yvelines · 16e de finale',
+    'U15M DEL 3\u00b0 / 4\u00b0 DIV POULE 4': 'U15M DEL 3\u00b0/4\u00b0 DIV \u00b7 Poule 4',
+    'TS VICINOIS 88 HB': 'Ts Vicinois 88',
+    'REGROUPEMENT BOUGIVAL LOUVECIENNES (U15M)': 'Bougival/Louveciennes',
 }
 
 def esc(s):
@@ -106,8 +109,34 @@ def res_from_team_view(marked, dom, s_me, s_opp):
 classements = sorted(data['competitions---mini-classement-or-ads']['classements'],
                      key=lambda c: int(c['place']))
 stand_usc = next(c for c in classements if str(c['equipeId']) == TEAM_ID)
-adv_nom = 'VERSAILLES HBC (3)'
-adv_row = next(c for c in classements if c['equipe_libelle'] == adv_nom)
+adv_nom = 'HB BOUCLE DE SEINE 78  (2)'
+adv_championnat = 'VERSAILLES HBC (3)'   # adversaire du prochain match de championnat (J3)
+BDS_RE = re.compile(r'BOUCLE DE SEINE', re.I)
+
+adv_row = None
+adv_path = os.path.join(DD, 'blocks_adv.json')
+if os.path.exists(adv_path):
+    adv_data = json.load(open(adv_path))
+    adv_bl = (adv_data.get('competitions---mini-classement-or-ads') or {}).get('classements') or []
+    adv_row = next((c for c in sorted(adv_bl, key=lambda c: int(c['place']))
+                    if BDS_RE.search(c.get('equipe_libelle',''))), None)
+if adv_row is None:
+    ms = history.get(adv_nom, [])
+    w = n = l = bp = bc = j = 0
+    res = []
+    for r in sorted(ms, key=lambda x: x.get('date') or '9999'):
+        if not played(r) or nd(r):
+            continue
+        dom = BDS_RE.search(r['equipe1Libelle']) is not None
+        s_me, s_adv = (int(r.get('equipe1Score') if dom else r.get('equipe2Score')),
+                       int(r.get('equipe2Score') if dom else r.get('equipe1Score')))
+        j += 1; bp += s_me; bc += s_adv
+        if s_me > s_adv: w += 1; res.append('1')
+        elif s_me == s_adv: n += 1; res.append('0')
+        else: l += 1; res.append('-1')
+    adv_row = {'place': '—', 'point': str(2*w+n), 'joue': str(j), 'gagne': str(w),
+               'nul': str(n), 'perdu': str(l), 'butPlus': str(bp), 'butMoins': str(bc),
+               'diff': str(bp-bc), 'dernieresRencontres': ';'.join(res[-5:])}
 
 def form_icons(s):
     return [{'1':'V','0':'N','-1':'D'}.get(v,'?') for v in str(s).strip().split(';')]
@@ -155,8 +184,8 @@ sched_rows = ''
 for m in sorted(matches, key=lambda x: x['ordre']):
     r = m['raw']
     dp = perspective(r)
-    e1cls = 'team usc' if r['equipe1Libelle'] == stand_usc['equipe_libelle'] else ('team opp2' if r['equipe1Libelle'] == adv_nom else 'team')
-    e2cls = 'team usc' if r['equipe2Libelle'] == stand_usc['equipe_libelle'] else ('team opp2' if r['equipe2Libelle'] == adv_nom else 'team')
+    e1cls = 'team usc' if r['equipe1Libelle'] == stand_usc['equipe_libelle'] else ('team opp2' if r['equipe1Libelle'] == adv_championnat else 'team')
+    e2cls = 'team usc' if r['equipe2Libelle'] == stand_usc['equipe_libelle'] else ('team opp2' if r['equipe2Libelle'] == adv_championnat else 'team')
     nxt = not played(r) and dp is not None and r['date'][:10] <= '2026-11-30'
     hl = ' class="next-row"' if nxt else ''
     if dp:
@@ -187,22 +216,17 @@ for m in sorted(matches, key=lambda x: x['ordre']):
 
 # ----------------------------------------------------------------- historique
 USC_RE = re.compile(r'USC MAISONS', re.I)
-VER_RE = re.compile(r'VERSAILLES|LE CHESNAY', re.I)
 
 def matched_libelle(r):
     for k in ('equipe1Libelle', 'equipe2Libelle'):
         v = r[k]
-        if USC_RE.search(v) or VER_RE.search(v):
+        if USC_RE.search(v):
+            return v
+    for k in ('equipe1Libelle', 'equipe2Libelle'):
+        v = r[k]
+        if BDS_RE.search(v):
             return v
     return None
-
-def keep_opp(r):
-    ml = matched_libelle(r)
-    if ml is None:
-        return False
-    if '(2)' in ml or 'LE CHESNAY 78 HB' in ml or ml.startswith('ELANCOURT'):
-        return False
-    return True
 
 def last_five_rows(rows):
     out = []
@@ -247,9 +271,9 @@ for team, ms in history.items():
             usc_hist.append(item)
             if not played(r) and r.get('date','9999') >= '2026-11-01':
                 next_items.append((r['date'], 'COUPE DES YVELINES' if 'COUPE' in r.get('competition','').upper() else 'CHAMPIONNAT', advn, dom, r))
-        elif VER_RE.search(ml or '') and keep_opp(r):
+        elif BDS_RE.search(ml or ''):
             e1, e2 = r['equipe1Libelle'], r['equipe2Libelle']
-            dom = VER_RE.search(e1) is not None and USC_RE.search(e1) is None
+            dom = BDS_RE.search(e1) is not None
             advn = e2 if dom else e1
             dp = (dom, advn, r.get('equipe1Score') if dom else r.get('equipe2Score'),
                   r.get('equipe2Score') if dom else r.get('equipe1Score'))
@@ -345,7 +369,7 @@ def fdm_block(sheets, titre):
             f'<ol class="buteurs">{buteurs}</ol></div>')
 
 usc_fdm = fdm_block(fdm.get('USC', []), 'USC Maisons-Laffitte HB')
-adv_fdm = fdm_block(fdm.get('VER', []), 'Versailles HBC (3)')
+adv_fdm = fdm_block(fdm.get('ADV', []), 'HB Boucle de Seine 78 (2)')
 note_fdm = (
     "Calcul\u00e9 automatiquement \u00e0 partir des feuilles de match \u00e9lectroniques (FDME) de toutes les "
     "comp\u00e9titions jou\u00e9es : d\u00e9laage, Coupe des Yvelines et championnat. \u00c9carts : buts marqu\u00e9s "
@@ -357,9 +381,10 @@ usc_tot = stand_usc
 adv_tot = adv_row
 
 note_adv = (
-    f"Bilan en championnat 3°/4° division : {adv_row['gagne']} victoire(s), {adv_row['nul']} nul(s), "
-    f"{adv_row['perdu']} défaite(s). Le club de Versailles aligne plusieurs équipes ((2), (3)) ; "
-    f"les 5 derniers matchs listés ici concernent l’équipe (3) et l’entente Le Chesnay/Versailles."
+    f"Prochain adversaire : 16e de finale de Coupe des Yvelines. En championnat, l’équipe 2 du club "
+    f"évolue en 3°/4° division (poule 4, même niveau que la nôtre) : {adv_row['gagne']} victoire(s), "
+    f"{adv_row['nul']} nul(s), {adv_row['perdu']} défaite(s). Après la coupe, notre prochain match de "
+    f"championnat (J3) nous opposera à Versailles HBC (3)."
 )
 
 maj_raw = data['competitions---poule-selector']['selected_poule'].get('dateDernierUpdateEnfants') or ''

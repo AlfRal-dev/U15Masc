@@ -1,0 +1,577 @@
+{
+ "competitions---poule-selector": {
+  "ext_saison_id": "22",
+  "url_competition_type": "departemental",
+  "url_structure": "",
+  "url_competition": "u15-masculins-32350",
+  "ext_poule_id": "199626",
+  "numero_journee": "",
+  "ext_equipe_id": "",
+  "ext_rencontre_id": "",
+  "selected_equipe": null,
+  "selected_poule": {
+   "id": "248312",
+   "ext_pouleId": "199626",
+   "phaseId": "89074",
+   "libelle": "U15M DEL 3° / 4° DIV POULE 4",
+   "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-11-07\",\"date_fin\":\"2026-11-08\"},{\"journee_numero\":2,\"date_debut\":\"2026-11-14\",\"date_fin\":\"2026-11-15\"},{\"journee_numero\":3,\"date_debut\":\"2026-11-28\",\"date_fin\":\"2026-11-29\"},{\"journee_numero\":4,\"date_debut\":\"2026-12-05\",\"date_fin\":\"2026-12-06\"},{\"journee_numero\":5,\"date_debut\":\"2026-12-12\",\"date_fin\":\"2026-12-13\"}]",
+   "dateDernierUpdateEnfants": "2026-11-20 07:38:37.000",
+   "phase_competitionId": "30813"
+  },
+  "equipe_options": [
+   {
+    "id": "1846933",
+    "ext_equipeId": "2224067",
+    "pouleId": "248312",
+    "structureId": "1979",
+    "libelle": "TS VICINOIS 88 HB",
+    "logoActif": "1"
+   },
+   {
+    "id": "1846934",
+    "ext_equipeId": "2224068",
+    "pouleId": "248312",
+    "structureId": "3874",
+    "libelle": "TRIEL CHANTELOUP VERNOUILLET VERNEUIL HB (2)",
+    "logoActif": "1"
+   },
+   {
+    "id": "1846935",
+    "ext_equipeId": "2224069",
+    "pouleId": "248312",
+    "structureId": "1955",
+    "libelle": "REGROUPEMENT BOUGIVAL LOUVECIENNES (U15M)",
+    "logoActif": "0"
+   },
+   {
+    "id": "1846936",
+    "ext_equipeId": "2224070",
+    "pouleId": "248312",
+    "structureId": "1957",
+    "libelle": "CELLOIS HB",
+    "logoActif": "1"
+   },
+   {
+    "id": "1846937",
+    "ext_equipeId": "2224071",
+    "pouleId": "248312",
+    "structureId": "1976",
+    "libelle": "HB BOUCLE DE SEINE 78  (2)",
+    "logoActif": "1"
+   },
+   {
+    "id": "1846938",
+    "ext_equipeId": "2224072",
+    "pouleId": "248312",
+    "structureId": "1963",
+    "libelle": "HB BOIS-D'ARCY",
+    "logoActif": "1"
+   }
+  ],
+  "phases": [
+   {
+    "id": "87392",
+    "ext_phaseId": "109549",
+    "competitionId": "30813",
+    "libelle": "U15 MASCULINS DELAYAGE PRE-REGION : BARRAGES",
+    "dateDernierUpdateEnfants": "2026-09-06 11:50:30.000",
+    "classement": "1"
+   },
+   {
+    "id": "87393",
+    "ext_phaseId": "109551",
+    "competitionId": "30813",
+    "libelle": "U15 MASCULINS DELAYAGE PRE-REGION : POULES",
+    "dateDernierUpdateEnfants": "2026-09-18 14:43:52.000",
+    "classement": "1"
+   },
+   {
+    "id": "87394",
+    "ext_phaseId": "109924",
+    "competitionId": "30813",
+    "libelle": "U15 MASCULINS DELAYAGE PRE-REGION : FINALITES 1 A 6 (19/09/26)",
+    "dateDernierUpdateEnfants": "2026-11-20 15:22:38.000",
+    "classement": "1"
+   },
+   {
+    "id": "87395",
+    "ext_phaseId": "109925",
+    "competitionId": "30813",
+    "libelle": "U15 MASCULINS PHASE 3 : DELAYAGE DEPARTEMENTAL HAUT NIVEAU",
+    "dateDernierUpdateEnfants": "2026-11-20 16:29:28.000",
+    "classement": "1"
+   },
+   {
+    "id": "87396",
+    "ext_phaseId": "113004",
+    "competitionId": "30813",
+    "libelle": "U15 MASCULINS DELAYAGE PRE-REGION : FINALITES 1 A 4 (20/09/26)",
+    "dateDernierUpdateEnfants": "2026-10-05 10:02:34.000",
+    "classement": "1"
+   },
+   {
+    "id": "87397",
+    "ext_phaseId": "113006",
+    "competitionId": "30813",
+    "libelle": "U15 MASCULINS DELAYAGE PRE-REGION : FINALITES 5 A 6 (20/09/26)",
+    "dateDernierUpdateEnfants": "2026-10-05 10:01:58.000",
+    "classement": "1"
+   },
+   {
+    "id": "88572",
+    "ext_phaseId": "113869",
+    "competitionId": "30813",
+    "libelle": "U15 MASCULINS PHASE 4 : DELAYAGE DEPARTEMENTAL HAUT NIVEAU",
+    "dateDernierUpdateEnfants": "2026-10-18 17:28:26.000",
+    "classement": "1"
+   },
+   {
+    "id": "89074",
+    "ext_phaseId": "114665",
+    "competitionId": "30813",
+    "libelle": "U15 MASCULINS PHASE 5 : DELAYAGE DEPARTEMENTAL 1ERE A 6EME DIVISION",
+    "dateDernierUpdateEnfants": "2026-11-20 20:39:37.000",
+    "classement": "1"
+   }
+  ],
+  "poules": [
+   {
+    "id": "243818",
+    "ext_pouleId": "190373",
+    "phaseId": "87392",
+    "libelle": "U15M DPR MATCH DE BARRAGE 1",
+    "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-09-05\",\"date_fin\":\"2026-09-06\"}]",
+    "dateDernierUpdateEnfants": "2026-09-06 11:50:30.000",
+    "phase_competitionId": "30813"
+   },
+   {
+    "id": "243819",
+    "ext_pouleId": "190374",
+    "phaseId": "87392",
+    "libelle": "U15M DPR MATCH DE BARRAGE 2",
+    "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-09-05\",\"date_fin\":\"2026-09-06\"}]",
+    "dateDernierUpdateEnfants": "2026-09-05 17:35:28.000",
+    "phase_competitionId": "30813"
+   },
+   {
+    "id": "243820",
+    "ext_pouleId": "190401",
+    "phaseId": "87393",
+    "libelle": "U15M DPR POULE A",
+    "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-09-12\",\"date_fin\":\"2026-09-13\"}]",
+    "dateDernierUpdateEnfants": "2026-09-13 14:40:34.000",
+    "phase_competitionId": "30813"
+   },
+   {
+    "id": "243821",
+    "ext_pouleId": "190403",
+    "phaseId": "87393",
+    "libelle": "U15M DPR POULE B",
+    "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-09-12\",\"date_fin\":\"2026-09-13\"}]",
+    "dateDernierUpdateEnfants": "2026-09-18 14:43:52.000",
+    "phase_competitionId": "30813"
+   },
+   {
+    "id": "243826",
+    "ext_pouleId": "191067",
+    "phaseId": "87395",
+    "libelle": "U15M DHN POULE 1",
+    "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-09-26\",\"date_fin\":\"2026-09-27\"}]",
+    "dateDernierUpdateEnfants": "2026-11-02 15:14:10.000",
+    "phase_competitionId": "30813"
+   },
+   {
+    "id": "243827",
+    "ext_pouleId": "191068",
+    "phaseId": "87395",
+    "libelle": "U15M DHN POULE 2",
+    "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-09-26\",\"date_fin\":\"2026-09-27\"}]",
+    "dateDernierUpdateEnfants": "2026-09-28 14:31:59.000",
+    "phase_competitionId": "30813"
+   },
+   {
+    "id": "243828",
+    "ext_pouleId": "191069",
+    "phaseId": "87395",
+    "libelle": "U15M DHN POULE 3",
+    "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-09-26\",\"date_fin\":\"2026-09-27\"}]",
+    "dateDernierUpdateEnfants": "2026-09-28 14:31:59.000",
+    "phase_competitionId": "30813"
+   },
+   {
+    "id": "243829",
+    "ext_pouleId": "191070",
+    "phaseId": "87395",
+    "libelle": "U15M DHN POULE 4",
+    "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-09-26\",\"date_fin\":\"2026-09-27\"}]",
+    "dateDernierUpdateEnfants": "2026-09-28 14:31:59.000",
+    "phase_competitionId": "30813"
+   },
+   {
+    "id": "243830",
+    "ext_pouleId": "191071",
+    "phaseId": "87395",
+    "libelle": "U15M DHN POULE 5",
+    "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-09-26\",\"date_fin\":\"2026-09-27\"}]",
+    "dateDernierUpdateEnfants": "2026-09-28 14:31:59.000",
+    "phase_competitionId": "30813"
+   },
+   {
+    "id": "243831",
+    "ext_pouleId": "191072",
+    "phaseId": "87395",
+    "libelle": "U15M DHN POULE 6",
+    "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-09-26\",\"date_fin\":\"2026-09-27\"}]",
+    "dateDernierUpdateEnfants": "2026-11-02 16:39:43.000",
+    "phase_competitionId": "30813"
+   },
+   {
+    "id": "243832",
+    "ext_pouleId": "191073",
+    "phaseId": "87395",
+    "libelle": "U15M DHN POULE 7",
+    "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-09-26\",\"date_fin\":\"2026-09-27\"}]",
+    "dateDernierUpdateEnfants": "2026-09-28 14:31:59.000",
+    "phase_competitionId": "30813"
+   },
+   {
+    "id": "243833",
+    "ext_pouleId": "191074",
+    "phaseId": "87395",
+    "libelle": "U15M DHN POULE 8",
+    "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-09-26\",\"date_fin\":\"2026-09-27\"}]",
+    "dateDernierUpdateEnfants": "2026-10-06 15:03:52.000",
+    "phase_competitionId": "30813"
+   },
+   {
+    "id": "243834",
+    "ext_pouleId": "191075",
+    "phaseId": "87395",
+    "libelle": "U15M DHN POULE 9",
+    "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-09-26\",\"date_fin\":\"2026-09-27\"}]",
+    "dateDernierUpdateEnfants": "2026-11-20 16:29:28.000",
+    "phase_competitionId": "30813"
+   },
+   {
+    "id": "243835",
+    "ext_pouleId": "191076",
+    "phaseId": "87395",
+    "libelle": "U15M DHN POULE 10",
+    "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-09-26\",\"date_fin\":\"2026-09-27\"}]",
+    "dateDernierUpdateEnfants": "2026-09-28 14:31:59.000",
+    "phase_competitionId": "30813"
+   },
+   {
+    "id": "243822",
+    "ext_pouleId": "195660",
+    "phaseId": "87394",
+    "libelle": "U15M DPR FINALITES PLACE 1 A 4 - MATCH 1",
+    "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-09-19\",\"date_fin\":\"2026-09-19\"}]",
+    "dateDernierUpdateEnfants": "2026-11-20 15:22:37.000",
+    "phase_competitionId": "30813"
+   },
+   {
+    "id": "243823",
+    "ext_pouleId": "195663",
+    "phaseId": "87394",
+    "libelle": "U15M DPR FINALITES PLACE 1 A 4 - MATCH 2",
+    "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-09-19\",\"date_fin\":\"2026-09-19\"}]",
+    "dateDernierUpdateEnfants": "2026-11-20 15:22:37.000",
+    "phase_competitionId": "30813"
+   },
+   {
+    "id": "243824",
+    "ext_pouleId": "195666",
+    "phaseId": "87394",
+    "libelle": "U15M DPR FINALITES PLACE 5 A 6 - MATCH 3",
+    "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-09-19\",\"date_fin\":\"2026-09-19\"}]",
+    "dateDernierUpdateEnfants": "2026-11-20 15:22:38.000",
+    "phase_competitionId": "30813"
+   },
+   {
+    "id": "243825",
+    "ext_pouleId": "195667",
+    "phaseId": "87394",
+    "libelle": "U15M DPR FINALITES PLACE 5 A 6 - MATCH 4",
+    "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-09-19\",\"date_fin\":\"2026-09-19\"}]",
+    "dateDernierUpdateEnfants": "2026-11-20 15:22:38.000",
+    "phase_competitionId": "30813"
+   },
+   {
+    "id": "243836",
+    "ext_pouleId": "195680",
+    "phaseId": "87396",
+    "libelle": "U15M DPR FINALITES PLACE 1/2 - V1/V2 (20/09/26)",
+    "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-09-20\",\"date_fin\":\"2026-09-20\"}]",
+    "dateDernierUpdateEnfants": "2026-10-05 10:01:04.000",
+    "phase_competitionId": "30813"
+   },
+   {
+    "id": "243837",
+    "ext_pouleId": "195682",
+    "phaseId": "87396",
+    "libelle": "U15M DPR FINALITES PLACE 3/4 - P1/P2 (20/09/26)",
+    "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-09-20\",\"date_fin\":\"2026-09-20\"}]",
+    "dateDernierUpdateEnfants": "2026-10-05 10:02:34.000",
+    "phase_competitionId": "30813"
+   },
+   {
+    "id": "243838",
+    "ext_pouleId": "195684",
+    "phaseId": "87397",
+    "libelle": "U15M DPR FINALITES PLACE 5/6 - V3/V4 (20/09/26)",
+    "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-09-20\",\"date_fin\":\"2026-09-20\"}]",
+    "dateDernierUpdateEnfants": "2026-10-05 10:01:58.000",
+    "phase_competitionId": "30813"
+   },
+   {
+    "id": "246892",
+    "ext_pouleId": "197857",
+    "phaseId": "88572",
+    "libelle": "U15M DHN POULE A",
+    "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-10-03\",\"date_fin\":\"2026-10-04\"},{\"journee_numero\":2,\"date_debut\":\"2026-10-10\",\"date_fin\":\"2026-10-11\"},{\"journee_numero\":3,\"date_debut\":\"2026-10-17\",\"date_fin\":\"2026-10-18\"}]",
+    "dateDernierUpdateEnfants": "2026-10-18 11:45:09.000",
+    "phase_competitionId": "30813"
+   },
+   {
+    "id": "246893",
+    "ext_pouleId": "197860",
+    "phaseId": "88572",
+    "libelle": "U15M DHN POULE B",
+    "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-10-03\",\"date_fin\":\"2026-10-04\"},{\"journee_numero\":2,\"date_debut\":\"2026-10-10\",\"date_fin\":\"2026-10-11\"},{\"journee_numero\":3,\"date_debut\":\"2026-10-17\",\"date_fin\":\"2026-10-18\"}]",
+    "dateDernierUpdateEnfants": "2026-10-17 16:56:17.000",
+    "phase_competitionId": "30813"
+   },
+   {
+    "id": "246894",
+    "ext_pouleId": "197861",
+    "phaseId": "88572",
+    "libelle": "U15M DHN POULE C",
+    "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-10-03\",\"date_fin\":\"2026-10-04\"},{\"journee_numero\":2,\"date_debut\":\"2026-10-10\",\"date_fin\":\"2026-10-11\"},{\"journee_numero\":3,\"date_debut\":\"2026-10-17\",\"date_fin\":\"2026-10-18\"}]",
+    "dateDernierUpdateEnfants": "2026-10-18 14:57:25.000",
+    "phase_competitionId": "30813"
+   },
+   {
+    "id": "246895",
+    "ext_pouleId": "197862",
+    "phaseId": "88572",
+    "libelle": "U15M DHN POULE D",
+    "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-10-03\",\"date_fin\":\"2026-10-04\"},{\"journee_numero\":2,\"date_debut\":\"2026-10-10\",\"date_fin\":\"2026-10-11\"},{\"journee_numero\":3,\"date_debut\":\"2026-10-17\",\"date_fin\":\"2026-10-18\"}]",
+    "dateDernierUpdateEnfants": "2026-10-18 13:00:10.000",
+    "phase_competitionId": "30813"
+   },
+   {
+    "id": "246896",
+    "ext_pouleId": "197863",
+    "phaseId": "88572",
+    "libelle": "U15M DHN POULE E",
+    "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-10-03\",\"date_fin\":\"2026-10-04\"},{\"journee_numero\":2,\"date_debut\":\"2026-10-10\",\"date_fin\":\"2026-10-11\"},{\"journee_numero\":3,\"date_debut\":\"2026-10-17\",\"date_fin\":\"2026-10-18\"}]",
+    "dateDernierUpdateEnfants": "2026-10-18 12:52:05.000",
+    "phase_competitionId": "30813"
+   },
+   {
+    "id": "246897",
+    "ext_pouleId": "197864",
+    "phaseId": "88572",
+    "libelle": "U15M DHN POULE F",
+    "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-10-03\",\"date_fin\":\"2026-10-04\"},{\"journee_numero\":2,\"date_debut\":\"2026-10-10\",\"date_fin\":\"2026-10-11\"},{\"journee_numero\":3,\"date_debut\":\"2026-10-17\",\"date_fin\":\"2026-10-18\"}]",
+    "dateDernierUpdateEnfants": "2026-10-18 17:28:26.000",
+    "phase_competitionId": "30813"
+   },
+   {
+    "id": "248309",
+    "ext_pouleId": "199622",
+    "phaseId": "89074",
+    "libelle": "U15M DEL 1° / 2° DIV POULE 1",
+    "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-11-07\",\"date_fin\":\"2026-11-08\"},{\"journee_numero\":2,\"date_debut\":\"2026-11-14\",\"date_fin\":\"2026-11-15\"},{\"journee_numero\":3,\"date_debut\":\"2026-11-28\",\"date_fin\":\"2026-11-29\"},{\"journee_numero\":4,\"date_debut\":\"2026-12-05\",\"date_fin\":\"2026-12-06\"},{\"journee_numero\":5,\"date_debut\":\"2026-12-12\",\"date_fin\":\"2026-12-13\"}]",
+    "dateDernierUpdateEnfants": "2026-11-19 14:57:37.000",
+    "phase_competitionId": "30813"
+   },
+   {
+    "id": "248310",
+    "ext_pouleId": "199624",
+    "phaseId": "89074",
+    "libelle": "U15M DEL 1° / 2° DIV POULE 2",
+    "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-11-07\",\"date_fin\":\"2026-11-08\"},{\"journee_numero\":2,\"date_debut\":\"2026-11-14\",\"date_fin\":\"2026-11-15\"},{\"journee_numero\":3,\"date_debut\":\"2026-11-28\",\"date_fin\":\"2026-11-29\"},{\"journee_numero\":4,\"date_debut\":\"2026-12-05\",\"date_fin\":\"2026-12-06\"},{\"journee_numero\":5,\"date_debut\":\"2026-12-12\",\"date_fin\":\"2026-12-13\"}]",
+    "dateDernierUpdateEnfants": "2026-11-20 20:39:37.000",
+    "phase_competitionId": "30813"
+   },
+   {
+    "id": "248311",
+    "ext_pouleId": "199625",
+    "phaseId": "89074",
+    "libelle": "U15M DEL 3° / 4° DIV POULE 3",
+    "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-11-07\",\"date_fin\":\"2026-11-08\"},{\"journee_numero\":2,\"date_debut\":\"2026-11-14\",\"date_fin\":\"2026-11-15\"},{\"journee_numero\":3,\"date_debut\":\"2026-11-28\",\"date_fin\":\"2026-11-29\"},{\"journee_numero\":4,\"date_debut\":\"2026-12-05\",\"date_fin\":\"2026-12-06\"},{\"journee_numero\":5,\"date_debut\":\"2026-12-12\",\"date_fin\":\"2026-12-13\"}]",
+    "dateDernierUpdateEnfants": "2026-11-19 14:57:37.000",
+    "phase_competitionId": "30813"
+   },
+   {
+    "id": "248312",
+    "ext_pouleId": "199626",
+    "phaseId": "89074",
+    "libelle": "U15M DEL 3° / 4° DIV POULE 4",
+    "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-11-07\",\"date_fin\":\"2026-11-08\"},{\"journee_numero\":2,\"date_debut\":\"2026-11-14\",\"date_fin\":\"2026-11-15\"},{\"journee_numero\":3,\"date_debut\":\"2026-11-28\",\"date_fin\":\"2026-11-29\"},{\"journee_numero\":4,\"date_debut\":\"2026-12-05\",\"date_fin\":\"2026-12-06\"},{\"journee_numero\":5,\"date_debut\":\"2026-12-12\",\"date_fin\":\"2026-12-13\"}]",
+    "dateDernierUpdateEnfants": "2026-11-20 07:38:37.000",
+    "phase_competitionId": "30813"
+   },
+   {
+    "id": "248313",
+    "ext_pouleId": "199633",
+    "phaseId": "89074",
+    "libelle": "U15M DEL 5° / 6° DIV POULE 5",
+    "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-11-07\",\"date_fin\":\"2026-11-08\"},{\"journee_numero\":2,\"date_debut\":\"2026-11-14\",\"date_fin\":\"2026-11-15\"},{\"journee_numero\":3,\"date_debut\":\"2026-11-28\",\"date_fin\":\"2026-11-29\"},{\"journee_numero\":4,\"date_debut\":\"2026-12-05\",\"date_fin\":\"2026-12-06\"},{\"journee_numero\":5,\"date_debut\":\"2026-12-12\",\"date_fin\":\"2026-12-13\"}]",
+    "dateDernierUpdateEnfants": "2026-11-20 09:39:59.000",
+    "phase_competitionId": "30813"
+   },
+   {
+    "id": "248314",
+    "ext_pouleId": "199635",
+    "phaseId": "89074",
+    "libelle": "U15M DEL 5° / 6° DIV POULE 6",
+    "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-11-07\",\"date_fin\":\"2026-11-08\"},{\"journee_numero\":2,\"date_debut\":\"2026-11-14\",\"date_fin\":\"2026-11-15\"},{\"journee_numero\":3,\"date_debut\":\"2026-11-28\",\"date_fin\":\"2026-11-29\"},{\"journee_numero\":4,\"date_debut\":\"2026-12-05\",\"date_fin\":\"2026-12-06\"},{\"journee_numero\":5,\"date_debut\":\"2026-12-12\",\"date_fin\":\"2026-12-13\"}]",
+    "dateDernierUpdateEnfants": "2026-11-19 14:57:37.000",
+    "phase_competitionId": "30813"
+   }
+  ]
+ },
+ "competitions---mini-classement-or-ads": {
+  "ext_saison_id": "22",
+  "url_competition_type": "departemental",
+  "url_structure": "",
+  "url_competition": "u15-masculins-32350",
+  "ext_poule_id": "199626",
+  "numero_journee": "",
+  "ext_equipe_id": "",
+  "ext_rencontre_id": "",
+  "classements": [
+   {
+    "id": "10630961",
+    "ext_classementId": "59751618",
+    "pouleId": "248312",
+    "equipeId": "1846934",
+    "place": "1",
+    "point": "6",
+    "joue": "2",
+    "gagne": "2",
+    "nul": "0",
+    "perdu": "0",
+    "butPlus": "78",
+    "butMoins": "56",
+    "diff": "22",
+    "dernieresRencontres": "1;1",
+    "equipe_libelle": "TRIEL CHANTELOUP VERNOUILLET VERNEUIL HB (2)",
+    "equipe_logoActif": "1",
+    "structure_logo": "2026-07-23-a5b68601-bc68-4d42-8a59-dd881e38de6b.png",
+    "ext_structureId": "12250"
+   },
+   {
+    "id": "10630964",
+    "ext_classementId": "59751617",
+    "pouleId": "248312",
+    "equipeId": "1846937",
+    "place": "2",
+    "point": "6",
+    "joue": "2",
+    "gagne": "2",
+    "nul": "0",
+    "perdu": "0",
+    "butPlus": "65",
+    "butMoins": "49",
+    "diff": "16",
+    "dernieresRencontres": "1;1;1",
+    "equipe_libelle": "HB BOUCLE DE SEINE 78  (2)",
+    "equipe_logoActif": "1",
+    "structure_logo": "2023-06-28-ef8ec6ae-5e83-44a7-8750-26d9c2c4ccc8.png",
+    "ext_structureId": "3245"
+   },
+   {
+    "id": "10630963",
+    "ext_classementId": "59751619",
+    "pouleId": "248312",
+    "equipeId": "1846936",
+    "place": "3",
+    "point": "4",
+    "joue": "2",
+    "gagne": "1",
+    "nul": "0",
+    "perdu": "1",
+    "butPlus": "53",
+    "butMoins": "50",
+    "diff": "3",
+    "dernieresRencontres": "1;-1",
+    "equipe_libelle": "CELLOIS HB",
+    "equipe_logoActif": "1",
+    "structure_logo": "2024-07-05-1124048a-7abf-4e8c-8316-de8c37847ff8.png",
+    "ext_structureId": "3226"
+   },
+   {
+    "id": "10630965",
+    "ext_classementId": "59751621",
+    "pouleId": "248312",
+    "equipeId": "1846938",
+    "place": "4",
+    "point": "4",
+    "joue": "2",
+    "gagne": "1",
+    "nul": "0",
+    "perdu": "1",
+    "butPlus": "60",
+    "butMoins": "65",
+    "diff": "-5",
+    "dernieresRencontres": "-1;1",
+    "equipe_libelle": "HB BOIS-D'ARCY",
+    "equipe_logoActif": "1",
+    "structure_logo": "2015-04-24-ca4b5f5a-095e-4a69-8a19-4dc62efa8cb3.jpg",
+    "ext_structureId": "3232"
+   },
+   {
+    "id": "10630960",
+    "ext_classementId": "59751620",
+    "pouleId": "248312",
+    "equipeId": "1846933",
+    "place": "5",
+    "point": "2",
+    "joue": "2",
+    "gagne": "0",
+    "nul": "0",
+    "perdu": "2",
+    "butPlus": "47",
+    "butMoins": "61",
+    "diff": "-14",
+    "dernieresRencontres": "-1;-1;-1",
+    "equipe_libelle": "TS VICINOIS 88 HB",
+    "equipe_logoActif": "1",
+    "structure_logo": "2015-06-25-54c7758a-0311-454e-9c73-9d84b1779483.JPG",
+    "ext_structureId": "3248"
+   },
+   {
+    "id": "10630962",
+    "ext_classementId": "59751622",
+    "pouleId": "248312",
+    "equipeId": "1846935",
+    "place": "6",
+    "point": "2",
+    "joue": "2",
+    "gagne": "0",
+    "nul": "0",
+    "perdu": "2",
+    "butPlus": "39",
+    "butMoins": "61",
+    "diff": "-22",
+    "dernieresRencontres": "-1;-1",
+    "equipe_libelle": "REGROUPEMENT BOUGIVAL LOUVECIENNES (U15M)",
+    "equipe_logoActif": "0",
+    "structure_logo": "2016-07-01-5c3f7720-eb39-40f9-8f31-278625c2b6e7.jpg",
+    "ext_structureId": "3224"
+   }
+  ],
+  "adLocationSlug": "ffh-competition-side",
+  "ads": [],
+  "dimensions": {
+   "mobile_h": 430,
+   "mobile_w": 375,
+   "desktop_h": 600,
+   "desktop_w": 300
+  }
+ }
+}

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Télécharge et agrège les feuilles de match (FDME) de l'USC et de Versailles HBC (3)."""
+"""Télécharge et agrège les feuilles de match (FDME) de l'USC et de HB Boucle de Seine 78 (2)."""
 import json, os, re, time, urllib.request
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -9,24 +9,15 @@ from pypdf import PdfReader
 history = json.load(open(os.path.join(DD, 'history.json')))
 
 USC_RE = re.compile(r'USC MAISONS', re.I)
-VER_RE = re.compile(r'VERSAILLES|LE CHESNAY', re.I)
+BDS_RE = re.compile(r'BOUCLE DE SEINE', re.I)
 
 def matched(r):
     for k in ('equipe1Libelle', 'equipe2Libelle'):
         if USC_RE.search(r[k]):
             return 'USC'
-        if VER_RE.search(r[k]):
-            return 'VER'
+        if BDS_RE.search(r[k]):
+            return 'ADV'
     return None
-
-def keep_ver(r):
-    ml = None
-    for k in ('equipe1Libelle', 'equipe2Libelle'):
-        if VER_RE.search(r[k]):
-            ml = r[k]
-    if ml is None:
-        return False
-    return '(2)' not in ml and 'LE CHESNAY 78 HB' not in ml and not ml.startswith('ELANCOURT')
 
 codes = {}
 seen = set()
@@ -43,8 +34,6 @@ for team, ms in history.items():
             continue
         side = matched(r)
         if not side:
-            continue
-        if side == 'VER' and not keep_ver(r):
             continue
         code = r.get('fdmCode')
         if code:
@@ -191,7 +180,7 @@ def compute(stats, our_label):
     m['buteurs'] = buteurs
     return m
 
-result = {'USC': [], 'VER': []}
+result = {'USC': [], 'ADV': []}
 for code, side in sorted(codes.items()):
     path = dl(code)
     if not path:
@@ -207,12 +196,9 @@ for code, side in sorted(codes.items()):
     for cand in both:
         if USC_RE.search(cand):
             label = cand; break
-    if label is None and side == 'VER':
-        for cand in both:
-            if 'LE CHESNAY 78 HB' in cand or cand.startswith('ELANCOURT') or '(2)' in cand:
-                continue
-            if VER_RE.search(cand):
-                label = cand; break
+    if label is None and side == 'ADV':
+        cands = [c for c in both if BDS_RE.search(c)]
+        label = next((c for c in cands if '(2)' in c), cands[0] if cands else None)
     if label not in both:
         print(code, 'équipe non trouvée sur la feuille:', both); continue
     stats = compute(st, label)
@@ -222,10 +208,10 @@ for code, side in sorted(codes.items()):
                   'competition': mm.get('competition'),
                   'adversaire': st['visiteur'] if st['recevant'] == label else st['recevant'],
                   'score': [st['recevant'], st['visiteur']]})
-    result['USC' if side == 'USC' else 'VER'].append(stats)
+    result[side].append(stats)
     print(code, stats['buts_marques'], stats['buts_encaisses'],
           'arrêts', stats['arrets'], '2\'', stats['deux_reçues'], '/', stats['deux_donnees'],
           'sup', stats['buts_sup_num'], 'inf', stats['buts_inf_num'])
 
 json.dump(result, open(os.path.join(DD, 'fdm_stats.json'), 'w'), ensure_ascii=False, indent=1)
-print('feuilles USC:', len(result['USC']), '/ versailles:', len(result['VER']))
+print('feuilles USC:', len(result['USC']), '/ Boucle de Seine (2):', len(result['ADV']))

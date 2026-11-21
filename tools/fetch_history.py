@@ -38,6 +38,7 @@ COMPS = [
 TEAMS = [
     {'match': re.compile(r'MAISONS[- ]LAFFITTE', re.I), 'nom': 'USC MAISONS-LAFFITTE HB'},
     {'match': re.compile(r'VERSAILLES', re.I), 'nom': 'VERSAILLES HBC (3)'},
+    {'match': re.compile(r'BOUCLE DE SEINE', re.I), 'nom': 'HB BOUCLE DE SEINE 78  (2)'},
 ]
 
 def first_poules(c):

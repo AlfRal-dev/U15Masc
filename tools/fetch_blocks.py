@@ -43,3 +43,16 @@ for name in ['competitions---poule-selector', 'competitions---rencontre-list', '
         out[name] = None
 with open(os.path.join(os.path.dirname(__file__), 'data', 'blocks.json'), 'w') as f:
     json.dump(out, f, ensure_ascii=False, indent=1)
+
+# classement de la poule du prochain adversaire (3°/4° div, equipe 2 de HB Boucle de Seine 78)
+params_adv = {**params, 'ext_poule_id': '199626'}
+out_adv = {}
+for name in ['competitions---poule-selector', 'competitions---mini-classement-or-ads']:
+    try:
+        out_adv[name] = block(name, params_adv)
+        print(name, '(adv) OK')
+    except Exception as e:
+        print(name, '(adv) FAIL:', e)
+        out_adv[name] = None
+with open(os.path.join(os.path.dirname(__file__), 'data', 'blocks_adv.json'), 'w') as f:
+    json.dump(out_adv, f, ensure_ascii=False, indent=1)
