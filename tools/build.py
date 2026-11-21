@@ -495,11 +495,17 @@ def outcome(s1, s2):
 # ------------------------------------------------------------------- prochain match
 if next_items:
     dt, tag, advn, dom, r = next_items[0]
-    match_tag = 'Coupe des Yvelines · 16e de finale' if tag == 'COUPE' else f'Championnat · J{r.get("journeeNumero","")}'
+    if tag == 'COUPE':
+        match_line1, match_line2 = 'Coupe des Yvelines', '16e de finale'
+    elif r.get('journeeNumero'):
+        match_line1, match_line2 = 'Championnat', f'Journée {r["journeeNumero"]}'
+    else:
+        match_line1, match_line2 = 'Championnat', 'À venir'
     match_meta = f'{fmt_date_long(dt)} · {fmt_time(dt)} · {"à domicile" if dom else "à l’extérieur"}'
 else:
-    match_tag = 'Championnat'
+    match_line1, match_line2 = 'Championnat', 'À venir'
     match_meta = 'Aucun match programmé dans les données'
+match_tag = f'{match_line1} · {match_line2}'
 
 situation_note = f"Prochain match : {match_tag} — {match_meta}."
 
@@ -521,7 +527,8 @@ html = (html
   .replace('__KPI_ADV_RANK__', f"{rang(adv_row['place'])} · {adv_row['point']} pts · {esc(poule_adv_info or '3°/4° div')}")
   .replace('__LOGO_USC__', logo_usc)
   .replace('__LOGO_ADV__', logo_adv)
-  .replace('__MATCH_TAG__', esc(match_tag))
+  .replace('__MATCH_LINE1__', esc(match_line1))
+  .replace('__MATCH_LINE2__', esc(match_line2))
   .replace('__MATCH_META__', esc(match_meta))
   .replace('__KPIS__', kpis)
   .replace('__COMP_ROWS__', comp_rows)
