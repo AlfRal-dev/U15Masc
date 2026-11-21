@@ -130,7 +130,7 @@
     "ext_phaseId": "114665",
     "competitionId": "30813",
     "libelle": "U15 MASCULINS PHASE 5 : DELAYAGE DEPARTEMENTAL 1ERE A 6EME DIVISION",
-    "dateDernierUpdateEnfants": "2026-11-20 09:40:42.000",
+    "dateDernierUpdateEnfants": "2026-11-20 20:39:37.000",
     "classement": "1"
    }
   ],
@@ -393,7 +393,7 @@
     "phaseId": "89074",
     "libelle": "U15M DEL 1° / 2° DIV POULE 2",
     "journees": "[{\"journee_numero\":1,\"date_debut\":\"2026-11-07\",\"date_fin\":\"2026-11-08\"},{\"journee_numero\":2,\"date_debut\":\"2026-11-14\",\"date_fin\":\"2026-11-15\"},{\"journee_numero\":3,\"date_debut\":\"2026-11-28\",\"date_fin\":\"2026-11-29\"},{\"journee_numero\":4,\"date_debut\":\"2026-12-05\",\"date_fin\":\"2026-12-06\"},{\"journee_numero\":5,\"date_debut\":\"2026-12-12\",\"date_fin\":\"2026-12-13\"}]",
-    "dateDernierUpdateEnfants": "2026-11-20 09:40:42.000",
+    "dateDernierUpdateEnfants": "2026-11-20 20:39:37.000",
     "phase_competitionId": "30813"
    },
    {
