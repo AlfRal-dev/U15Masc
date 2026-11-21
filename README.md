@@ -39,6 +39,10 @@ lundi-dimanche (cron : 05h10, 11h10, 17h10 UTC) puis commite `index.html` si les
 données ont changé. Déclenchement manuel possible : onglet *Actions* →
 « Mise a jour du rapport FFHB » → *Run workflow*.
 
+Le job `pages` du même workflow publie ensuite `index.html` sur GitHub Pages à
+l'adresse https://alfral-dev.github.io/U15Masc/ (site activé automatiquement à la
+première exécution, puis republié après chaque mise à jour).
+
 ## Paramétrage
 
 Dans `tools/build.py` : `TEAM_ID` identifie l'équipe suivie (USC Maisons-Laffitte HB).
