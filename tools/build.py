@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""Génère index.html (rapport de match) à partir des données FFHB de la poule."""
-import json, os, re, datetime, unicodedata
+"""Génère index.html (rapport de duel USC vs prochain adversaire, format FDME)."""
+import json, os, re, datetime
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 DD = os.path.join(HERE, 'data')
@@ -10,7 +10,12 @@ rencontres = json.load(open(os.path.join(DD, 'rencontres.json')))
 hist_json = os.path.join(DD, 'history.json')
 history = json.load(open(hist_json)) if os.path.exists(hist_json) else {}
 
-TEAM_ID = '1846931'   # USC MAISONS-LAFFITTE HB (identifiant interne FFHB, poule actuelle)
+TEAM_ID = '1846931'   # USC MAISONS-LAFFITTE HB
+USC_LABEL = 'USC Maisons-Laffitte'
+ADV_LABEL = 'Boucle de Seine (2)'
+ADV_NOM = 'HB BOUCLE DE SEINE 78  (2)'
+ADV_RE = re.compile(r'BOUCLE DE SEINE', re.I)
+USC_RE = re.compile(r'USC MAISONS', re.I)
 MOIS = {'1':'janvier','2':'février','3':'mars','4':'avril','5':'mai','6':'juin','7':'juillet',
         '8':'août','9':'septembre','10':'octobre','11':'novembre','12':'décembre'}
 JOURS = {0:'lundi',1:'mardi',2:'mercredi',3:'jeudi',4:'vendredi',5:'samedi',6:'dimanche'}
@@ -36,7 +41,8 @@ SHORT = {
     'TRIEL CHANTELOUP VERNOUILLET VERNEUIL HB (2)': 'Triel-Chanteloup-Vern. (2)',
     'ELANCOURT-MAUREPAS HB': 'Élancourt-Maurepas',
     'ELANCOURT-MAUREPAS HB U15M.1': 'Élancourt-Maurepas 1',
-    'PLAISIR -\u00a0LES CLAYES HB': 'Plaisir-Les Clayes',
+    'PLAISIR —LES CLAYES HB': 'Plaisir-Les Clayes',
+    'PLAISIR -\xa0LES CLAYES HB': 'Plaisir-Les Clayes',
     'GUYANCOURT HB': 'Guyancourt',
     'US HOUDAN HB': 'US Houdan',
     "HB BOIS-D'ARCY": 'Bois-d\'Arcy',
@@ -47,38 +53,34 @@ SHORT = {
     'CLOC ACHERES': 'CLOC Achères',
     'CLOC ACHERES (2)': 'CLOC Achères (2)',
     'CELLOIS HB': 'Cellois HB',
-    'U15 MASCULINS': 'Championnat U15M',
-    'U15 MASCULINS COUPE DES YVELINES': 'Coupe des Yvelines',
-    'U15 MASCULINS DELAYAGE PRE-REGION : POULES': 'Délaage pré-région',
-    'U15 MASCULINS DELAYAGE PRE-REGION : BARRAGES': 'Délaage pré-région · barrages',
-    'U15 MASCULINS DELAYAGE PRE-REGION : FINALITES 1 A 6 (19/09/26)': 'Délaage pré-région · finalités',
-    'U15 MASCULINS PHASE 3 : DELAYAGE DEPARTEMENTAL HAUT NIVEAU': 'Phase 3 · délaage haut niveau',
-    'U15 MASCULINS PHASE 4 : DELAYAGE DEPARTEMENTAL HAUT NIVEAU': 'Phase 4 · délaage haut niveau',
-    'U15 MASCULINS PHASE 5 : DELAYAGE DEPARTEMENTAL 1ERE A 6EME DIVISION': 'Phase 5 · délaage départemental',
+    'TS VICINOIS 88 HB': 'Ts Vicinois 88',
+    'REGROUPEMENT BOUGIVAL LOUVECIENNES (U15M)': 'Bougival/Louveciennes',
+    'U15M CDY 16EME DE FINALE': 'Coupe des Yvelines · 16e de finale',
+    'U15M DEL 3\u00b0 / 4\u00b0 DIV POULE 3': 'U15M DEL 3\u00b0/4\u00b0 DIV · Poule 3',
+    'U15M DEL 3\u00b0 / 4\u00b0 DIV POULE 4': 'U15M DEL 3\u00b0/4\u00b0 DIV · Poule 4',
     'U15M DHN POULE 8': 'U15M DHN · Poule 8',
     'U15M DHN POULE E': 'U15M DHN · Poule E',
     'U15M DHN POULE 10': 'U15M DHN · Poule 10',
     'U15M DHN POULE C': 'U15M DHN · Poule C',
     'U15M DHN POULE 7': 'U15M DHN · Poule 7',
     'U15M DHN POULE F': 'U15M DHN · Poule F',
-    'U15M DPR POULE A': 'U15M Pré-région · Poule A',
-    'U15M DPR FINALITES PLACE 1 A 4 - MATCH 1': 'Pré-région · Finalité places 1-4',
     'U15M DPR FINALITES PLACE 1/2 - V1/V2 (20/09/26)': 'Pré-région · Finalité 1/2',
-    'U15M DEL 3° / 4° DIV POULE 3': 'U15M DEL 3°/4° DIV · Poule 3',
-    'U15M DEL 1° / 2° DIV POULE 1': 'U15M DEL 1°/2° DIV · Poule 1',
-    'U15M CDY 16EME DE FINALE': 'Coupe des Yvelines · 16e de finale',
-    'U15M DEL 3\u00b0 / 4\u00b0 DIV POULE 4': 'U15M DEL 3\u00b0/4\u00b0 DIV \u00b7 Poule 4',
-    'TS VICINOIS 88 HB': 'Ts Vicinois 88',
-    'REGROUPEMENT BOUGIVAL LOUVECIENNES (U15M)': 'Bougival/Louveciennes',
 }
+
+PAREN = re.compile(r'\s*\(.*$')
 
 def esc(s):
     return str(s).replace('&','&amp;').replace('<','&lt;').replace('>','&gt;')
 
-PAREN = re.compile(r'\s*\(.*$')
+def nom(s):
+    return PAREN.split(str(s))[0].strip().title()
 
 def short(t):
     return SHORT.get(t, t.title())
+
+def fr(x, d=1):
+    s = f'{x:.{d}f}'
+    return s.replace('.', ',').replace('-0,', '0,')
 
 def fmt_date(iso):
     d = datetime.date.fromisoformat(iso[:10])
@@ -98,20 +100,10 @@ def played(r):
 def nd(r):
     return played(r) and str(r['equipe1Score']) == '0' and str(r['equipe2Score']) == '0'
 
-def res_from_team_view(marked, dom, s_me, s_opp):
-    if s_me is None:
-        return None
-    if s_me == 0 and s_opp == 0:
-        return 'ND'
-    return 'V' if s_me > s_opp else 'N' if s_me == s_opp else 'D'
-
-# ---------------------------------------------------------------- classement
+# ---------------------------------------------------------------- classements
 classements = sorted(data['competitions---mini-classement-or-ads']['classements'],
                      key=lambda c: int(c['place']))
 stand_usc = next(c for c in classements if str(c['equipeId']) == TEAM_ID)
-adv_nom = 'HB BOUCLE DE SEINE 78  (2)'
-adv_championnat = 'VERSAILLES HBC (3)'   # adversaire du prochain match de championnat (J3)
-BDS_RE = re.compile(r'BOUCLE DE SEINE', re.I)
 
 adv_row = None
 adv_path = os.path.join(DD, 'blocks_adv.json')
@@ -119,62 +111,341 @@ if os.path.exists(adv_path):
     adv_data = json.load(open(adv_path))
     adv_bl = (adv_data.get('competitions---mini-classement-or-ads') or {}).get('classements') or []
     adv_row = next((c for c in sorted(adv_bl, key=lambda c: int(c['place']))
-                    if BDS_RE.search(c.get('equipe_libelle',''))), None)
+                    if ADV_RE.search(c.get('equipe_libelle',''))), None)
 if adv_row is None:
-    ms = history.get(adv_nom, [])
     w = n = l = bp = bc = j = 0
-    res = []
+    for r in sorted(history.get(ADV_NOM, []), key=lambda x: x.get('date') or '9999'):
+        if not played(r) or nd(r) or not (ADV_RE.search(r['equipe1Libelle']) or ADV_RE.search(r['equipe2Libelle'])):
+            continue
+        dom = ADV_RE.search(r['equipe1Libelle']) is not None
+        s_me = int(r.get('equipe1Score') if dom else r.get('equipe2Score'))
+        s_adv = int(r.get('equipe2Score') if dom else r.get('equipe1Score'))
+        j += 1; bp += s_me; bc += s_adv
+        if s_me > s_adv: w += 1
+        elif s_me == s_adv: n += 1
+        else: l += 1
+    adv_row = {'place': '—', 'point': str(2*w+n), 'joue': str(j), 'gagne': str(w),
+               'nul': str(n), 'perdu': str(l), 'butPlus': str(bp), 'butMoins': str(bc)}
+
+def rang(p):
+    return '1ᵉʳ' if str(p) == '1' else f'{p}ᵉ'
+
+def poule_court(libelle):
+    m1 = re.search(r'POULE\s+(\S+)\s*$', libelle or '')
+    m2 = re.search(r'DEL (\S.*?) DIV', libelle or '')
+    parts = []
+    if m2:
+        parts.append(m2.group(1) + ' div')
+    if m1:
+        parts.append('poule ' + m1.group(1))
+    return ' · '.join(parts) or (libelle or '')
+
+poule_usc_info = poule_court((data['competitions---poule-selector'].get('selected_poule') or {}).get('libelle',''))
+adv_path2 = os.path.join(DD, 'blocks_adv.json')
+poule_adv_info = ''
+if os.path.exists(adv_path2):
+    adata = json.load(open(adv_path2))
+    sp = (adata.get('competitions---poule-selector') or {}).get('selected_poule') or {}
+    poule_adv_info = poule_court(sp.get('libelle',''))
+
+# ------------------------------------------------------------------- history
+def matched_libelle(r):
+    for k in ('equipe1Libelle', 'equipe2Libelle'):
+        if USC_RE.search(r[k]):
+            return r[k]
+    for k in ('equipe1Libelle', 'equipe2Libelle'):
+        if ADV_RE.search(r[k]):
+            return r[k]
+    return None
+
+usc_hist, opp_hist, next_items = [], [], []
+_seen = set()
+for team, ms in history.items():
     for r in sorted(ms, key=lambda x: x.get('date') or '9999'):
+        _key = ('c', str(r.get('ext_rencontreId') or r.get('id')), str(r.get('ext_pouleId') or r.get('pouleId')))
+        ml = matched_libelle(r)
+        e1, e2 = r['equipe1Libelle'], r['equipe2Libelle']
+        if not USC_RE.search(ml or ''):
+            continue
+        if _key in _seen:
+            continue
+        _seen.add(_key)
+        dom = USC_RE.search(e1) is not None
+        advn = e2 if dom else e1
+        dp = (dom, advn, r.get('equipe1Score') if dom else r.get('equipe2Score'),
+              r.get('equipe2Score') if dom else r.get('equipe1Score'))
+        try:
+            dp = (dp[0], dp[1], int(dp[2]) if dp[2] not in (None,'') else None,
+                  int(dp[3]) if dp[3] not in (None,'') else None)
+        except (TypeError, ValueError):
+            dp = (dp[0], dp[1], None, None)
+        usc_hist.append({'r': r, 'dp': dp})
+        if not played(r) and r.get('date','9999') >= '2026-11-01':
+            next_items.append((r['date'], 'COUPE' if 'COUPE' in r.get('competition','').upper() else 'CHAMPIONNAT', advn, dom, r))
+for team, ms in history.items():
+    for r in sorted(ms, key=lambda x: x.get('date') or '9999'):
+        ml = matched_libelle(r)
+        if USC_RE.search(ml or ''):
+            continue
+        if not ADV_RE.search(ml or ''):
+            continue
+        _key = ('c', str(r.get('ext_rencontreId') or r.get('id')), str(r.get('ext_pouleId') or r.get('pouleId')))
+        e1, e2 = r['equipe1Libelle'], r['equipe2Libelle']
+        dom = ADV_RE.search(e1) is not None
+        advn = e2 if dom else e1
+        if USC_RE.search(advn):
+            continue
+        if _key in _seen:
+            continue
+        _seen.add(_key)
+        dp = (dom, advn, r.get('equipe1Score') if dom else r.get('equipe2Score'),
+              r.get('equipe2Score') if dom else r.get('equipe1Score'))
+        try:
+            dp = (dp[0], dp[1], int(dp[2]) if dp[2] not in (None,'') else None,
+                  int(dp[3]) if dp[3] not in (None,'') else None)
+        except (TypeError, ValueError):
+            dp = (dp[0], dp[1], None, None)
+        opp_hist.append({'r': r, 'dp': dp})
+
+usc_hist.sort(key=lambda it: it['r'].get('date') or '9999')
+opp_hist.sort(key=lambda it: it['r'].get('date') or '9999')
+usc_five = [it for it in usc_hist if played(it['r']) and not nd(it['r'])][-5:][::-1]
+opp_five = [it for it in opp_hist if played(it['r']) and not nd(it['r'])][-5:][::-1]
+next_items.sort(key=lambda x: x[0])
+
+# ----------------------------------------------------- statistiques FDME agg
+fdm_path = os.path.join(DD, 'fdm_stats.json')
+fdm = json.load(open(fdm_path)) if os.path.exists(fdm_path) else {}
+USC_SHEETS = fdm.get('USC', [])
+ADV_SHEETS = fdm.get('ADV', [])
+N_USC, N_ADV = len(USC_SHEETS), len(ADV_SHEETS)
+
+def agg_sheets(sheets):
+    n = len(sheets)
+    tot = {k: sum(s.get(k, 0) for s in sheets) for k in
+           ('buts_marques', 'buts_encaisses', 'arrets', 'deux_reçues', 'deux_donnees',
+            'buts_7m', 'buts_7m_adv', 'avertissements')}
+    tm, tc = {}, {}
+    for s in sheets:
+        for k, v in s.get('tranches_m', {}).items():
+            tm[int(k)] = tm.get(int(k), 0) + v
+        for k, v in s.get('tranches_c', {}).items():
+            tc[int(k)] = tc.get(int(k), 0) + v
+    buteurs = {}
+    for s in sheets:
+        for nom_, b in s.get('buteurs', {}).items():
+            buteurs[nom_] = buteurs.get(nom_, 0) + b
+    return n, tot, tm, tc, buteurs
+
+N_U, TOT_U, TM_U, TC_U, BUT_U = agg_sheets(USC_SHEETS)
+N_A, TOT_A, TM_A, TC_A, BUT_A = agg_sheets(ADV_SHEETS)
+
+def avg(tot, k, n):
+    return tot[k] / n if n else 0.0
+
+# ---- KPI
+def rank_kpi(row, poule_info, nomcarte, classe):
+    pts, j = int(row['point']), int(row['joue'])
+    d = int(row.get('butPlus', 0)) - int(row.get('butMoins', 0)) if row.get('butPlus') is not None else 0
+    return {'classe': classe, 'nom': nomcarte, 'rang': rang(row['place']), 'pts': pts, 'j': j, 'poule': poule_info}
+
+kpi_usc = rank_kpi(stand_usc, poule_usc_info, 'Classement USC', 'nous')
+kpi_adv = rank_kpi(adv_row, poule_adv_info or '3°/4° div', 'Classement Boucle de Seine (2)', 'eux')
+
+dif_u = TOT_U['buts_marques'] - TOT_U['buts_encaisses']
+dif_a = TOT_A['buts_marques'] - TOT_A['buts_encaisses']
+
+def kpi_card(label, value, sub, cls=''):
+    c = f' {cls}' if cls else ''
+    return (f'<div class="kpi{c}"><div class="label">{esc(label)}</div>'
+            f'<div class="value">{esc(value)}</div><div class="sub">{sub}</div></div>')
+
+kpis = '\n'.join([
+    kpi_card(kpi_usc['nom'], kpi_usc['rang'], f"{kpi_usc['pts']} pts · {kpi_usc['j']} matchs · {esc(kpi_usc['poule'])}", 'nous'),
+    kpi_card(kpi_adv['nom'], kpi_adv['rang'], f"{kpi_adv['pts']} pts · {kpi_adv['j']} matchs · {esc(kpi_adv['poule'])}", 'eux'),
+    kpi_card('Différentiel USC', f'{dif_u:+d}', f"{TOT_U['buts_marques']} marqués / {TOT_U['buts_encaisses']} encaissés (FDME, {N_U} matchs)", 'nous'),
+    kpi_card('Différentiel Boucle de Seine (2)', f'{dif_a:+d}', f"{TOT_A['buts_marques']} marqués / {TOT_A['buts_encaisses']} encaissés (FDME, {N_A} matchs)", 'eux'),
+])
+
+# ---- comparaison attaque / défense / arrêts
+def comp_row(label, vu, va, hint=''):
+    mx = max(vu, va, 0.001) * 1.15
+    hint = f' {hint}' if hint else ''
+    return (f'<div class="metric"><div class="mlabel">{esc(label)}{hint}</div>'
+            f'<div class="comp">'
+            f'<div class="side l"><span class="name">USC</span><span class="val">{fr(vu)}</span>'
+            f'<span class="track"><i style="width:{vu/mx*100:.0f}%"></i></span></div>'
+            f'<div class="side r"><span class="track"><i style="width:{va/mx*100:.0f}%"></i></span>'
+            f'<span class="val">{fr(va)}</span><span class="name">Boucle (2)</span></div>'
+            f'</div></div>')
+
+comp_rows = (comp_row('Buts marqués par match', avg(TOT_U, 'buts_marques', N_U), avg(TOT_A, 'buts_marques', N_A))
+             + comp_row('Buts encaissés par match (plus bas = mieux)', avg(TOT_U, 'buts_encaisses', N_U), avg(TOT_A, 'buts_encaisses', N_A))
+             + comp_row('Arrêts du gardien par match', avg(TOT_U, 'arrets', N_U), avg(TOT_A, 'arrets', N_A)))
+
+# ---- forme
+def res_letter(dp):
+    s_me, s_adv = dp[2], dp[3]
+    if s_me is None:
+        return None
+    return 'V' if s_me > s_adv else 'N' if s_me == s_adv else 'D'
+
+html_form = lambda five: ''.join(
+    f'<span class="form f-{res_letter(it["dp"]).lower()}">{res_letter(it["dp"])}</span>' for it in five)
+form_usc = html_form(usc_five)
+form_adv = html_form(opp_five)
+
+def serie(five):
+    if not five:
+        return 'aucun match avec feuille'
+    s0 = res_letter(five[0]['dp'])
+    k = 0
+    for it in five:
+        if res_letter(it['dp']) == s0:
+            k += 1
+        else:
+            break
+    mot = {'V': 'victoire(s)', 'N': 'nul(s)', 'D': 'défaite(s)'}[s0]
+    return f'{k} {mot} consécutives' if k > 1 else ('1 ' + mot[:1].upper() + mot[1:2] + (' consécutive' if k == 1 and s0 != 'N' else ''))
+
+def hist_rows(five):
+    out = []
+    for i, it in enumerate(five, 1):
+        r = it['r']
+        dom, advn, s_me, s_adv = it['dp']
         if not played(r) or nd(r):
             continue
-        dom = BDS_RE.search(r['equipe1Libelle']) is not None
-        s_me, s_adv = (int(r.get('equipe1Score') if dom else r.get('equipe2Score')),
-                       int(r.get('equipe2Score') if dom else r.get('equipe1Score')))
-        j += 1; bp += s_me; bc += s_adv
-        if s_me > s_adv: w += 1; res.append('1')
-        elif s_me == s_adv: n += 1; res.append('0')
-        else: l += 1; res.append('-1')
-    adv_row = {'place': '—', 'point': str(2*w+n), 'joue': str(j), 'gagne': str(w),
-               'nul': str(n), 'perdu': str(l), 'butPlus': str(bp), 'butMoins': str(bc),
-               'diff': str(bp-bc), 'dernieresRencontres': ';'.join(res[-5:])}
+        res = res_letter(it['dp'])
+        out.append(
+            f'<li class="resline"><span class="badge badge-{res.lower()}">{res}</span>'
+            f'<span class="scoreline"><strong>{s_me}</strong> – <strong>{s_adv}</strong></span>'
+            f'<span class="vs2">{"à domicile" if dom else "à l’extérieur"} vs {esc(short(advn))}'
+            f'<em class="meta">{esc(short(r.get("poule","")))} · {fmt_date_long(r["date"])} · {fmt_time(r["date"])}</em></span></li>')
+    return ''.join(out)
 
-def form_icons(s):
-    return [{'1':'V','0':'N','-1':'D'}.get(v,'?') for v in str(s).strip().split(';')]
+usc_hist_html = hist_rows(usc_five)
+adv_hist_html = hist_rows(opp_five)
+form_note = (f"Série en cours — USC : {serie(usc_five)} ; Boucle de Seine (2) : {serie(opp_five)}. "
+             f"Les deux équipes ont déjà joué leur phase de délavage (pré-région puis DHN) avant la poule 3°/4° division."
+             )
 
-def form_html(xs):
-    return ''.join(f'<span class="form {"f-v" if x=="V" else "f-n" if x=="N" else "f-d"}">{x}</span>' for x in xs)
+# ---- gardiens
+def gk_rows(sheets, gk_key, be_key, team_name, team_cls):
+    acc = {}
+    for s in sheets:
+        tk = s.get(gk_key, {})
+        tot = sum(tk.values())
+        be = s.get(be_key, 0)
+        for nmn, k in tk.items():
+            e = acc.setdefault(nmn, [0, 0.0, 0])
+            e[0] += k; e[2] += 1
+            if tot:
+                e[1] += be * k / tot
+    rows = ''
+    for nmn, (a_, be_, s_) in sorted(acc.items(), key=lambda kv: -kv[1][0]):
+        taux = a_ / (a_ + be_) * 100 if (a_ + be_) else None
+        nmn_disp = esc(nom(nmn))
+        cell_taux = '—' if taux is None else f'{fr(taux, 0)} %'
+        rows += (f'<tr><td class="team {team_cls}">{team_name}</td><td class="team">{nmn_disp}</td>'
+                 f'<td>{a_}</td><td>{fr(a_/s_)}</td><td>{cell_taux}</td></tr>')
+    return rows
 
+gk_rows_all = gk_rows(USC_SHEETS, 'gk_our', 'buts_encaisses', 'USC', '') + \
+              gk_rows(ADV_SHEETS, 'gk_our', 'buts_encaisses', 'Boucle (2)', 'tag-eux')
+
+# ---- discipline
+def disc_row(label, key, fmt=fr):
+    vu = avg(TOT_U, key, N_U); va = avg(TOT_A, key, N_A)
+    return (f'<tr><td class="team">{esc(label)}</td><td><b>{fmt(vu)}</b></td><td><b>{fmt(va)}</b></td></tr>')
+
+disc_rows = (disc_row("2' reçues / match", 'deux_reçues')
+             + disc_row("2' données / match", 'deux_donnees')
+             + disc_row('Buts sur 7 m marqués / match', 'buts_7m')
+             + disc_row('Buts sur 7 m subis / match', 'buts_7m_adv')
+             + disc_row('Avertissements / match', 'avertissements'))
+
+u2, a2 = avg(TOT_U, 'deux_reçues', N_U), avg(TOT_A, 'deux_reçues', N_A)
+p2_u = "L'USC se pénalise plus que son adversaire" if u2 > a2 else "L'USC est plus disciplinée que son adversaire"
+disc_note = (f"{p2_u} ({fr(u2)} contre {fr(a2)} sanctions de 2' reçues par match). "
+             f"Buts sur 7 m : {fr(avg(TOT_U,'buts_7m',N_U))} obtenus vs {fr(avg(TOT_U,'buts_7m_adv',N_U))} subis "
+             f"pour l'USC ; {fr(avg(TOT_A,'buts_7m',N_A))} obtenus vs {fr(avg(TOT_A,'buts_7m_adv',N_A))} subis pour Boucle de Seine (2).")
+
+# ---- joueurs clés
+def players_rows(buters, n, start=1):
+    top = sorted(buters.items(), key=lambda kv: (-kv[1], kv[0]))[:5]
+    return ''.join(
+        f'<li><span class="rank">{i}</span><span class="nm">{esc(nom(nmn))}</span>'
+        f'<span class="pts">{b} but{"s" if b > 1 else ""} <small>· {fr(b/n)}/match</small></span></li>'
+        for i, (nmn, b) in enumerate(top, start))
+
+players_usc = players_rows(BUT_U, N_U)
+players_adv = players_rows(BUT_A, N_A)
+
+# ---- rythme par tranches de 5'
+def tranche_lab(i):
+    return f"{i*5}–{(i+1)*5}"
+
+def slice_maxes(tm1, tc1, tm2, tc2):
+    m = 1
+    for d in (tm1, tc1, tm2, tc2):
+        for v in d.values():
+            m = max(m, v)
+    return m
+
+def rhythm_html(tm, tc, n, mx):
+    cols = ''
+    for i in range(13):
+        if i == 12 and tm.get(i, 0) == 0 and tc.get(i, 0) == 0:
+            continue
+        hm = round(tm.get(i, 0) / n / mx * 80) if n else 0
+        hc = round(tc.get(i, 0) / n / mx * 80) if n else 0
+        cols += (f'<div class="rhcol"><div class="bars">'
+                 f'<i class="barv m" style="height:{max(hm,2)}px"></i>'
+                 f'<i class="barv e" style="height:{max(hc,2)}px"></i>'
+                 f'</div><div class="rhlabel">{tranche_lab(i)}\'</div></div>')
+    return cols
+
+MX = slice_maxes(TM_U, TC_U, TM_A, TC_A)
+rhythm_usc = rhythm_html(TM_U, TC_U, N_U, MX)
+rhythm_adv = rhythm_html(TM_A, TC_A, N_A, MX)
+
+def best_worst(tm, tc, n):
+    if not n:
+        return ''
+    def diff(i):
+        return (tm.get(i, 0) - tc.get(i, 0)) / n
+    bi = max((i for i in tm), key=lambda i: diff(i))
+    wi = min((i for i in tm), key=lambda i: diff(i))
+    def txt(i):
+        return (f"{tranche_lab(i)}′ ({fr(tm.get(i,0)/n)} marqués / {fr(tc.get(i,0)/n)} encaissés)")
+    return f"Meilleure tranche : <b>{txt(bi)}</b>", f"Pire tranche : <b>{txt(wi)}</b>"
+
+bu, wu = best_worst(TM_U, TC_U, N_U)
+ba, wa = best_worst(TM_A, TC_A, N_A)
+tr_usc = f"USC — {bu} · {wu}"
+tr_adv = f"Boucle de Seine (2) — {ba} · {wa}"
+
+tr_tip = (f"À exploiter : frapper fort sur notre meilleure tranche "
+          f"({tranche_lab(max(TM_U, key=lambda i: TM_U.get(i, 0) - TC_U.get(i, 0)))}′), et rester solides "
+          f"pendant leur pic de pression ({tranche_lab(max(TM_A, key=lambda i: TM_A.get(i, 0) - TC_A.get(i, 0)))}′).")
+
+# ------------------------------------------------------------- classement/calendrier
 stand_rows = ''
 for c in classements:
     nous = str(c['equipeId']) == TEAM_ID
-    nom = 'USC Maisons-Laffitte HB' if nous else esc(short(c['equipe_libelle']))
-    cls = ' class="nous-row"' if nous else ''
+    nnm = 'USC Maisons-Laffitte HB' if nous else esc(short(c['equipe_libelle']))
+    cls = ' class="nous"' if nous else ''
     d = int(c['diff'])
-    diff = f'{d:+d}' if d else '0'
-    stand_rows += (f'<tr{cls}><td class="place">{c["place"]}</td><td class="team">{nom}</td>'
+    stand_rows += (f'<tr{cls}><td>{c["place"]}</td><td class="team {"" if nous else ""}">{nnm}</td>'
                    f'<td>{c["point"]}</td><td>{c["joue"]}</td><td>{c["gagne"]}</td><td>{c["nul"]}</td>'
                    f'<td>{c["perdu"]}</td><td>{c["butPlus"]}</td><td>{c["butMoins"]}</td>'
-                   f'<td class="diff {"pos" if d>0 else "neg" if d<0 else ""}">{diff}</td>'
-                   f'<td class="formcell">{form_html(form_icons(c["dernieresRencontres"]))}</td></tr>')
+                   f'<td>{d:+d}</td></tr>')
 
-# ------------------------------------------------- poule actuelle (blocs FFHB)
 def outcome(s1, s2):
     if not played({'equipe1Score': s1, 'equipe2Score': s2}):
         return None
     a, b = int(s1), int(s2)
     return 'H' if a > b else 'A' if a < b else 'N'
-
-def perspective(r):
-    """(domicile, adversaire, notre_score, score_adv) si le match concerne l'USC."""
-    e1, e2 = r['equipe1Libelle'], r['equipe2Libelle']
-    usc1 = e1 == stand_usc['equipe_libelle']
-    usc2 = e2 == stand_usc['equipe_libelle']
-    if not (usc1 or usc2):
-        return None
-    dom = usc1
-    s_me = r.get('equipe1Score') if dom else r.get('equipe2Score')
-    s_adv = r.get('equipe2Score') if dom else r.get('equipe1Score')
-    return dom, (e2 if dom else e1), s_me, s_adv
 
 matches = []
 for r in rencontres:
@@ -183,257 +454,68 @@ for r in rencontres:
 sched_rows = ''
 for m in sorted(matches, key=lambda x: x['ordre']):
     r = m['raw']
-    dp = perspective(r)
-    e1cls = 'team usc' if r['equipe1Libelle'] == stand_usc['equipe_libelle'] else ('team opp2' if r['equipe1Libelle'] == adv_championnat else 'team')
-    e2cls = 'team usc' if r['equipe2Libelle'] == stand_usc['equipe_libelle'] else ('team opp2' if r['equipe2Libelle'] == adv_championnat else 'team')
-    nxt = not played(r) and dp is not None and r['date'][:10] <= '2026-11-30'
-    hl = ' class="next-row"' if nxt else ''
-    if dp:
-        dom, advn, s_me, s_adv = dp
-        if not played(r):
-            score = '<span class="score tbd">à jouer</span>'
-            resb = '<span class="badge badge-next res-mini">à venir</span>'
-        else:
-            me, ad = int(s_me), int(s_adv)
-            win = me > ad
-            score = (f'<span class="score win">{dom and me or ad} – {dom and ad or me}</span>'
-                     if win else f'<span class="score">{dom and me or ad} – {dom and ad or me}</span>')
-            res = 'V' if win else ('N' if me == ad and me != 0 else 'D')
-            resb = (f'<span class="badge badge-{res.lower()}">{res}</span>'
-                    if not (me == 0 and ad == 0) else
-                    '<span class="badge badge-next res-mini">n.d.</span>')
+    usc1 = USC_RE.search(r['equipe1Libelle'])
+    usc2 = USC_RE.search(r['equipe2Libelle'])
+    if played(r):
+        score = f'{r["equipe1Score"]} – {r["equipe2Score"]}'
+        if str(r['equipe1Score']) == '0' and str(r['equipe2Score']) == '0':
+            score = 'n.d.'
     else:
-        res_ = outcome(r.get('equipe1Score'), r.get('equipe2Score'))
-        score = (f'<span class="score">{r["equipe1Score"]} – {r["equipe2Score"]}</span>'
-                 if played(r) else '<span class="score tbd">à jouer</span>')
-        resb = ''
-    sched_rows += (f'<tr{hl}><td class="jrn">J{r["journeeNumero"]}</td>'
-                   f'<td class="date">{fmt_date(r["date"])}<span class="heure">{fmt_time(r["date"])}</span></td>'
-                   f'<td class="{e1cls}">{esc(short(r["equipe1Libelle"]))}</td>'
-                   f'<td class="scorecell">{score}</td>'
-                   f'<td class="{e2cls}">{esc(short(r["equipe2Libelle"]))}</td>'
-                   f'<td class="rescell">{resb}</td></tr>')
+        score = 'à jouer'
+    cls = ' class="nous"' if (usc1 or usc2) else ''
+    sched_rows += (f'<tr{cls}><td>J{r["journeeNumero"]}</td>'
+                   f'<td>{fmt_date(r["date"])} <span style="color:var(--ink-soft)">{fmt_time(r["date"])}</span></td>'
+                   f'<td class="team">{esc(short(r["equipe1Libelle"]))}</td>'
+                   f'<td>{score}</td>'
+                   f'<td class="team">{esc(short(r["equipe2Libelle"]))}</td></tr>')
 
-# ----------------------------------------------------------------- historique
-USC_RE = re.compile(r'USC MAISONS', re.I)
-
-def matched_libelle(r):
-    for k in ('equipe1Libelle', 'equipe2Libelle'):
-        v = r[k]
-        if USC_RE.search(v):
-            return v
-    for k in ('equipe1Libelle', 'equipe2Libelle'):
-        v = r[k]
-        if BDS_RE.search(v):
-            return v
-    return None
-
-def last_five_rows(rows):
-    out = []
-    for item in rows:
-        r = item['r']
-        dom, advn, s_me, s_adv = item['dp']
-        if not played(r) or nd(r):
-            continue
-        res = 'V' if s_me > s_adv else 'N' if s_me == s_adv else 'D'
-        badge = f'<span class="badge badge-{res.lower()}">{res}</span>'
-        out.append(
-            f'<li class="resline">{badge}'
-            f'<span class="scoreline"><strong>{s_me}</strong> – <strong>{s_adv}</strong></span>'
-            f'<span class="vs">{"à domicile" if dom else "à l’extérieur"} vs {esc(short(advn))}'
-            f'<em class="meta">{esc(short(r.get("poule","")))} · {fmt_date_long(r["date"])} · {fmt_time(r["date"])}</em></span></li>')
-    return ''.join(out)
-
-usc_hist, opp_hist, next_items = [], [], []
-_seen = set()
-for team, ms in history.items():
-    for r in sorted(ms, key=lambda x: x.get('date') or '9999'):
-        _key = ('c', str(r.get('ext_rencontreId') or r.get('id')), str(r.get('ext_pouleId') or r.get('pouleId')))
-        if _key in _seen:
-            continue
-        _seen.add(_key)
-        ml = matched_libelle(r)
-        usc = USC_RE.search(ml or '')
-        if usc:
-            e1, e2 = r['equipe1Libelle'], r['equipe2Libelle']
-            dom = bool(USC_RE.search(e1))
-            advn = e2 if dom else e1
-            dp = (dom, advn, r.get('equipe1Score') if dom else r.get('equipe2Score'),
-                  r.get('equipe2Score') if dom else r.get('equipe1Score'))
-            s_me, s_adv = dp[2], dp[3]
-            try:
-                dp = (dom, advn, int(s_me) if s_me not in (None,'') else None,
-                      int(s_adv) if s_adv not in (None,'') else None)
-            except (TypeError, ValueError):
-                dp = (dom, advn, None, None)
-            item = {'r': r, 'dp': dp, 'competition': r.get('competition',''),
-                    'phase': '', 'poule': r.get('poule','')}
-            usc_hist.append(item)
-            if not played(r) and r.get('date','9999') >= '2026-11-01':
-                next_items.append((r['date'], 'COUPE DES YVELINES' if 'COUPE' in r.get('competition','').upper() else 'CHAMPIONNAT', advn, dom, r))
-        elif BDS_RE.search(ml or ''):
-            e1, e2 = r['equipe1Libelle'], r['equipe2Libelle']
-            dom = BDS_RE.search(e1) is not None
-            advn = e2 if dom else e1
-            dp = (dom, advn, r.get('equipe1Score') if dom else r.get('equipe2Score'),
-                  r.get('equipe2Score') if dom else r.get('equipe1Score'))
-            s_me, s_adv = dp[2], dp[3]
-            try:
-                dp = (dom, advn, int(s_me) if s_me not in (None,'') else None,
-                      int(s_adv) if s_adv not in (None,'') else None)
-            except (TypeError, ValueError):
-                dp = (dom, advn, None, None)
-            item = {'r': r, 'dp': dp, 'competition': r.get('competition',''),
-                    'phase': '', 'poule': r.get('poule','')}
-            opp_hist.append(item)
-
-usc_hist.sort(key=lambda it: it['r'].get('date') or '9999')
-opp_hist.sort(key=lambda it: it['r'].get('date') or '9999')
-usc_five = [it for it in usc_hist if played(it['r']) and not nd(it['r'])][-5:][::-1]
-opp_five = [it for it in opp_hist if played(it['r']) and not nd(it['r'])][-5:][::-1]
-next_items.sort(key=lambda x: x[0])
-
-next_rows = []
-for dt, tag, advn, dom, r in next_items[:3]:
-    ncls = 'tag-coupe' if 'COUPE' in tag else ''
-    next_rows.append(
-        f'<div class="nrow"><span class="ntag {ncls}">{"Coupe des Yvelines" if "COUPE" in tag else "Championnat J" + str(r.get("journeeNumero",""))}</span>'
-        f'<span class="nwho">{"vs" if not dom else "recevra"} {esc(short(advn))}</span>'
-        f'<span class="nwhen">{"@" if dom else "@ "}{fmt_date_long(dt)}<br>{fmt_time(dt)} · {"à domicile" if dom else "à l’extérieur"}</span></div>')
-next_list = ''.join(next_rows) or '<div class="nrow">Plus de rencontre programmée</div>'
-
-# ------------------------------------------- statistiques feuilles de match (FDME)
-fdm_path = os.path.join(DD, 'fdm_stats.json')
-fdm = json.load(open(fdm_path)) if os.path.exists(fdm_path) else {}
-
-def tranche_lab(i):
-    return f"{i*5}\u2013{(i+1)*5}\u2032"
-
-def fdm_block(sheets, titre):
-    n = len(sheets)
-    if n == 0:
-        return '<p class="note">Aucune feuille de match FDME exploitable pour l\u2019instant.</p>'
-    def moy(k):
-        return sum(s.get(k, 0) for s in sheets) / n
-    tr = {}
-    for s in sheets:
-        for k, v in s.get('tranches', {}).items():
-            tr[int(k)] = tr.get(int(k), 0) + v
-    maxabs = max(abs(v) for v in tr.values()) if tr else 0
-    rows = ''
-    for i in sorted(tr):
-        v = tr[i]
-        f = abs(v) / maxabs * 50 if maxabs else 0
-        if v > 0:
-            bars = (f'<span class="sp" style="width:{50-f:.2f}%"></span>'
-                    f'<span class="bar b-pos" style="width:{f:.2f}%"></span>')
-        elif v < 0:
-            bars = (f'<span class="sp" style="width:50%"></span>'
-                    f'<span class="bar b-neg" style="width:{f:.2f}%"></span>'
-                    f'<span class="sp" style="width:{50-f:.2f}%"></span>')
-        else:
-            bars = '<span class="bar z" style="width:2px"></span>'
-        vtxt = f'+{v}' if v > 0 else str(v)
-        rows += (f'<div class="trrow"><span class="trlabel">{tranche_lab(i)}</span>'
-                 f'<span class="trtrack">{bars}</span>'
-                 f'<span class="trval">{vtxt}</span></div>')
-    trligne = ''
-    if maxabs:
-        best_i = max(tr, key=lambda i: tr[i])
-        worst_i = min(tr, key=lambda i: tr[i])
-        trligne = (f'<p class="trbest">Meilleure tranche <b>{esc(tranche_lab(best_i))} '
-                   f'({tr[best_i]:+d})</b> \u00b7 Pire tranche <b>{esc(tranche_lab(worst_i))} '
-                   f'({tr[worst_i]:+d})</b> <small>(\u00e9cart de buts cumul\u00e9 sur {n} matchs)</small></p>')
-    else:
-        trligne = '<p class="trbest">Aucun \u00e9cart de buts marqu\u00e9 sur ces feuilles.</p>'
-    tot = {}
-    for s in sheets:
-        for nom, b in s.get('buteurs', {}).items():
-            tot[nom] = tot.get(nom, 0) + b
-    top5 = sorted(tot.items(), key=lambda kv: (-kv[1], kv[0]))[:5]
-    buteurs = ''.join(f'<li><span class="n">{esc(PAREN.split(nom)[0].strip().title())}</span><span class="b">{b} but{"s" if b > 1 else ""}</span></li>'
-                      for nom, b in top5)
-    return (f'<div><div class="fdm-title"><b>{esc(titre)}</b>'
-            f'<span class="gtag">{n} feuilles analys\u00e9es</span></div>'
-            f'<div class="stats-row">'
-            f'<div class="stat"><b>{moy("buts_marques"):.1f}</b><small>Buts marqu\u00e9s / match</small></div>'
-            f'<div class="stat"><b>{moy("buts_encaisses"):.1f}</b><small>Buts encaiss\u00e9s / match</small></div>'
-            f'<div class="stat"><b>{moy("arrets"):.1f}</b><small>Arr\u00eats / match</small></div>'
-            f'</div><div class="stats-row">'
-            f'<div class="stat"><b>{moy("deux_re\u00e7ues"):.1f}</b><small>2\u2032 re\u00e7ues / match</small></div>'
-            f'<div class="stat"><b>{moy("deux_donnees"):.1f}</b><small>2\u2032 donn\u00e9es / match</small></div>'
-            f'<div class="stat pos"><b>{moy("buts_sup_num"):.1f}</b><small>Buts en sup\u00e9riorit\u00e9 num.</small></div>'
-            f'<div class="stat neg"><b>{moy("buts_inf_num"):.1f}</b><small>Buts en inf\u00e9riorit\u00e9 num.</small></div>'
-            f'</div>{trligne}'
-            f'<div class="small-h">Top 5 buteurs</div>'
-            f'<ol class="buteurs">{buteurs}</ol></div>')
-
-usc_fdm = fdm_block(fdm.get('USC', []), 'USC Maisons-Laffitte HB')
-adv_fdm = fdm_block(fdm.get('ADV', []), 'HB Boucle de Seine 78 (2)')
-note_fdm = (
-    "Calcul\u00e9 automatiquement \u00e0 partir des feuilles de match \u00e9lectroniques (FDME) de toutes les "
-    "comp\u00e9titions jou\u00e9es : d\u00e9laage, Coupe des Yvelines et championnat. \u00c9carts : buts marqu\u00e9s "
-    "pendant une sup\u00e9riorit\u00e9 num\u00e9rique et buts encaiss\u00e9s en inf\u00e9riorit\u00e9 (estimation \u00e0 partir du "
-    "chronom\u00e8tre des sanctions de 2 minutes)."
-)
-
-usc_tot = stand_usc
-adv_tot = adv_row
-
-note_adv = (
-    f"Prochain adversaire : 16e de finale de Coupe des Yvelines. En championnat, l’équipe 2 du club "
-    f"évolue en 3°/4° division (poule 4, même niveau que la nôtre) : {adv_row['gagne']} victoire(s), "
-    f"{adv_row['nul']} nul(s), {adv_row['perdu']} défaite(s). Après la coupe, notre prochain match de "
-    f"championnat (J3) nous opposera à Versailles HBC (3)."
-)
-
-maj_raw = data['competitions---poule-selector']['selected_poule'].get('dateDernierUpdateEnfants') or ''
-maj_date = datetime.date.fromisoformat(maj_raw.strip()[:10]) if maj_raw.strip() else None
-maj = f"{maj_date.day} {MOIS[str(maj_date.month)]} {maj_date.year}" if maj_date else 'inconnue'
-
-equipes_liens = ''.join(f'<span class="chip">{esc(short(o["libelle"]))}</span>'
+equipes_chips = ''.join(f'<span style="display:inline-block;background:var(--line);border-radius:999px;padding:3px 10px;font-size:.78rem">{esc(short(o["libelle"]))}</span>'
                         for o in data['competitions---poule-selector']['equipe_options'])
 
-def badge(res):
-    return f'<span class="badge badge-{res.lower()}">{res}</span>'
+# ------------------------------------------------------------------- prochain match
+if next_items:
+    dt, tag, advn, dom, r = next_items[0]
+    match_tag = 'Coupe des Yvelines · 16e de finale' if tag == 'COUPE' else f'Championnat · J{r.get("journeeNumero","")}'
+    match_meta = f'{fmt_date_long(dt)} · {fmt_time(dt)} · {"à domicile" if dom else "à l’extérieur"}'
+else:
+    match_tag = 'Championnat'
+    match_meta = 'Aucun match programmé dans les données'
+
+maj_raw = (data['competitions---poule-selector'].get('selected_poule') or {}).get('dateDernierUpdateEnfants') or ''
+maj_date = datetime.date.fromisoformat(maj_raw.strip()[:10]) if maj_raw.strip() else None
+maj = f"{maj_date.day} {MOIS[str(maj_date.month)]} {maj_date.year}" if maj_date else 'inconnue'
+gen = datetime.date.today().strftime('%d/%m/%Y')
 
 html = open(os.path.join(HERE, 'template.html')).read()
 html = (html
+  .replace('__KPI_USC_RANK__', f"rang {rang(stand_usc['place'])} · {stand_usc['point']} pts · {esc(poule_usc_info)}")
+  .replace('__KPI_ADV_RANK__', f"rang {rang(adv_row['place'])} · {adv_row['point']} pts · {esc(poule_adv_info or '3°/4° div')}")
+  .replace('__MATCH_TAG__', esc(match_tag))
+  .replace('__MATCH_META__', esc(match_meta))
+  .replace('__KPIS__', kpis)
+  .replace('__COMP_ROWS__', comp_rows)
+  .replace('__N_FDM_USC__', str(N_U))
+  .replace('__N_FDM_ADV__', str(N_A))
+  .replace('__FORM_USC__', form_usc)
+  .replace('__FORM_ADV__', form_adv)
+  .replace('__USC_HIST__', usc_hist_html)
+  .replace('__ADV_HIST__', adv_hist_html)
+  .replace('__FORM_NOTE__', esc(form_note))
+  .replace('__GK_ROWS__', gk_rows_all)
+  .replace('__DISC_ROWS__', disc_rows)
+  .replace('__DISC_NOTE__', esc(disc_note))
+  .replace('__PLAYERS_USC__', players_usc)
+  .replace('__PLAYERS_ADV__', players_adv)
+  .replace('__RHYTHM_USC__', rhythm_usc)
+  .replace('__RHYTHM_ADV__', rhythm_adv)
+  .replace('__TR_USC__', tr_usc)
+  .replace('__TR_ADV__', tr_adv)
+  .replace('__TR_TIP__', esc(tr_tip))
   .replace('__STAND_ROWS__', stand_rows)
   .replace('__SCHED_ROWS__', sched_rows)
-  .replace('__NEXT_LIST__', next_list)
-  .replace('__USC_HIST__', last_five_rows(usc_five))
-  .replace('__ADV_HIST__', last_five_rows(opp_five))
-  .replace('__USC_PTS__', usc_tot['point'])
-  .replace('__USC_J__', usc_tot['joue'])
-  .replace('__USC_G__', usc_tot['gagne'])
-  .replace('__USC_N__', usc_tot['nul'])
-  .replace('__USC_P__', usc_tot['perdu'])
-  .replace('__USC_BP__', usc_tot['butPlus'])
-  .replace('__USC_BC__', usc_tot['butMoins'])
-  .replace('__USC_DIFF__', usc_tot['diff'])
-  .replace('__USC_PLACE__', usc_tot['place'])
-  .replace('__AVG_MARQUE__', f"{int(usc_tot['butPlus'])/int(usc_tot['joue']):.1f}")
-  .replace('__AVG_ENCAISSE__', f"{int(usc_tot['butMoins'])/int(usc_tot['joue']):.1f}")
-  .replace('__ADV_PLACE__', adv_row['place'])
-  .replace('__ADV_PTS__', adv_row['point'])
-  .replace('__ADV_G__', adv_row['gagne'])
-  .replace('__ADV_N__', adv_row['nul'])
-  .replace('__ADV_P__', adv_row['perdu'])
-  .replace('__ADV_TOT__', str(len(opp_hist)))
-  .replace('__ADV_BP__', adv_row['butPlus'])
-  .replace('__ADV_BC__', adv_row['butMoins'])
-  .replace('__ADV_DIFF__', adv_row['diff'])
-  .replace('__ADV_FORM__', form_html(form_icons(adv_row['dernieresRencontres'])))
-  .replace('__AVG_ADV_MARQUE__', f"{int(adv_row['butPlus'])/int(adv_row['joue']):.1f}")
-  .replace('__AVG_ADV_ENCAISSE__', f"{int(adv_row['butMoins'])/int(adv_row['joue']):.1f}")
-  .replace('__NOTE_ADV__', note_adv)
-  .replace('__USC_FDM__', usc_fdm)
-  .replace('__ADV_FDM__', adv_fdm)
-  .replace('__NOTE_FDM__', note_fdm)
-  .replace('__POULE__', 'U15M DEL 3°/4° DIV POULE 3')
+  .replace('__EQUIPES_CHIPS__', equipes_chips)
+  .replace('__GEN__', gen)
   .replace('__MAJ__', maj)
-  .replace('__EQUIPES_CHIPS__', equipes_liens)
 )
 
 out_path = os.path.join(os.path.dirname(HERE), 'index.html')

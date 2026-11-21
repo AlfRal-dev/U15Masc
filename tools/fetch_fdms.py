@@ -139,19 +139,34 @@ def compute(stats, our_label):
     a = stats['actions']
     def our_is(cote):
         return cote == our
+    def cnt(t_, side):
+        return sum(1 for x in a if x['type'] == t_ and x['cote'] == side)
     m = {
         'buts_marques': sum(1 for x in a if x['type'] in ('but', 'but7m') and x['cote'] == our),
         'buts_encaisses': sum(1 for x in a if x['type'] in ('but', 'but7m') and x['cote'] == opp),
-        'arrets': sum(1 for x in a if x['type'] == 'arret' and x['cote'] == our),
-        'deux_reçues': sum(1 for x in a if x['type'] == 'excl2' and x['cote'] == our),
-        'deux_donnees': sum(1 for x in a if x['type'] == 'excl2' and x['cote'] == opp),
+        'arrets': cnt('arret', our),
+        'deux_reçues': cnt('excl2', our),
+        'deux_donnees': cnt('excl2', opp),
+        'buts_7m': cnt('but7m', our),
+        'buts_7m_adv': cnt('but7m', opp),
+        'avertissements': cnt('avert', our),
+        'avertissements_donnees': cnt('avert', opp),
         'tranches': {i: 0 for i in range(13)},
+        'tranches_m': {i: 0 for i in range(13)},
+        'tranches_c': {i: 0 for i in range(13)},
     }
     for x in a:
         if x['type'] in ('but', 'but7m') and x['cote'] in (our, opp):
             minute = x['t'] // 60
             tr = min(int(minute // 5), 12)
             m['tranches'][tr] += 1 if x['cote'] == our else -1
+            (m['tranches_m'] if x['cote'] == our else m['tranches_c'])[tr] += 1
+    gk = {our: {}, opp: {}}
+    for x in a:
+        if x['type'] == 'arret' and x['cote'] in gk:
+            gk[x['cote']][x['qui']] = gk[x['cote']].get(x['qui'], 0) + 1
+    m['gk_our'] = gk[our]
+    m['gk_opp'] = gk[opp]
     # supériorité / infériorité numériques
     susp = {'REC': [], 'VIS': []}
     sup = inf = 0
