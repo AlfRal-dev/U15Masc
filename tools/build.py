@@ -367,11 +367,10 @@ def disc_row(label, key, share_of=None):
     ba_ = avg(TOT_A, share_of, N_A) if share_of else None
     return (f'<tr><td class="team">{esc(label)}</td><td>{cell(vu, bu)}</td><td>{cell(va, ba_)}</td></tr>')
 
-disc_rows = (disc_row("2' reçues / match", 'deux_reçues')
-             + disc_row("2' données / match", 'deux_donnees')
-             + disc_row('Buts sur 7 m marqués / match', 'buts_7m')
-             + disc_row('Buts sur 7 m subis / match', 'buts_7m_adv')
-             + disc_row('Avertissements / match', 'avertissements'))
+disc_rows = (disc_row("2' reçues", 'deux_reçues')
+             + disc_row("2' données", 'deux_donnees')
+             + disc_row('7m marqués', 'buts_7m')
+             + disc_row('7m subis', 'buts_7m_adv'))
 
 u2, a2 = avg(TOT_U, 'deux_reçues', N_U), avg(TOT_A, 'deux_reçues', N_A)
 p2_u = "L'USML se pénalise plus que son adversaire" if u2 > a2 else "L'USML est plus disciplinée que son adversaire"
