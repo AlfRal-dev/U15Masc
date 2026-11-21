@@ -9,8 +9,8 @@ générée à partir des données officielles de [ffhandball.fr](https://www.ffh
 - `index.html` — le rapport de duel (autonome, aucun serveur requis : double-cliquer pour l'ouvrir) :
   prochain rendez-vous (Coupe des Yvelines vs HB Boucle de Seine 78 (2)), KPI de classement,
   comparaison attaque/défense/arrêts, forme récente, gardiens, discipline (2'/7 m),
-  top 5 buteurs des deux équipes, rythme du match par tranches de 5 minutes, et en annexe
-  classement + calendrier de notre poule.
+  top 5 buteurs des deux équipes, rythme du match par tranches de 5 minutes, résumé
+  de la situation agrégé, et en annexe le classement de notre poule.
 - `tools/build.py` — régénère `index.html` depuis les données (`tools/data/`).
 - `tools/fetch_history.py` — récupère l'historique complet (délaage + Coupe des Yvelines)
   de l'USC et de Versailles HBC via la recherche club de ffhandball.fr.

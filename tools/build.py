@@ -262,9 +262,9 @@ def kpi_card(label, value, sub, cls=''):
 
 kpis = '\n'.join([
     kpi_card('Classement USML', kpi_usc['rang'], f"{kpi_usc['pts']} pts · {kpi_usc['j']} matchs · {esc(kpi_usc['poule'])}", 'nous'),
-    kpi_card('Différentiel USML', f'{dif_u:+d}', f"{TOT_U['buts_marques']} marqués / {TOT_U['buts_encaisses']} encaissés (FDME, {N_U} matchs)", 'nous'),
+    kpi_card('Différentiel USML', f'{dif_u:+d}', f"{TOT_U['buts_marques']} marqués / {TOT_U['buts_encaisses']} encaissés ({N_U} matchs)", 'nous'),
     kpi_card('Classement Boucle de Seine (2)', kpi_adv['rang'], f"{kpi_adv['pts']} pts · {kpi_adv['j']} matchs · {esc(kpi_adv['poule'])}", 'eux'),
-    kpi_card('Différentiel Boucle de Seine (2)', f'{dif_a:+d}', f"{TOT_A['buts_marques']} marqués / {TOT_A['buts_encaisses']} encaissés (FDME, {N_A} matchs)", 'eux'),
+    kpi_card('Différentiel Boucle de Seine (2)', f'{dif_a:+d}', f"{TOT_A['buts_marques']} marqués / {TOT_A['buts_encaisses']} encaissés ({N_A} matchs)", 'eux'),
 ])
 
 # ---- comparaison attaque / défense / arrêts
@@ -390,6 +390,41 @@ def players_rows(buters, n, start=1):
 players_usc = players_rows(BUT_U, N_U)
 players_adv = players_rows(BUT_A, N_A)
 
+# ---- résumé de la situation
+def gk_top(sheets, gk_key, be_key):
+    acc = {}
+    for s in sheets:
+        tk = s.get(gk_key, {})
+        tot = sum(tk.values())
+        for nmn, k in tk.items():
+            e = acc.setdefault(nmn, [0, 0])
+            e[0] += k; e[1] += 1
+    if not acc:
+        return '—'
+    nmn, (a_, n_) = sorted(acc.items(), key=lambda kv: (-kv[1][1], -kv[1][0]))[0]
+    return f"{nom(nmn)} — {a_} arrêts · {n_} m."
+
+def srow(label, u, a):
+    return f'<tr><td class="team">{esc(label)}</td><td>{u}</td><td>{a}</td></tr>'
+
+bu_top = max(BUT_U.items(), key=lambda kv: kv[1])
+ba_top = max(BUT_A.items(), key=lambda kv: kv[1])
+
+situation_rows = (
+    srow('Poule', esc(poule_usc_info), esc(poule_adv_info or '3°/4° div'))
+    + srow('Classement', f"{kpi_usc['rang']} · {kpi_usc['pts']} pts · {kpi_usc['j']} matchs",
+           f"{kpi_adv['rang']} · {kpi_adv['pts']} pts · {kpi_adv['j']} matchs")
+    + srow('Série en cours', esc(serie(usc_five)), esc(serie(opp_five)))
+    + srow('Buts marqués / match', fr(avg(TOT_U, 'buts_marques', N_U)), fr(avg(TOT_A, 'buts_marques', N_A)))
+    + srow('Buts encaissés / match', fr(avg(TOT_U, 'buts_encaisses', N_U)), fr(avg(TOT_A, 'buts_encaisses', N_A)))
+    + srow('Arrêts / match', fr(avg(TOT_U, 'arrets', N_U)), fr(avg(TOT_A, 'arrets', N_A)))
+    + srow("2' reçues / match", fr(u2), fr(a2))
+    + srow('Gardien le plus utilisé', esc(gk_top(USC_SHEETS, 'gk_our', 'buts_encaisses')),
+           esc(gk_top(ADV_SHEETS, 'gk_our', 'buts_encaisses')))
+    + srow('Meilleur buteur', f"{esc(nom(bu_top[0]))} — {bu_top[1]} buts ({fr(bu_top[1]/N_U)}/m.)",
+           f"{esc(nom(ba_top[0]))} — {ba_top[1]} buts ({fr(ba_top[1]/N_A)}/m.)")
+)
+
 # ---- rythme par tranches de 5'
 def tranche_lab(i):
     return f"{i*5}–{(i+1)*5}"
@@ -457,31 +492,6 @@ def outcome(s1, s2):
     a, b = int(s1), int(s2)
     return 'H' if a > b else 'A' if a < b else 'N'
 
-matches = []
-for r in rencontres:
-    matches.append({'raw': r, 'ordre': (int(r['journeeNumero']), r['date'])})
-
-sched_rows = ''
-for m in sorted(matches, key=lambda x: x['ordre']):
-    r = m['raw']
-    usc1 = USC_RE.search(r['equipe1Libelle'])
-    usc2 = USC_RE.search(r['equipe2Libelle'])
-    if played(r):
-        score = f'{r["equipe1Score"]} – {r["equipe2Score"]}'
-        if str(r['equipe1Score']) == '0' and str(r['equipe2Score']) == '0':
-            score = 'n.d.'
-    else:
-        score = 'à jouer'
-    cls = ' class="nous"' if (usc1 or usc2) else ''
-    sched_rows += (f'<tr{cls}><td>J{r["journeeNumero"]}</td>'
-                   f'<td>{fmt_date(r["date"])} <span style="color:var(--ink-soft)">{fmt_time(r["date"])}</span></td>'
-                   f'<td class="team">{esc(short(r["equipe1Libelle"]))}</td>'
-                   f'<td>{score}</td>'
-                   f'<td class="team">{esc(short(r["equipe2Libelle"]))}</td></tr>')
-
-equipes_chips = ''.join(f'<span style="display:inline-block;background:var(--line);border-radius:999px;padding:3px 10px;font-size:.78rem">{esc(short(o["libelle"]))}</span>'
-                        for o in data['competitions---poule-selector']['equipe_options'])
-
 # ------------------------------------------------------------------- prochain match
 if next_items:
     dt, tag, advn, dom, r = next_items[0]
@@ -491,6 +501,8 @@ else:
     match_tag = 'Championnat'
     match_meta = 'Aucun match programmé dans les données'
 
+situation_note = f"Prochain match : {match_tag} — {match_meta}."
+
 maj_raw = (data['competitions---poule-selector'].get('selected_poule') or {}).get('dateDernierUpdateEnfants') or ''
 maj_date = datetime.date.fromisoformat(maj_raw.strip()[:10]) if maj_raw.strip() else None
 maj = f"{maj_date.day} {MOIS[str(maj_date.month)]} {maj_date.year}" if maj_date else 'inconnue'
@@ -498,8 +510,8 @@ gen = datetime.date.today().strftime('%d/%m/%Y')
 
 html = open(os.path.join(HERE, 'template.html')).read()
 html = (html
-  .replace('__KPI_USC_RANK__', f"rang {rang(stand_usc['place'])} · {stand_usc['point']} pts · {esc(poule_usc_info)}")
-  .replace('__KPI_ADV_RANK__', f"rang {rang(adv_row['place'])} · {adv_row['point']} pts · {esc(poule_adv_info or '3°/4° div')}")
+  .replace('__KPI_USC_RANK__', f"{rang(stand_usc['place'])} · {stand_usc['point']} pts · {esc(poule_usc_info)}")
+  .replace('__KPI_ADV_RANK__', f"{rang(adv_row['place'])} · {adv_row['point']} pts · {esc(poule_adv_info or '3°/4° div')}")
   .replace('__MATCH_TAG__', esc(match_tag))
   .replace('__MATCH_META__', esc(match_meta))
   .replace('__KPIS__', kpis)
@@ -522,8 +534,8 @@ html = (html
   .replace('__TR_ADV__', tr_adv)
   .replace('__TR_TIP__', esc(tr_tip))
   .replace('__STAND_ROWS__', stand_rows)
-  .replace('__SCHED_ROWS__', sched_rows)
-  .replace('__EQUIPES_CHIPS__', equipes_chips)
+  .replace('__SITUATION_ROWS__', situation_rows)
+  .replace('__SITUATION_NOTE__', esc(situation_note))
   .replace('__GEN__', gen)
   .replace('__MAJ__', maj)
 )
