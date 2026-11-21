@@ -11,7 +11,7 @@ hist_json = os.path.join(DD, 'history.json')
 history = json.load(open(hist_json)) if os.path.exists(hist_json) else {}
 
 TEAM_ID = '1846931'   # USC MAISONS-LAFFITTE HB
-USC_LABEL = 'USC Maisons-Laffitte'
+USC_LABEL = 'USML'
 ADV_LABEL = 'Boucle de Seine (2)'
 ADV_NOM = 'HB BOUCLE DE SEINE 78  (2)'
 ADV_RE = re.compile(r'BOUCLE DE SEINE', re.I)
@@ -21,7 +21,7 @@ MOIS = {'1':'janvier','2':'février','3':'mars','4':'avril','5':'mai','6':'juin'
 JOURS = {0:'lundi',1:'mardi',2:'mercredi',3:'jeudi',4:'vendredi',5:'samedi',6:'dimanche'}
 
 SHORT = {
-    'USC MAISONS-LAFFITTE HB': 'USC Maisons-Laffitte',
+    'USC MAISONS-LAFFITTE HB': 'USML Maisons-Laffitte',
     'SUD YVELINES HB LE PERRAY RAMBOUILLET (U15M)': 'Sud Yvelines HB',
     'CA MANTES LA VILLE / HBC ROSNY (U15M)': 'CA Mantes/Rosny',
     'VERSAILLES HBC (3)': 'Versailles HBC (3)',
@@ -249,7 +249,7 @@ def rank_kpi(row, poule_info, nomcarte, classe):
     d = int(row.get('butPlus', 0)) - int(row.get('butMoins', 0)) if row.get('butPlus') is not None else 0
     return {'classe': classe, 'nom': nomcarte, 'rang': rang(row['place']), 'pts': pts, 'j': j, 'poule': poule_info}
 
-kpi_usc = rank_kpi(stand_usc, poule_usc_info, 'Classement USC', 'nous')
+kpi_usc = rank_kpi(stand_usc, poule_usc_info, 'Classement USML', 'nous')
 kpi_adv = rank_kpi(adv_row, poule_adv_info or '3°/4° div', 'Classement Boucle de Seine (2)', 'eux')
 
 dif_u = TOT_U['buts_marques'] - TOT_U['buts_encaisses']
@@ -261,9 +261,9 @@ def kpi_card(label, value, sub, cls=''):
             f'<div class="value">{esc(value)}</div><div class="sub">{sub}</div></div>')
 
 kpis = '\n'.join([
-    kpi_card(kpi_usc['nom'], kpi_usc['rang'], f"{kpi_usc['pts']} pts · {kpi_usc['j']} matchs · {esc(kpi_usc['poule'])}", 'nous'),
-    kpi_card(kpi_adv['nom'], kpi_adv['rang'], f"{kpi_adv['pts']} pts · {kpi_adv['j']} matchs · {esc(kpi_adv['poule'])}", 'eux'),
-    kpi_card('Différentiel USC', f'{dif_u:+d}', f"{TOT_U['buts_marques']} marqués / {TOT_U['buts_encaisses']} encaissés (FDME, {N_U} matchs)", 'nous'),
+    kpi_card('Classement USML', kpi_usc['rang'], f"{kpi_usc['pts']} pts · {kpi_usc['j']} matchs · {esc(kpi_usc['poule'])}", 'nous'),
+    kpi_card('Différentiel USML', f'{dif_u:+d}', f"{TOT_U['buts_marques']} marqués / {TOT_U['buts_encaisses']} encaissés (FDME, {N_U} matchs)", 'nous'),
+    kpi_card('Classement Boucle de Seine (2)', kpi_adv['rang'], f"{kpi_adv['pts']} pts · {kpi_adv['j']} matchs · {esc(kpi_adv['poule'])}", 'eux'),
     kpi_card('Différentiel Boucle de Seine (2)', f'{dif_a:+d}', f"{TOT_A['buts_marques']} marqués / {TOT_A['buts_encaisses']} encaissés (FDME, {N_A} matchs)", 'eux'),
 ])
 
@@ -273,7 +273,7 @@ def comp_row(label, vu, va, hint=''):
     hint = f' {hint}' if hint else ''
     return (f'<div class="metric"><div class="mlabel">{esc(label)}{hint}</div>'
             f'<div class="comp">'
-            f'<div class="side l"><span class="name">USC</span><span class="val">{fr(vu)}</span>'
+            f'<div class="side l"><span class="name">USML</span><span class="val">{fr(vu)}</span>'
             f'<span class="track"><i style="width:{vu/mx*100:.0f}%"></i></span></div>'
             f'<div class="side r"><span class="track"><i style="width:{va/mx*100:.0f}%"></i></span>'
             f'<span class="val">{fr(va)}</span><span class="name">Boucle (2)</span></div>'
@@ -325,7 +325,7 @@ def hist_rows(five):
 
 usc_hist_html = hist_rows(usc_five)
 adv_hist_html = hist_rows(opp_five)
-form_note = (f"Série en cours — USC : {serie(usc_five)} ; Boucle de Seine (2) : {serie(opp_five)}. "
+form_note = (f"Série en cours — USML : {serie(usc_five)} ; Boucle de Seine (2) : {serie(opp_five)}. "
              f"Les deux équipes ont déjà joué leur phase de délavage (pré-région puis DHN) avant la poule 3°/4° division."
              )
 
@@ -342,7 +342,8 @@ def gk_rows(sheets, gk_key, be_key, team_name, team_cls):
             if tot:
                 e[1] += be * k / tot
     rows = ''
-    for nmn, (a_, be_, s_) in sorted(acc.items(), key=lambda kv: -kv[1][0]):
+    top = sorted(acc.items(), key=lambda kv: (-kv[1][2], -kv[1][0]))[:2]
+    for nmn, (a_, be_, s_) in top:
         taux = a_ / (a_ + be_) * 100 if (a_ + be_) else None
         nmn_disp = esc(nom(nmn))
         cell_taux = '—' if taux is None else f'{fr(taux, 0)} %'
@@ -350,25 +351,33 @@ def gk_rows(sheets, gk_key, be_key, team_name, team_cls):
                  f'<td>{a_}</td><td>{fr(a_/s_)}</td><td>{cell_taux}</td></tr>')
     return rows
 
-gk_rows_all = gk_rows(USC_SHEETS, 'gk_our', 'buts_encaisses', 'USC', '') + \
+gk_rows_all = gk_rows(USC_SHEETS, 'gk_our', 'buts_encaisses', 'USML', '') + \
               gk_rows(ADV_SHEETS, 'gk_our', 'buts_encaisses', 'Boucle (2)', 'tag-eux')
 
 # ---- discipline
-def disc_row(label, key, fmt=fr):
+def disc_row(label, key, share_of=None):
     vu = avg(TOT_U, key, N_U); va = avg(TOT_A, key, N_A)
-    return (f'<tr><td class="team">{esc(label)}</td><td><b>{fmt(vu)}</b></td><td><b>{fmt(va)}</b></td></tr>')
+    def cell(v, base):
+        if not v:
+            return '<b>0</b>' + (' <small>0 %</small>' if base else '')
+        if base:
+            return f'<b>{fr(v)}</b> <small>{fr(v / base * 100, 0)} %</small>'
+        return f'<b>{fr(v)}</b>'
+    bu = avg(TOT_U, share_of, N_U) if share_of else None
+    ba_ = avg(TOT_A, share_of, N_A) if share_of else None
+    return (f'<tr><td class="team">{esc(label)}</td><td>{cell(vu, bu)}</td><td>{cell(va, ba_)}</td></tr>')
 
 disc_rows = (disc_row("2' reçues / match", 'deux_reçues')
              + disc_row("2' données / match", 'deux_donnees')
-             + disc_row('Buts sur 7 m marqués / match', 'buts_7m')
-             + disc_row('Buts sur 7 m subis / match', 'buts_7m_adv')
+             + disc_row('Buts sur 7 m marqués / match', 'buts_7m', 'buts_marques')
+             + disc_row('Buts sur 7 m subis / match', 'buts_7m_adv', 'buts_encaisses')
              + disc_row('Avertissements / match', 'avertissements'))
 
 u2, a2 = avg(TOT_U, 'deux_reçues', N_U), avg(TOT_A, 'deux_reçues', N_A)
-p2_u = "L'USC se pénalise plus que son adversaire" if u2 > a2 else "L'USC est plus disciplinée que son adversaire"
+p2_u = "L'USML se pénalise plus que son adversaire" if u2 > a2 else "L'USML est plus disciplinée que son adversaire"
 disc_note = (f"{p2_u} ({fr(u2)} contre {fr(a2)} sanctions de 2' reçues par match). "
-             f"Buts sur 7 m : {fr(avg(TOT_U,'buts_7m',N_U))} obtenus vs {fr(avg(TOT_U,'buts_7m_adv',N_U))} subis "
-             f"pour l'USC ; {fr(avg(TOT_A,'buts_7m',N_A))} obtenus vs {fr(avg(TOT_A,'buts_7m_adv',N_A))} subis pour Boucle de Seine (2).")
+             f"Pour les 7 m, la fédération ne publie pas les essais manqués : le % affiché est la part "
+             f"dans les buts marqués (resp. encaissés), calculée sur l'ensemble des feuilles.")
 
 # ---- joueurs clés
 def players_rows(buters, n, start=1):
@@ -422,7 +431,7 @@ def best_worst(tm, tc, n):
 
 bu, wu = best_worst(TM_U, TC_U, N_U)
 ba, wa = best_worst(TM_A, TC_A, N_A)
-tr_usc = f"USC — {bu} · {wu}"
+tr_usc = f"USML — {bu} · {wu}"
 tr_adv = f"Boucle de Seine (2) — {ba} · {wa}"
 
 tr_tip = (f"À exploiter : frapper fort sur notre meilleure tranche "
@@ -433,7 +442,7 @@ tr_tip = (f"À exploiter : frapper fort sur notre meilleure tranche "
 stand_rows = ''
 for c in classements:
     nous = str(c['equipeId']) == TEAM_ID
-    nnm = 'USC Maisons-Laffitte HB' if nous else esc(short(c['equipe_libelle']))
+    nnm = 'USML Maisons-Laffitte' if nous else esc(short(c['equipe_libelle']))
     cls = ' class="nous"' if nous else ''
     d = int(c['diff'])
     stand_rows += (f'<tr{cls}><td>{c["place"]}</td><td class="team {"" if nous else ""}">{nnm}</td>'
