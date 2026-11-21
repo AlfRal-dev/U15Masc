@@ -47,6 +47,27 @@ header.hero{background:linear-gradient(135deg,var(--primary-dark),var(--primary)
 .stat.pos b{color:var(--win)} .stat.neg b{color:var(--loss)}
 .stat small{color:var(--muted);font-size:.66rem;text-transform:uppercase;letter-spacing:.04em;line-height:1.3;display:block}
 /* history */
+.fdm-title{display:flex;align-items:baseline;gap:8px;margin:4px 0 8px;flex-wrap:wrap}
+.fdm-title b{font-size:.86rem;color:var(--primary)}
+.fdm-title .gtag{font-size:.62rem;text-transform:uppercase;letter-spacing:.06em;background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:2px 8px;color:var(--muted);white-space:nowrap}
+.trwrap{margin:12px 0 2px}
+.trrow{display:flex;align-items:center;gap:6px;font-size:.7rem;color:var(--muted);margin:2px 0}
+.trlabel{width:48px;flex:none;font-variant-numeric:tabular-nums}
+.trtrack{flex:1;display:flex;align-items:center;height:12px}
+.sp{height:100%}
+.bar{height:9px;border-radius:3px}
+.b-pos{background:var(--win)}
+.b-neg{background:var(--loss)}
+.bar.z{background:var(--line);flex:none}
+.trval{width:30px;flex:none;text-align:right;font-variant-numeric:tabular-nums;font-weight:600;color:var(--ink)}
+.trbest{font-size:.8rem;color:var(--muted);margin-top:8px}
+.trbest b{color:var(--ink)}
+.trbest small{display:block;font-size:.7rem}
+.small-h{font-size:.74rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);font-weight:700;margin-top:12px}
+.buteurs{list-style:none;margin:2px 0 4px;padding:0}
+.buteurs li{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:5px 0;border-bottom:1px dashed var(--line);font-size:.9rem}
+.buteurs li:last-child{border-bottom:none}
+.buteurs .b{background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:1px 10px;font-size:.78rem;font-variant-numeric:tabular-nums;white-space:nowrap}
 .ghead{margin:16px 0 4px;display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
 .ghead:first-child{margin-top:4px}
 .ghead b{font-size:.86rem;color:var(--primary)}
@@ -161,6 +182,21 @@ footer a{color:var(--primary)}
           <p class="note">Bilan en championnat 3°/4° division : 0 victoire(s), 1 nul(s), 1 défaite(s). Le club de Versailles aligne plusieurs équipes ((2), (3)) ; les 5 derniers matchs listés ici concernent l’équipe (3) et l’entente Le Chesnay/Versailles.</p>
         </div>
       </div>
+    </section>
+  </div>
+
+  <div class="grid" style="margin-top:20px">
+    <section class="card">
+      <h2>Statistiques des feuilles de match</h2>
+      <div class="grid cols2eq" style="margin-top:6px">
+        <div class="trwrap" style="margin-top:0">
+<div><div class="fdm-title"><b>USC Maisons-Laffitte HB</b><span class="gtag">6 feuilles analysées</span></div><div class="stats-row"><div class="stat"><b>34.8</b><small>Buts marqués / match</small></div><div class="stat"><b>25.7</b><small>Buts encaissés / match</small></div><div class="stat"><b>15.2</b><small>Arrêts / match</small></div></div><div class="stats-row"><div class="stat"><b>3.8</b><small>2′ reçues / match</small></div><div class="stat"><b>2.5</b><small>2′ données / match</small></div><div class="stat pos"><b>0.3</b><small>Buts en supériorité num.</small></div><div class="stat neg"><b>0.2</b><small>Buts en infériorité num.</small></div></div><p class="trbest">Meilleure tranche <b>5–10′ (+17)</b> · Pire tranche <b>20–25′ (-4)</b> <small>(écart de buts cumulé sur 6 matchs)</small></p><div class="small-h">Top 5 buteurs</div><ol class="buteurs"><li><span class="n">Devriese Alister</span><span class="b">65 buts</span></li><li><span class="n">Jeanjean Arthur</span><span class="b">37 buts</span></li><li><span class="n">Hertel-Andrault Jules</span><span class="b">33 buts</span></li><li><span class="n">Golaszewski Martin</span><span class="b">27 buts</span></li><li><span class="n">Cazaoulou Axel</span><span class="b">11 buts</span></li></ol></div>
+        </div>
+        <div class="trwrap" style="margin-top:0">
+<div><div class="fdm-title"><b>Versailles HBC (3)</b><span class="gtag">10 feuilles analysées</span></div><div class="stats-row"><div class="stat"><b>18.2</b><small>Buts marqués / match</small></div><div class="stat"><b>29.4</b><small>Buts encaissés / match</small></div><div class="stat"><b>10.1</b><small>Arrêts / match</small></div></div><div class="stats-row"><div class="stat"><b>1.4</b><small>2′ reçues / match</small></div><div class="stat"><b>1.1</b><small>2′ données / match</small></div><div class="stat pos"><b>0.0</b><small>Buts en supériorité num.</small></div><div class="stat neg"><b>0.1</b><small>Buts en infériorité num.</small></div></div><p class="trbest">Meilleure tranche <b>50–55′ (+1)</b> · Pire tranche <b>20–25′ (-22)</b> <small>(écart de buts cumulé sur 10 matchs)</small></p><div class="small-h">Top 5 buteurs</div><ol class="buteurs"><li><span class="n">Pouly Hereng Antonin</span><span class="b">21 buts</span></li><li><span class="n">Boisseau Adam</span><span class="b">20 buts</span></li><li><span class="n">Limare Arthur</span><span class="b">20 buts</span></li><li><span class="n">Vade Antonin</span><span class="b">15 buts</span></li><li><span class="n">Lecorps Sacha</span><span class="b">13 buts</span></li></ol></div>
+        </div>
+      </div>
+      <p class="note">Calculé automatiquement à partir des feuilles de match électroniques (FDME) de toutes les compétitions jouées : délaage, Coupe des Yvelines et championnat. Écarts : buts marqués pendant une supériorité numérique et buts encaissés en infériorité (estimation à partir du chronomètre des sanctions de 2 minutes).</p>
     </section>
   </div>
 

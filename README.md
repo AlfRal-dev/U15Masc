@@ -10,6 +10,9 @@ générée à partir des données officielles de [ffhandball.fr](https://www.ffh
 - `tools/build.py` — régénère `index.html` depuis les données (`tools/data/`).
 - `tools/fetch_history.py` — récupère l'historique complet (délaage + Coupe des Yvelines)
   de l'USC et de Versailles HBC via la recherche club de ffhandball.fr.
+- `tools/fetch_fdms.py` — télécharge et analyse les feuilles de match électroniques (FDME)
+  de l'USC et de Versailles HBC : moyennes de buts/arrêts/2 min/écarts en supériorité et
+  infériorité numérique, écarts de buts par tranche de 5 min, top 5 buteurs (dépend de `pypdf`).
 - `tools/fetch_blocks.py` / `tools/fetch_matches.py` — récupèrent classement et calendrier
   depuis la route publique `wp-json/competitions/v1/computeBlockAttributes` de ffhandball.fr,
   décodés comme le navigateur le fait (base64 + XOR avec la clé `data-cfk` de la page).
@@ -20,6 +23,8 @@ générée à partir des données officielles de [ffhandball.fr](https://www.ffh
 cd tools
 python3 fetch_blocks.py      # met à jour data/blocks.json (classement, poule)
 python3 fetch_matches.py     # met à jour data/rencontres.json (tous les matchs)
+python3 fetch_history.py     # (optionnel) historique USC / Versailles (3)
+python3 fetch_fdms.py        # (optionnel) statistiques des feuilles de match (FDME)
 python3 build.py             # régénère index.html
 ```
 

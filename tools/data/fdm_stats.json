@@ -1,0 +1,672 @@
+{
+ "USC": [
+  {
+   "buts_marques": 32,
+   "buts_encaisses": 17,
+   "arrets": 16,
+   "deux_reçues": 4,
+   "deux_donnees": 1,
+   "tranches": {
+    "0": 1,
+    "1": 3,
+    "2": 1,
+    "3": 3,
+    "4": 0,
+    "5": 1,
+    "6": 4,
+    "7": 2,
+    "8": 1,
+    "9": -1,
+    "10": 0,
+    "11": 0,
+    "12": 0
+   },
+   "buts_sup_num": 0,
+   "buts_inf_num": 0,
+   "buteurs": {
+    "DEVRIESE Alister": 10,
+    "GOLASZEWSKI Martin": 6,
+    "JEANJEAN Arthur": 6,
+    "HERTEL-ANDRAULT Jules": 5,
+    "BIDAULT Valentin": 2,
+    "VIGNE Gabriel": 2,
+    "MARTIN Theo": 1
+   },
+   "code": "WAGRVEX",
+   "date": "2026-09-27T11:30:00+02:00",
+   "poule": "U15M DHN POULE 8",
+   "competition": "U15 MASCULINS",
+   "adversaire": "CELLOIS - LOUVECIENNES",
+   "score": [
+    "USC MAISONS-LAFFITTE HB",
+    "CELLOIS - LOUVECIENNES"
+   ]
+  },
+  {
+   "buts_marques": 28,
+   "buts_encaisses": 29,
+   "arrets": 12,
+   "deux_reçues": 6,
+   "deux_donnees": 4,
+   "tranches": {
+    "0": -3,
+    "1": 2,
+    "2": 2,
+    "3": 0,
+    "4": 0,
+    "5": -1,
+    "6": 1,
+    "7": 2,
+    "8": -2,
+    "9": -2,
+    "10": 0,
+    "11": 0,
+    "12": 0
+   },
+   "buts_sup_num": 1,
+   "buts_inf_num": 1,
+   "buteurs": {
+    "CAZAOULOU Axel (Né.e CAZAOULOU LAMOUCHE)": 5,
+    "JEANJEAN Arthur": 8,
+    "GUILLAUME Hugo": 1,
+    "GOLASZEWSKI Martin": 1,
+    "HERTEL-ANDRAULT Jules": 11,
+    "VIGNE Gabriel": 1,
+    "BIDAULT Valentin": 1
+   },
+   "code": "WAGXNQJ",
+   "date": "2026-10-04T14:00:00+02:00",
+   "poule": "U15M DHN POULE E",
+   "competition": "U15 MASCULINS",
+   "adversaire": "CLOC ACHERES (2)",
+   "score": [
+    "CLOC ACHERES (2)",
+    "USC MAISONS-LAFFITTE HB"
+   ]
+  },
+  {
+   "buts_marques": 32,
+   "buts_encaisses": 37,
+   "arrets": 15,
+   "deux_reçues": 5,
+   "deux_donnees": 3,
+   "tranches": {
+    "0": -1,
+    "1": 1,
+    "2": 0,
+    "3": -2,
+    "4": -3,
+    "5": 1,
+    "6": 3,
+    "7": -1,
+    "8": -1,
+    "9": -2,
+    "10": 0,
+    "11": 0,
+    "12": 0
+   },
+   "buts_sup_num": 0,
+   "buts_inf_num": 0,
+   "buteurs": {
+    "THILL Nicolas": 2,
+    "DEVRIESE Alister": 11,
+    "GOLASZEWSKI Martin": 6,
+    "JEANJEAN Arthur": 4,
+    "HERTEL-ANDRAULT Jules": 5,
+    "CAZAOULOU Axel (Né.e CAZAOULOU LAMOUCHE)": 2,
+    "MARTIN Theo": 2
+   },
+   "code": "WAGXNQK",
+   "date": "2026-10-11T09:30:00+02:00",
+   "poule": "U15M DHN POULE E",
+   "competition": "U15 MASCULINS",
+   "adversaire": "PLAISIR - LES CLAYES HB",
+   "score": [
+    "USC MAISONS-LAFFITTE HB",
+    "PLAISIR - LES CLAYES HB"
+   ]
+  },
+  {
+   "buts_marques": 49,
+   "buts_encaisses": 25,
+   "arrets": 22,
+   "deux_reçues": 4,
+   "deux_donnees": 2,
+   "tranches": {
+    "0": 3,
+    "1": 5,
+    "2": 4,
+    "3": 1,
+    "4": 3,
+    "5": 1,
+    "6": 1,
+    "7": 3,
+    "8": 2,
+    "9": 1,
+    "10": 0,
+    "11": 0,
+    "12": 0
+   },
+   "buts_sup_num": 0,
+   "buts_inf_num": 0,
+   "buteurs": {
+    "DEVRIESE Alister": 12,
+    "JEANJEAN Arthur": 9,
+    "GOLASZEWSKI Martin": 14,
+    "CAZAOULOU Axel (Né.e CAZAOULOU LAMOUCHE)": 1,
+    "GASPARD Valentin": 7,
+    "HERTEL-ANDRAULT Jules": 3,
+    "BIDAULT Valentin": 2,
+    "GUILLAUME Hugo": 1
+   },
+   "code": "WAGXNQN",
+   "date": "2026-10-18T11:30:00+02:00",
+   "poule": "U15M DHN POULE E",
+   "competition": "U15 MASCULINS",
+   "adversaire": "HB BOIS-D'ARCY",
+   "score": [
+    "USC MAISONS-LAFFITTE HB",
+    "HB BOIS-D'ARCY"
+   ]
+  },
+  {
+   "buts_marques": 34,
+   "buts_encaisses": 22,
+   "arrets": 16,
+   "deux_reçues": 3,
+   "deux_donnees": 0,
+   "tranches": {
+    "0": 0,
+    "1": 3,
+    "2": 0,
+    "3": 2,
+    "4": 1,
+    "5": 0,
+    "6": 2,
+    "7": 0,
+    "8": 0,
+    "9": 3,
+    "10": 1,
+    "11": 0,
+    "12": 0
+   },
+   "buts_sup_num": 0,
+   "buts_inf_num": 0,
+   "buteurs": {
+    "DEVRIESE Alister": 14,
+    "JEANJEAN Arthur": 6,
+    "THILL Nicolas": 3,
+    "HERTEL-ANDRAULT Jules": 6,
+    "ESKINI Kyan": 2,
+    "MARTIN Theo": 1,
+    "BOYER William": 2
+   },
+   "code": "WAGZBOU",
+   "date": "2026-11-15T16:00:00+01:00",
+   "poule": "U15M DEL 3° / 4° DIV POULE 3",
+   "competition": "U15 MASCULINS",
+   "adversaire": "CO GARGENVILLE",
+   "score": [
+    "USC MAISONS-LAFFITTE HB",
+    "CO GARGENVILLE"
+   ]
+  },
+  {
+   "buts_marques": 34,
+   "buts_encaisses": 24,
+   "arrets": 10,
+   "deux_reçues": 1,
+   "deux_donnees": 5,
+   "tranches": {
+    "0": -1,
+    "1": 3,
+    "2": 3,
+    "3": -2,
+    "4": -5,
+    "5": 4,
+    "6": 1,
+    "7": 3,
+    "8": 0,
+    "9": 4,
+    "10": 0,
+    "11": 0,
+    "12": 0
+   },
+   "buts_sup_num": 1,
+   "buts_inf_num": 0,
+   "buteurs": {
+    "DEVRIESE Alister": 18,
+    "CAZAOULOU Axel (Né.e CAZAOULOU LAMOUCHE)": 3,
+    "VIGNE Gabriel": 3,
+    "JEANJEAN Arthur": 4,
+    "GASPARD Valentin": 3,
+    "HERTEL-ANDRAULT Jules": 3
+   },
+   "code": "WAHAQYW",
+   "date": "2026-11-08T11:00:00+01:00",
+   "poule": "U15M DEL 3° / 4° DIV POULE 3",
+   "competition": "U15 MASCULINS",
+   "adversaire": "CA MANTES LA VILLE / HBC ROSNY (U15M)",
+   "score": [
+    "CA MANTES LA VILLE / HBC ROSNY (U15M)",
+    "USC MAISONS-LAFFITTE HB"
+   ]
+  }
+ ],
+ "VER": [
+  {
+   "buts_marques": 24,
+   "buts_encaisses": 14,
+   "arrets": 3,
+   "deux_reçues": 2,
+   "deux_donnees": 1,
+   "tranches": {
+    "0": 2,
+    "1": 3,
+    "2": 2,
+    "3": 1,
+    "4": 2,
+    "5": 0,
+    "6": 0,
+    "7": 0,
+    "8": 0,
+    "9": 0,
+    "10": 0,
+    "11": 0,
+    "12": 0
+   },
+   "buts_sup_num": 0,
+   "buts_inf_num": 0,
+   "buteurs": {
+    "SHAHAD Evan": 4,
+    "POULY HERENG Antonin": 7,
+    "AFONSO Amaury": 5,
+    "BOISSEAU Adam": 1,
+    "LECORPS Sacha": 1,
+    "BROUARD Maxime": 1,
+    "SZABO Matyas": 1,
+    "CEILLIER Noa": 3,
+    "POYET Ilyas": 1
+   },
+   "code": "WAGRIPA",
+   "date": "2026-09-13T10:00:00+02:00",
+   "poule": "U15M DPR POULE A",
+   "competition": "U15 MASCULINS",
+   "adversaire": "HB ACHERES CONFLANS (U15M PRE REGION)",
+   "score": [
+    "HB ACHERES CONFLANS (U15M PRE REGION)",
+    "LE CHESNAY / VERSAILLES GP 78 (U15M PRE RE-"
+   ]
+  },
+  {
+   "buts_marques": 15,
+   "buts_encaisses": 15,
+   "arrets": 3,
+   "deux_reçues": 0,
+   "deux_donnees": 0,
+   "tranches": {
+    "0": 1,
+    "1": -1,
+    "2": 1,
+    "3": 1,
+    "4": -2,
+    "5": 0,
+    "6": 0,
+    "7": 0,
+    "8": 0,
+    "9": 0,
+    "10": 0,
+    "11": 0,
+    "12": 0
+   },
+   "buts_sup_num": 0,
+   "buts_inf_num": 0,
+   "buteurs": {
+    "BOISSEAU Adam": 2,
+    "BROUARD Maxime": 2,
+    "POULY HERENG Antonin": 7,
+    "LECORPS Sacha": 1,
+    "POIZEAU Tyler": 1,
+    "SHAHAD Evan": 2
+   },
+   "code": "WAGRIPB",
+   "date": "2026-09-13T10:00:00+02:00",
+   "poule": "U15M DPR POULE A",
+   "competition": "U15 MASCULINS",
+   "adversaire": "AS HB LES MUREAUX",
+   "score": [
+    "LE CHESNAY / VERSAILLES GP 78 (U15M PRE RE-",
+    "AS HB LES MUREAUX"
+   ]
+  },
+  {
+   "buts_marques": 21,
+   "buts_encaisses": 12,
+   "arrets": 1,
+   "deux_reçues": 1,
+   "deux_donnees": 1,
+   "tranches": {
+    "0": 3,
+    "1": 4,
+    "2": 3,
+    "3": 1,
+    "4": -2,
+    "5": 0,
+    "6": 0,
+    "7": 0,
+    "8": 0,
+    "9": 0,
+    "10": 0,
+    "11": 0,
+    "12": 0
+   },
+   "buts_sup_num": 0,
+   "buts_inf_num": 0,
+   "buteurs": {
+    "SHAHAD Evan": 4,
+    "LECORPS Sacha": 4,
+    "POULY HERENG Antonin": 1,
+    "BOISSEAU Adam": 6,
+    "SZABO Matyas": 2,
+    "BROUARD Maxime": 1,
+    "LAMBERT Celian": 1,
+    "CEILLIER Noa": 1,
+    "POYET Ilyas": 1
+   },
+   "code": "WAGRIPD",
+   "date": "2026-09-13T10:00:00+02:00",
+   "poule": "U15M DPR POULE A",
+   "competition": "U15 MASCULINS",
+   "adversaire": "AS POISSY HB",
+   "score": [
+    "AS POISSY HB",
+    "LE CHESNAY / VERSAILLES GP 78 (U15M PRE RE-"
+   ]
+  },
+  {
+   "buts_marques": 8,
+   "buts_encaisses": 27,
+   "arrets": 9,
+   "deux_reçues": 0,
+   "deux_donnees": 0,
+   "tranches": {
+    "0": -5,
+    "1": 2,
+    "2": -4,
+    "3": -5,
+    "4": -4,
+    "5": -3,
+    "6": 0,
+    "7": 0,
+    "8": 0,
+    "9": 0,
+    "10": 0,
+    "11": 0,
+    "12": 0
+   },
+   "buts_sup_num": 0,
+   "buts_inf_num": 0,
+   "buteurs": {
+    "LIMARE Arthur": 2,
+    "COMMIN Alexi": 2,
+    "LACROIX Thomas": 2,
+    "PUCHOL Isaac (Né.e FLOUTIER PUCHOL)": 1,
+    "MANSUY Victor": 1
+   },
+   "code": "WAGRVFE",
+   "date": "2026-09-26T17:00:00+02:00",
+   "poule": "U15M DHN POULE 10",
+   "competition": "U15 MASCULINS",
+   "adversaire": "SQY HB MONTIGNY TRAPPES (U15M2)",
+   "score": [
+    "VERSAILLES HBC (3)",
+    "SQY HB MONTIGNY TRAPPES (U15M2)"
+   ]
+  },
+  {
+   "buts_marques": 31,
+   "buts_encaisses": 35,
+   "arrets": 14,
+   "deux_reçues": 3,
+   "deux_donnees": 3,
+   "tranches": {
+    "0": -1,
+    "1": -3,
+    "2": -2,
+    "3": 3,
+    "4": 0,
+    "5": 2,
+    "6": 1,
+    "7": -1,
+    "8": -3,
+    "9": 0,
+    "10": 0,
+    "11": 0,
+    "12": 0
+   },
+   "buts_sup_num": 0,
+   "buts_inf_num": 0,
+   "buteurs": {
+    "BOISSEAU Adam": 11,
+    "POULY HERENG Antonin": 6,
+    "LECORPS Sacha": 7,
+    "SAVARY Raphael": 1,
+    "SHAHAD Evan": 2,
+    "BROUARD Maxime": 2,
+    "AFONSO Amaury": 1,
+    "POIZEAU Tyler": 1
+   },
+   "code": "WAGVUTY",
+   "date": "2026-09-19T13:15:00+02:00",
+   "poule": "U15M DPR FINALITES PLACE 1 A 4 - MATCH 1",
+   "competition": "U15 MASCULINS",
+   "adversaire": "TRIEL CHANTELOUP VERNOUILLET VERNEUIL HB",
+   "score": [
+    "LE CHESNAY / VERSAILLES GP 78",
+    "TRIEL CHANTELOUP VERNOUILLET VERNEUIL HB"
+   ]
+  },
+  {
+   "buts_marques": 3,
+   "buts_encaisses": 46,
+   "arrets": 10,
+   "deux_reçues": 2,
+   "deux_donnees": 2,
+   "tranches": {
+    "0": -4,
+    "1": -6,
+    "2": -1,
+    "3": -4,
+    "4": -3,
+    "5": -5,
+    "6": -7,
+    "7": -3,
+    "8": -5,
+    "9": -5,
+    "10": 0,
+    "11": 0,
+    "12": 0
+   },
+   "buts_sup_num": 0,
+   "buts_inf_num": 0,
+   "buteurs": {
+    "SEVE Mayeul": 1,
+    "PUCHOL Isaac (Né.e FLOUTIER PUCHOL)": 2
+   },
+   "code": "WAGXNPW",
+   "date": "2026-10-04T16:00:00+02:00",
+   "poule": "U15M DHN POULE C",
+   "competition": "U15 MASCULINS",
+   "adversaire": "AS ST-CYR/FONTENAY HB 78",
+   "score": [
+    "AS ST-CYR/FONTENAY HB 78",
+    "VERSAILLES HBC (3)"
+   ]
+  },
+  {
+   "buts_marques": 22,
+   "buts_encaisses": 33,
+   "arrets": 19,
+   "deux_reçues": 1,
+   "deux_donnees": 2,
+   "tranches": {
+    "0": 0,
+    "1": 2,
+    "2": -3,
+    "3": -2,
+    "4": -3,
+    "5": -3,
+    "6": 0,
+    "7": 1,
+    "8": -1,
+    "9": -3,
+    "10": 1,
+    "11": 0,
+    "12": 0
+   },
+   "buts_sup_num": 0,
+   "buts_inf_num": 0,
+   "buteurs": {
+    "TRASSARD Jonathan": 1,
+    "COMMIN Alexi": 6,
+    "LIMARE Arthur": 1,
+    "VADE Antonin": 6,
+    "PUCHOL Isaac (Né.e FLOUTIER PUCHOL)": 3,
+    "MANSUY Victor": 1,
+    "LACROIX Thomas": 1,
+    "SEVE Mayeul": 2,
+    "LEQUILLER Basile": 1
+   },
+   "code": "WAGXNPZ",
+   "date": "2026-10-11T11:45:00+02:00",
+   "poule": "U15M DHN POULE C",
+   "competition": "U15 MASCULINS",
+   "adversaire": "TRIEL CHANTELOUP VERNOUILLET VERNEUIL HB",
+   "score": [
+    "VERSAILLES HBC (3)",
+    "TRIEL CHANTELOUP VERNOUILLET VERNEUIL HB"
+   ]
+  },
+  {
+   "buts_marques": 11,
+   "buts_encaisses": 52,
+   "arrets": 13,
+   "deux_reçues": 1,
+   "deux_donnees": 1,
+   "tranches": {
+    "0": -2,
+    "1": -2,
+    "2": -5,
+    "3": -3,
+    "4": -7,
+    "5": -5,
+    "6": -1,
+    "7": -2,
+    "8": -6,
+    "9": -8,
+    "10": 0,
+    "11": 0,
+    "12": 0
+   },
+   "buts_sup_num": 0,
+   "buts_inf_num": 0,
+   "buteurs": {
+    "LIMARE Arthur": 7,
+    "BOTTARO Valentin": 2,
+    "ZAIR Thomas": 2
+   },
+   "code": "WAGXNQB",
+   "date": "2026-10-17T15:00:00+02:00",
+   "poule": "U15M DHN POULE C",
+   "competition": "U15 MASCULINS",
+   "adversaire": "SQY HB MONTIGNY TRAPPES (U15M2)",
+   "score": [
+    "SQY HB MONTIGNY TRAPPES (U15M2)",
+    "VERSAILLES HBC (3)"
+   ]
+  },
+  {
+   "buts_marques": 26,
+   "buts_encaisses": 26,
+   "arrets": 14,
+   "deux_reçues": 1,
+   "deux_donnees": 1,
+   "tranches": {
+    "0": 2,
+    "1": -1,
+    "2": -1,
+    "3": 0,
+    "4": -2,
+    "5": 1,
+    "6": -1,
+    "7": -2,
+    "8": 3,
+    "9": 1,
+    "10": 0,
+    "11": 0,
+    "12": 0
+   },
+   "buts_sup_num": 0,
+   "buts_inf_num": 0,
+   "buteurs": {
+    "VADE Antonin": 5,
+    "LIMARE Arthur": 8,
+    "TRASSARD Jonathan": 6,
+    "LACROIX Thomas": 3,
+    "LEQUILLER Basile": 1,
+    "POIRIER MISSOTTEN Benjamin": 3
+   },
+   "code": "WAGZBOR",
+   "date": "2026-11-07T17:00:00+01:00",
+   "poule": "U15M DEL 3° / 4° DIV POULE 3",
+   "competition": "U15 MASCULINS",
+   "adversaire": "CO GARGENVILLE",
+   "score": [
+    "CO GARGENVILLE",
+    "VERSAILLES HBC (3)"
+   ]
+  },
+  {
+   "buts_marques": 21,
+   "buts_encaisses": 34,
+   "arrets": 15,
+   "deux_reçues": 3,
+   "deux_donnees": 0,
+   "tranches": {
+    "0": -3,
+    "1": -4,
+    "2": -2,
+    "3": -1,
+    "4": -1,
+    "5": -1,
+    "6": -1,
+    "7": 0,
+    "8": -1,
+    "9": 1,
+    "10": 0,
+    "11": 0,
+    "12": 0
+   },
+   "buts_sup_num": 0,
+   "buts_inf_num": 1,
+   "buteurs": {
+    "VERBEURGT Gabin": 7,
+    "VADE Antonin": 4,
+    "LAIGUILLON Alexandre": 3,
+    "LIMARE Arthur": 2,
+    "LACROIX Thomas": 1,
+    "PUCHOL Isaac (Né.e FLOUTIER PUCHOL)": 2,
+    "TRASSARD Jonathan": 2
+   },
+   "code": "WAGZBOV",
+   "date": "2026-11-15T14:00:00+01:00",
+   "poule": "U15M DEL 3° / 4° DIV POULE 3",
+   "competition": "U15 MASCULINS",
+   "adversaire": "SUD YVELINES HB LE PERRAY RAMBOUILLET",
+   "score": [
+    "VERSAILLES HBC (3)",
+    "SUD YVELINES HB LE PERRAY RAMBOUILLET"
+   ]
+  }
+ ]
+}

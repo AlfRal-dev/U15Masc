@@ -72,6 +72,8 @@ SHORT = {
 def esc(s):
     return str(s).replace('&','&amp;').replace('<','&lt;').replace('>','&gt;')
 
+PAREN = re.compile(r'\s*\(.*$')
+
 def short(t):
     return SHORT.get(t, t.title())
 
@@ -276,6 +278,81 @@ for dt, tag, advn, dom, r in next_items[:3]:
         f'<span class="nwhen">{"@" if dom else "@ "}{fmt_date_long(dt)}<br>{fmt_time(dt)} · {"à domicile" if dom else "à l’extérieur"}</span></div>')
 next_list = ''.join(next_rows) or '<div class="nrow">Plus de rencontre programmée</div>'
 
+# ------------------------------------------- statistiques feuilles de match (FDME)
+fdm_path = os.path.join(DD, 'fdm_stats.json')
+fdm = json.load(open(fdm_path)) if os.path.exists(fdm_path) else {}
+
+def tranche_lab(i):
+    return f"{i*5}\u2013{(i+1)*5}\u2032"
+
+def fdm_block(sheets, titre):
+    n = len(sheets)
+    if n == 0:
+        return '<p class="note">Aucune feuille de match FDME exploitable pour l\u2019instant.</p>'
+    def moy(k):
+        return sum(s.get(k, 0) for s in sheets) / n
+    tr = {}
+    for s in sheets:
+        for k, v in s.get('tranches', {}).items():
+            tr[int(k)] = tr.get(int(k), 0) + v
+    maxabs = max(abs(v) for v in tr.values()) if tr else 0
+    rows = ''
+    for i in sorted(tr):
+        v = tr[i]
+        f = abs(v) / maxabs * 50 if maxabs else 0
+        if v > 0:
+            bars = (f'<span class="sp" style="width:{50-f:.2f}%"></span>'
+                    f'<span class="bar b-pos" style="width:{f:.2f}%"></span>')
+        elif v < 0:
+            bars = (f'<span class="sp" style="width:50%"></span>'
+                    f'<span class="bar b-neg" style="width:{f:.2f}%"></span>'
+                    f'<span class="sp" style="width:{50-f:.2f}%"></span>')
+        else:
+            bars = '<span class="bar z" style="width:2px"></span>'
+        vtxt = f'+{v}' if v > 0 else str(v)
+        rows += (f'<div class="trrow"><span class="trlabel">{tranche_lab(i)}</span>'
+                 f'<span class="trtrack">{bars}</span>'
+                 f'<span class="trval">{vtxt}</span></div>')
+    trligne = ''
+    if maxabs:
+        best_i = max(tr, key=lambda i: tr[i])
+        worst_i = min(tr, key=lambda i: tr[i])
+        trligne = (f'<p class="trbest">Meilleure tranche <b>{esc(tranche_lab(best_i))} '
+                   f'({tr[best_i]:+d})</b> \u00b7 Pire tranche <b>{esc(tranche_lab(worst_i))} '
+                   f'({tr[worst_i]:+d})</b> <small>(\u00e9cart de buts cumul\u00e9 sur {n} matchs)</small></p>')
+    else:
+        trligne = '<p class="trbest">Aucun \u00e9cart de buts marqu\u00e9 sur ces feuilles.</p>'
+    tot = {}
+    for s in sheets:
+        for nom, b in s.get('buteurs', {}).items():
+            tot[nom] = tot.get(nom, 0) + b
+    top5 = sorted(tot.items(), key=lambda kv: (-kv[1], kv[0]))[:5]
+    buteurs = ''.join(f'<li><span class="n">{esc(PAREN.split(nom)[0].strip().title())}</span><span class="b">{b} but{"s" if b > 1 else ""}</span></li>'
+                      for nom, b in top5)
+    return (f'<div><div class="fdm-title"><b>{esc(titre)}</b>'
+            f'<span class="gtag">{n} feuilles analys\u00e9es</span></div>'
+            f'<div class="stats-row">'
+            f'<div class="stat"><b>{moy("buts_marques"):.1f}</b><small>Buts marqu\u00e9s / match</small></div>'
+            f'<div class="stat"><b>{moy("buts_encaisses"):.1f}</b><small>Buts encaiss\u00e9s / match</small></div>'
+            f'<div class="stat"><b>{moy("arrets"):.1f}</b><small>Arr\u00eats / match</small></div>'
+            f'</div><div class="stats-row">'
+            f'<div class="stat"><b>{moy("deux_re\u00e7ues"):.1f}</b><small>2\u2032 re\u00e7ues / match</small></div>'
+            f'<div class="stat"><b>{moy("deux_donnees"):.1f}</b><small>2\u2032 donn\u00e9es / match</small></div>'
+            f'<div class="stat pos"><b>{moy("buts_sup_num"):.1f}</b><small>Buts en sup\u00e9riorit\u00e9 num.</small></div>'
+            f'<div class="stat neg"><b>{moy("buts_inf_num"):.1f}</b><small>Buts en inf\u00e9riorit\u00e9 num.</small></div>'
+            f'</div>{trligne}'
+            f'<div class="small-h">Top 5 buteurs</div>'
+            f'<ol class="buteurs">{buteurs}</ol></div>')
+
+usc_fdm = fdm_block(fdm.get('USC', []), 'USC Maisons-Laffitte HB')
+adv_fdm = fdm_block(fdm.get('VER', []), 'Versailles HBC (3)')
+note_fdm = (
+    "Calcul\u00e9 automatiquement \u00e0 partir des feuilles de match \u00e9lectroniques (FDME) de toutes les "
+    "comp\u00e9titions jou\u00e9es : d\u00e9laage, Coupe des Yvelines et championnat. \u00c9carts : buts marqu\u00e9s "
+    "pendant une sup\u00e9riorit\u00e9 num\u00e9rique et buts encaiss\u00e9s en inf\u00e9riorit\u00e9 (estimation \u00e0 partir du "
+    "chronom\u00e8tre des sanctions de 2 minutes)."
+)
+
 usc_tot = stand_usc
 adv_tot = adv_row
 
@@ -326,6 +403,9 @@ html = (html
   .replace('__AVG_ADV_MARQUE__', f"{int(adv_row['butPlus'])/int(adv_row['joue']):.1f}")
   .replace('__AVG_ADV_ENCAISSE__', f"{int(adv_row['butMoins'])/int(adv_row['joue']):.1f}")
   .replace('__NOTE_ADV__', note_adv)
+  .replace('__USC_FDM__', usc_fdm)
+  .replace('__ADV_FDM__', adv_fdm)
+  .replace('__NOTE_FDM__', note_fdm)
   .replace('__POULE__', 'U15M DEL 3°/4° DIV POULE 3')
   .replace('__MAJ__', maj)
   .replace('__EQUIPES_CHIPS__', equipes_liens)

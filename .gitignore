@@ -1,0 +1,3 @@
+tools/data/fdm_*.pdf
+tools/data/fdm_st*.json.tmp
+__pycache__/
