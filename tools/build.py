@@ -369,15 +369,15 @@ def disc_row(label, key, share_of=None):
 
 disc_rows = (disc_row("2' reçues / match", 'deux_reçues')
              + disc_row("2' données / match", 'deux_donnees')
-             + disc_row('Buts sur 7 m marqués / match', 'buts_7m', 'buts_marques')
-             + disc_row('Buts sur 7 m subis / match', 'buts_7m_adv', 'buts_encaisses')
+             + disc_row('Buts sur 7 m marqués / match', 'buts_7m')
+             + disc_row('Buts sur 7 m subis / match', 'buts_7m_adv')
              + disc_row('Avertissements / match', 'avertissements'))
 
 u2, a2 = avg(TOT_U, 'deux_reçues', N_U), avg(TOT_A, 'deux_reçues', N_A)
 p2_u = "L'USML se pénalise plus que son adversaire" if u2 > a2 else "L'USML est plus disciplinée que son adversaire"
 disc_note = (f"{p2_u} ({fr(u2)} contre {fr(a2)} sanctions de 2' reçues par match). "
-             f"Pour les 7 m, la fédération ne publie pas les essais manqués : le % affiché est la part "
-             f"dans les buts marqués (resp. encaissés), calculée sur l'ensemble des feuilles.")
+             f"Pour les 7 m, la fédération ne publie pas les essais manqués : seul le nombre de buts "
+             f"sur 7 m est disponible.")
 
 # ---- joueurs clés
 def players_rows(buters, n, start=1):
@@ -394,11 +394,12 @@ players_adv = players_rows(BUT_A, N_A)
 def tranche_lab(i):
     return f"{i*5}–{(i+1)*5}"
 
-def slice_maxes(tm1, tc1, tm2, tc2):
-    m = 1
-    for d in (tm1, tc1, tm2, tc2):
-        for v in d.values():
-            m = max(m, v)
+def slice_maxes(pairs):
+    m = 1.0
+    for tm, tc, n in pairs:
+        for d in (tm, tc):
+            for v in d.values():
+                m = max(m, v / n if n else 0)
     return m
 
 def rhythm_html(tm, tc, n, mx):
@@ -414,7 +415,7 @@ def rhythm_html(tm, tc, n, mx):
                  f'</div><div class="rhlabel">{tranche_lab(i)}\'</div></div>')
     return cols
 
-MX = slice_maxes(TM_U, TC_U, TM_A, TC_A)
+MX = slice_maxes([(TM_U, TC_U, N_U), (TM_A, TC_A, N_A)])
 rhythm_usc = rhythm_html(TM_U, TC_U, N_U, MX)
 rhythm_adv = rhythm_html(TM_A, TC_A, N_A, MX)
 
