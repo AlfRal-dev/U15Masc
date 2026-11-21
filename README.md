@@ -35,7 +35,7 @@ python3 build.py             # régénère index.html
 ## Mise à jour automatique
 
 Un déploiement GitHub Actions (`.github/workflows/update.yml`) rafraîchit les données
-lundi-dimanche (cron : 05h10, 11h10, 17h10 UTC) puis commite `index.html` si les
+lundi-dimanche (cron : 05h10 UTC uniquement) puis commite `index.html` si les
 données ont changé. Déclenchement manuel possible : onglet *Actions* →
 « Mise a jour du rapport FFHB » → *Run workflow*.
 
