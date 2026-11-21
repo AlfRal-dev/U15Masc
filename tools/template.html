@@ -20,9 +20,10 @@ header.hero{background:linear-gradient(135deg,#1e3a8a,#2563eb);color:#fff;border
 .team small{color:rgba(255,255,255,.8);display:block}
 .team h2{font-size:1.3rem;margin:2px 0}
 .team .tinfo{font-size:.85rem;color:rgba(255,255,255,.9)}
+.team .logo{width:76px;height:76px;object-fit:contain;background:#fff;border-radius:10px;padding:5px;margin-bottom:10px}
 .vs{background:rgba(255,255,255,.15);border-radius:999px;padding:10px 18px;font-weight:700;font-size:1.1rem}
 .match-meta{text-align:center;font-size:1rem;color:rgba(255,255,255,.9);margin-top:2px}
-.match-tag{display:inline-block;background:rgba(255,255,255,.2);border-radius:999px;padding:5px 16px;font-size:1.05rem;text-transform:uppercase;letter-spacing:.04em;font-weight:800;margin-bottom:6px}
+.match-tag{display:inline-block;background:rgba(255,255,255,.2);border-radius:999px;padding:7px 22px;font-size:1.35rem;text-transform:uppercase;letter-spacing:.03em;font-weight:800;margin-bottom:6px}
 .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:20px}
 .kpi{background:var(--card);border-radius:var(--radius);padding:16px 18px;box-shadow:0 1px 4px rgba(15,23,42,.08);text-align:center}
 .kpi .label{font-size:.72rem;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.05em}
@@ -109,6 +110,7 @@ footer a{color:var(--nous)}
 
   <header class="hero">
     <div class="team">
+      __LOGO_USC__
       <small>USC Maisons-Laffitte HB</small>
       <h2>USML U15 M</h2>
       <div class="tinfo">__KPI_USC_RANK__</div>
@@ -118,6 +120,7 @@ footer a{color:var(--nous)}
       <div class="match-meta">__MATCH_META__</div>
     </div>
     <div class="team">
+      __LOGO_ADV__
       <small>HB Boucle de Seine 78</small>
       <h2>Boucle de Seine (2)</h2>
       <div class="tinfo">__KPI_ADV_RANK__</div>
@@ -242,8 +245,7 @@ __STAND_ROWS__
     </section>
 
   <footer>
-    Sources : <a href="https://www.ffhandball.fr/competitions/saison-2026-2027-22/departemental/u15-masculins-32350/poule-199625/">ffhandball.fr</a> (calendrier, classement) et feuilles de match électroniques FDME (statistiques détaillées).<br>
-    Rapport généré le __GEN__ · données arrêtées au __MAJ__ · rapport de préparation USML — Coupe des Yvelines, 16e de finale.
+    Sources : <a href="https://www.ffhandball.fr/competitions/saison-2026-2027-22/departemental/u15-masculins-32350/poule-199625/">ffhandball.fr</a> — Rapport généré le __GEN__
   </footer>
 
 </div>

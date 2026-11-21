@@ -441,9 +441,7 @@ def slice_maxes(pairs):
 
 def rhythm_html(tm, tc, n, mx):
     cols = ''
-    for i in range(13):
-        if i == 12 and tm.get(i, 0) == 0 and tc.get(i, 0) == 0:
-            continue
+    for i in range(10):
         hm = round(tm.get(i, 0) / n / mx * 80) if n else 0
         hc = round(tc.get(i, 0) / n / mx * 80) if n else 0
         cols += (f'<div class="rhcol"><div class="bars">'
@@ -461,8 +459,8 @@ def best_worst(tm, tc, n):
         return ''
     def diff(i):
         return (tm.get(i, 0) - tc.get(i, 0)) / n
-    bi = max((i for i in tm), key=lambda i: diff(i))
-    wi = min((i for i in tm), key=lambda i: diff(i))
+    bi = max((i for i in tm if i < 10), key=lambda i: diff(i))
+    wi = min((i for i in tm if i < 10), key=lambda i: diff(i))
     def txt(i):
         return (f"{tranche_lab(i)}′ ({fr(tm.get(i,0)/n)} marqués / {fr(tc.get(i,0)/n)} encaissés)")
     return f"Meilleure tranche : <b>{txt(bi)}</b>", f"Pire tranche : <b>{txt(wi)}</b>"
@@ -473,8 +471,8 @@ tr_usc = f"USML — {bu} · {wu}"
 tr_adv = f"Boucle de Seine (2) — {ba} · {wa}"
 
 tr_tip = (f"À exploiter : frapper fort sur notre meilleure tranche "
-          f"({tranche_lab(max(TM_U, key=lambda i: TM_U.get(i, 0) - TC_U.get(i, 0)))}′), et rester solides "
-          f"pendant leur pic de pression ({tranche_lab(max(TM_A, key=lambda i: TM_A.get(i, 0) - TC_A.get(i, 0)))}′).")
+          f"({tranche_lab(max((i for i in TM_U if i < 10), key=lambda i: TM_U.get(i, 0) - TC_U.get(i, 0)))}′), et rester solides "
+          f"pendant leur pic de pression ({tranche_lab(max((i for i in TM_A if i < 10), key=lambda i: TM_A.get(i, 0) - TC_A.get(i, 0)))}′).")
 
 # ------------------------------------------------------------- classement/calendrier
 stand_rows = ''
@@ -505,15 +503,24 @@ else:
 
 situation_note = f"Prochain match : {match_tag} — {match_meta}."
 
-maj_raw = (data['competitions---poule-selector'].get('selected_poule') or {}).get('dateDernierUpdateEnfants') or ''
-maj_date = datetime.date.fromisoformat(maj_raw.strip()[:10]) if maj_raw.strip() else None
-maj = f"{maj_date.day} {MOIS[str(maj_date.month)]} {maj_date.year}" if maj_date else 'inconnue'
+LOGO_BASE = 'https://media-logos-clubs.ffhandball.fr/128/'
+
+def logo_img(src, alt):
+    if not src:
+        return ''
+    return f'<img class="logo" src="{LOGO_BASE}{src.rsplit(".", 1)[0]}.webp" alt="{esc(alt)}" loading="lazy">'
+
+logo_usc = logo_img(stand_usc.get('structure_logo'), 'USC Maisons-Laffitte HB')
+logo_adv = logo_img(adv_row.get('structure_logo') if adv_row else '', 'Boucle de Seine (2)')
+
 gen = datetime.date.today().strftime('%d/%m/%Y')
 
 html = open(os.path.join(HERE, 'template.html')).read()
 html = (html
   .replace('__KPI_USC_RANK__', f"{rang(stand_usc['place'])} · {stand_usc['point']} pts · {esc(poule_usc_info)}")
   .replace('__KPI_ADV_RANK__', f"{rang(adv_row['place'])} · {adv_row['point']} pts · {esc(poule_adv_info or '3°/4° div')}")
+  .replace('__LOGO_USC__', logo_usc)
+  .replace('__LOGO_ADV__', logo_adv)
   .replace('__MATCH_TAG__', esc(match_tag))
   .replace('__MATCH_META__', esc(match_meta))
   .replace('__KPIS__', kpis)
@@ -539,7 +546,6 @@ html = (html
   .replace('__SITUATION_ROWS__', situation_rows)
   .replace('__SITUATION_NOTE__', esc(situation_note))
   .replace('__GEN__', gen)
-  .replace('__MAJ__', maj)
 )
 
 out_path = os.path.join(os.path.dirname(HERE), 'index.html')
