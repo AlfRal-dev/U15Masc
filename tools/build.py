@@ -15,7 +15,7 @@ USC_LABEL = 'USML'
 ADV_LABEL = 'Versailles HBC (3)'
 ADV_T = 'Versailles (3)'
 ADV_NOM = 'VERSAILLES HBC (3)'
-ADV_RE = re.compile(r'VERSAILLES', re.I)
+ADV_RE = re.compile(r'VERSAILLES\s+HBC\s*\(3\)', re.I)
 USC_RE = re.compile(r'USC MAISONS', re.I)
 MOIS = {'1':'janvier','2':'février','3':'mars','4':'avril','5':'mai','6':'juin','7':'juillet',
         '8':'août','9':'septembre','10':'octobre','11':'novembre','12':'décembre'}

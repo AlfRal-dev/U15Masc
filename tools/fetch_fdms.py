@@ -9,7 +9,7 @@ from pypdf import PdfReader
 history = json.load(open(os.path.join(DD, 'history.json')))
 
 USC_RE = re.compile(r'USC MAISONS', re.I)
-ADV_RE = re.compile(r'VERSAILLES', re.I)
+ADV_RE = re.compile(r'VERSAILLES\s+HBC\s*\(3\)', re.I)
 
 def matched(r):
     for k in ('equipe1Libelle', 'equipe2Libelle'):
@@ -216,7 +216,7 @@ for code, side in sorted(codes.items()):
         side = 'USC'
     elif side == 'ADV':
         cands = [c for c in both if ADV_RE.search(c)]
-        label = next((c for c in cands if '(3)' in c), cands[0] if cands else None)
+        label = next((c for c in cands if ADV_RE.search(c)), cands[0] if cands else None)
     if label not in both:
         print(code, 'équipe non trouvée sur la feuille:', both); continue
     stats = compute(st, label)
