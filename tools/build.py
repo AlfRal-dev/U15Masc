@@ -12,9 +12,10 @@ history = json.load(open(hist_json)) if os.path.exists(hist_json) else {}
 
 TEAM_ID = '1846931'   # USC MAISONS-LAFFITTE HB
 USC_LABEL = 'USML'
-ADV_LABEL = 'Boucle de Seine (2)'
-ADV_NOM = 'HB BOUCLE DE SEINE 78  (2)'
-ADV_RE = re.compile(r'BOUCLE DE SEINE', re.I)
+ADV_LABEL = 'Versailles HBC (3)'
+ADV_T = 'Versailles (3)'
+ADV_NOM = 'VERSAILLES HBC (3)'
+ADV_RE = re.compile(r'VERSAILLES', re.I)
 USC_RE = re.compile(r'USC MAISONS', re.I)
 MOIS = {'1':'janvier','2':'février','3':'mars','4':'avril','5':'mai','6':'juin','7':'juillet',
         '8':'août','9':'septembre','10':'octobre','11':'novembre','12':'décembre'}
@@ -105,13 +106,14 @@ classements = sorted(data['competitions---mini-classement-or-ads']['classements'
                      key=lambda c: int(c['place']))
 stand_usc = next(c for c in classements if str(c['equipeId']) == TEAM_ID)
 
-adv_row = None
-adv_path = os.path.join(DD, 'blocks_adv.json')
-if os.path.exists(adv_path):
-    adv_data = json.load(open(adv_path))
-    adv_bl = (adv_data.get('competitions---mini-classement-or-ads') or {}).get('classements') or []
-    adv_row = next((c for c in sorted(adv_bl, key=lambda c: int(c['place']))
-                    if ADV_RE.search(c.get('equipe_libelle',''))), None)
+adv_row = next((c for c in classements if ADV_RE.search(c.get('equipe_libelle',''))), None)
+if adv_row is None:
+    adv_path = os.path.join(DD, 'blocks_adv.json')
+    if os.path.exists(adv_path):
+        adv_data = json.load(open(adv_path))
+        adv_bl = (adv_data.get('competitions---mini-classement-or-ads') or {}).get('classements') or []
+        adv_row = next((c for c in sorted(adv_bl, key=lambda c: int(c['place']))
+                        if ADV_RE.search(c.get('equipe_libelle',''))), None)
 if adv_row is None:
     w = n = l = bp = bc = j = 0
     for r in sorted(history.get(ADV_NOM, []), key=lambda x: x.get('date') or '9999'):
@@ -142,8 +144,8 @@ def poule_court(libelle):
 
 poule_usc_info = poule_court((data['competitions---poule-selector'].get('selected_poule') or {}).get('libelle',''))
 adv_path2 = os.path.join(DD, 'blocks_adv.json')
-poule_adv_info = ''
-if os.path.exists(adv_path2):
+poule_adv_info = poule_usc_info if adv_row is not None else ''
+if not poule_adv_info and os.path.exists(adv_path2):
     adata = json.load(open(adv_path2))
     sp = (adata.get('competitions---poule-selector') or {}).get('selected_poule') or {}
     poule_adv_info = poule_court(sp.get('libelle',''))
@@ -250,7 +252,7 @@ def rank_kpi(row, poule_info, nomcarte, classe):
     return {'classe': classe, 'nom': nomcarte, 'rang': rang(row['place']), 'pts': pts, 'j': j, 'poule': poule_info}
 
 kpi_usc = rank_kpi(stand_usc, poule_usc_info, 'Classement USML', 'nous')
-kpi_adv = rank_kpi(adv_row, poule_adv_info or '3°/4° div', 'Classement Boucle de Seine (2)', 'eux')
+kpi_adv = rank_kpi(adv_row, poule_adv_info or '3°/4° div', f'Classement {ADV_LABEL}', 'eux')
 
 dif_u = TOT_U['buts_marques'] - TOT_U['buts_encaisses']
 dif_a = TOT_A['buts_marques'] - TOT_A['buts_encaisses']
@@ -263,8 +265,8 @@ def kpi_card(label, value, sub, cls=''):
 kpis = '\n'.join([
     kpi_card('Classement USML', kpi_usc['rang'], f"{kpi_usc['pts']} pts · {kpi_usc['j']} matchs · {esc(kpi_usc['poule'])}", 'nous'),
     kpi_card('Différentiel USML', f'{dif_u:+d}', f"{TOT_U['buts_marques']} marqués / {TOT_U['buts_encaisses']} encaissés ({N_U} matchs)", 'nous'),
-    kpi_card('Classement Boucle de Seine (2)', kpi_adv['rang'], f"{kpi_adv['pts']} pts · {kpi_adv['j']} matchs · {esc(kpi_adv['poule'])}", 'eux'),
-    kpi_card('Différentiel Boucle de Seine (2)', f'{dif_a:+d}', f"{TOT_A['buts_marques']} marqués / {TOT_A['buts_encaisses']} encaissés ({N_A} matchs)", 'eux'),
+    kpi_card(f'Classement {ADV_LABEL}', kpi_adv['rang'], f"{kpi_adv['pts']} pts · {kpi_adv['j']} matchs · {esc(kpi_adv['poule'])}", 'eux'),
+    kpi_card(f'Différentiel {ADV_LABEL}', f'{dif_a:+d}', f"{TOT_A['buts_marques']} marqués / {TOT_A['buts_encaisses']} encaissés ({N_A} matchs)", 'eux'),
 ])
 
 # ---- comparaison attaque / défense / arrêts
@@ -276,7 +278,7 @@ def comp_row(label, vu, va, hint=''):
             f'<div class="side l"><span class="name">USML</span><span class="val">{fr(vu)}</span>'
             f'<span class="track"><i style="width:{vu/mx*100:.0f}%"></i></span></div>'
             f'<div class="side r"><span class="track"><i style="width:{va/mx*100:.0f}%"></i></span>'
-            f'<span class="val">{fr(va)}</span><span class="name">Boucle (2)</span></div>'
+            f'<span class="val">{fr(va)}</span><span class="name">{ADV_T}</span></div>'
             f'</div></div>')
 
 comp_rows = (comp_row('Buts marqués', avg(TOT_U, 'buts_marques', N_U), avg(TOT_A, 'buts_marques', N_A))
@@ -325,7 +327,7 @@ def hist_rows(five):
 
 usc_hist_html = hist_rows(usc_five)
 adv_hist_html = hist_rows(opp_five)
-form_note = (f"Série en cours — USML : {serie(usc_five)} ; Boucle de Seine (2) : {serie(opp_five)}. "
+form_note = (f"Série en cours — USML : {serie(usc_five)} ; {ADV_LABEL} : {serie(opp_five)}. "
              f"Les deux équipes ont déjà joué leur phase de délavage (pré-région puis DHN) avant la poule 3°/4° division."
              )
 
@@ -352,7 +354,7 @@ def gk_rows(sheets, gk_key, be_key, team_name, team_cls):
     return rows
 
 gk_rows_all = gk_rows(USC_SHEETS, 'gk_our', 'buts_encaisses', 'USML', '') + \
-              gk_rows(ADV_SHEETS, 'gk_our', 'buts_encaisses', 'Boucle (2)', 'tag-eux')
+              gk_rows(ADV_SHEETS, 'gk_our', 'buts_encaisses', ADV_T, 'tag-eux')
 
 # ---- discipline
 def disc_row(label, key, share_of=None):
@@ -465,7 +467,7 @@ def best_worst(tm, tc, n):
 bu, wu = best_worst(TM_U, TC_U, N_U)
 ba, wa = best_worst(TM_A, TC_A, N_A)
 tr_usc = f"USML — {bu} · {wu}"
-tr_adv = f"Boucle de Seine (2) — {ba} · {wa}"
+tr_adv = f"{ADV_LABEL} — {ba} · {wa}"
 
 tr_tip = (f"À exploiter : frapper fort sur notre meilleure tranche "
           f"({tranche_lab(max((i for i in TM_U if i < 10), key=lambda i: TM_U.get(i, 0) - TC_U.get(i, 0)))}′), et rester solides "
@@ -514,7 +516,7 @@ def logo_img(src, alt):
     return f'<img class="logo" src="{LOGO_BASE}{src.rsplit(".", 1)[0]}.webp" alt="{esc(alt)}" loading="lazy">'
 
 logo_usc = logo_img(stand_usc.get('structure_logo'), 'USC Maisons-Laffitte HB')
-logo_adv = logo_img(adv_row.get('structure_logo') if adv_row else '', 'Boucle de Seine (2)')
+logo_adv = logo_img(adv_row.get('structure_logo') if adv_row else '', ADV_LABEL)
 
 gen = datetime.date.today().strftime('%d/%m/%Y')
 
@@ -524,6 +526,7 @@ html = (html
   .replace('__KPI_ADV_RANK__', f"{rang(adv_row['place'])} · {adv_row['point']} pts · {esc(poule_adv_info or '3°/4° div')}")
   .replace('__LOGO_USC__', logo_usc)
   .replace('__LOGO_ADV__', logo_adv)
+  .replace('__ADV_NAME__', esc(ADV_LABEL))
   .replace('__MATCH_LINE1__', esc(match_line1))
   .replace('__MATCH_LINE2__', esc(match_line2))
   .replace('__MATCH_META__', esc(match_meta))

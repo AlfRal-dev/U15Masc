@@ -45,7 +45,7 @@ with open(os.path.join(os.path.dirname(__file__), 'data', 'blocks.json'), 'w') a
     json.dump(out, f, ensure_ascii=False, indent=1)
 
 # classement de la poule du prochain adversaire (3°/4° div, equipe 2 de HB Boucle de Seine 78)
-params_adv = {**params, 'ext_poule_id': '199626'}
+params_adv = {**params, 'ext_poule_id': '199625'}
 out_adv = {}
 for name in ['competitions---poule-selector', 'competitions---mini-classement-or-ads']:
     try:
