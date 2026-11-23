@@ -477,8 +477,9 @@ tr_tip = (f"À exploiter : frapper fort sur notre meilleure tranche "
 stand_rows = ''
 for c in classements:
     nous = str(c['equipeId']) == TEAM_ID
+    adv = bool(ADV_RE.search(c.get('equipe_libelle', '')))
     nnm = 'USML Maisons-Laffitte' if nous else esc(short(c['equipe_libelle']))
-    cls = ' class="nous"' if nous else ''
+    cls = ' class="nous"' if nous else (' class="eux"' if adv else '')
     d = int(c['diff'])
     stand_rows += (f'<tr{cls}><td>{c["place"]}</td><td class="team {"" if nous else ""}">{nnm}</td>'
                    f'<td>{c["point"]}</td><td>{c["joue"]}</td><td>{c["gagne"]}</td><td>{c["nul"]}</td>'
