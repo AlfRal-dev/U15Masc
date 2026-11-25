@@ -433,25 +433,30 @@ def tranche_lab(i):
 def slice_maxes(pairs):
     m = 1.0
     for tm, tc, n in pairs:
-        for d in (tm, tc):
-            for v in d.values():
-                m = max(m, v / n if n else 0)
+        for i in range(10):
+            m = max(m, abs((tm.get(i, 0) - tc.get(i, 0)) / n) if n else 0)
     return m
 
-def rhythm_html(tm, tc, n, mx):
+def rhythm_html(tmu, tcu, nu, tma, tca, na, mx):
+    def val(d):
+        s = f'{d:+.1f}'.replace('.', ',')
+        return '0,0' if s in ('+0,0', '-0,0') else s
     cols = ''
     for i in range(10):
-        hm = round(tm.get(i, 0) / n / mx * 80) if n else 0
-        hc = round(tc.get(i, 0) / n / mx * 80) if n else 0
+        du = (tmu.get(i, 0) - tcu.get(i, 0)) / nu if nu else 0
+        da = (tma.get(i, 0) - tca.get(i, 0)) / na if na else 0
+        hm = round(abs(du) / mx * 38) if mx else 0
+        ha = round(abs(da) / mx * 38) if mx else 0
         cols += (f'<div class="rhcol"><div class="bars">'
-                 f'<i class="barv m" style="height:{max(hm,2)}px"></i>'
-                 f'<i class="barv e" style="height:{max(hc,2)}px"></i>'
-                 f'</div><div class="rhlabel">{tranche_lab(i)}\'</div></div>')
+                 f'<span class="barwrap"><i class="barv m{" neg" if du < 0 else ""}" style="height:{max(hm, 2)}px"></i></span>'
+                 f'<span class="barwrap"><i class="barv e{" neg" if da < 0 else ""}" style="height:{max(ha, 2)}px"></i></span>'
+                 f'</div><div class="rhvalue"><span class="vu">{val(du)}</span>'
+                 f' <span class="va">{val(da)}</span></div>'
+                 f'<div class="rhlabel">{tranche_lab(i)}\'</div></div>')
     return cols
 
 MX = slice_maxes([(TM_U, TC_U, N_U), (TM_A, TC_A, N_A)])
-rhythm_usc = rhythm_html(TM_U, TC_U, N_U, MX)
-rhythm_adv = rhythm_html(TM_A, TC_A, N_A, MX)
+rhythm = rhythm_html(TM_U, TC_U, N_U, TM_A, TC_A, N_A, MX)
 
 def best_worst(tm, tc, n):
     if not n:
@@ -545,8 +550,7 @@ html = (html
   .replace('__DISC_NOTE__', esc(disc_note))
   .replace('__PLAYERS_USC__', players_usc)
   .replace('__PLAYERS_ADV__', players_adv)
-  .replace('__RHYTHM_USC__', rhythm_usc)
-  .replace('__RHYTHM_ADV__', rhythm_adv)
+  .replace('__RHYTHM__', rhythm)
   .replace('__TR_USC__', tr_usc)
   .replace('__TR_ADV__', tr_adv)
   .replace('__TR_TIP__', esc(tr_tip))

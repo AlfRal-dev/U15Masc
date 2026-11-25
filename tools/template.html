@@ -92,10 +92,17 @@ tr.tux td:first-child{border-left:3px solid var(--eux)}
 .rh-title{font-weight:700;font-size:.86rem;margin-bottom:6px}
 .rh-title.usc{color:var(--nous)} .rh-title.eux{color:var(--eux)}
 .rhcols{display:flex;gap:6px;align-items:flex-end}
-.rhcol{flex:1;text-align:center}
-.bars{display:flex;gap:2px;align-items:flex-end;height:80px;justify-content:center}
-.barv{width:9px;border-radius:3px 3px 0 0}
-.barv.m{background:var(--nous)} .barv.e{background:var(--eux)}
+.rhcol{flex:1;text-align:center;min-width:0}
+.bars{display:flex;gap:2px;align-items:stretch;justify-content:center;height:80px;position:relative}
+.bars::before{content:'';position:absolute;top:50%;left:-3px;right:-3px;height:1px;background:var(--ink-soft);opacity:.5}
+.barwrap{flex:1;position:relative}
+.barv{position:absolute;left:50%;transform:translateX(-50%);width:9px;border-radius:3px}
+.barv.m{background:var(--nous);bottom:40px}
+.barv.e{background:var(--eux);bottom:40px}
+.barv.neg{bottom:auto;top:40px}
+.rhvalue{font-size:.68rem;font-weight:700;white-space:nowrap}
+.rhvalue .vu{color:var(--nous)}
+.rhvalue .va{color:var(--eux)}
 .rhlabel{font-size:.62rem;color:var(--ink-soft);margin-top:3px}
 .legende{display:flex;gap:16px;margin-top:8px;font-size:.75rem;color:var(--ink-soft);flex-wrap:wrap}
 .dot{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
@@ -217,19 +224,12 @@ __PLAYERS_ADV__
   </div>
 
   <section class="card" style="margin-top:20px">
-    <h3>Rythme du match : buts mis / pris par tranche de 5 minutes (moyenne par match)</h3>
-    <div class="rh">
-      <div class="rh-title usc">USML Maisons-Laffitte</div>
-      <div class="rhcols">__RHYTHM_USC__</div>
-    </div>
-    <div class="rh euxside">
-      <div class="rh-title eux">__ADV_NAME__</div>
-      <div class="rhcols">__RHYTHM_ADV__</div>
-    </div>
+    <h3>Écart de buts par tranche de 5 mn (moyenne par match)</h3>
+    <div class="rhcols">__RHYTHM__</div>
     <div class="legende">
-      <span><span class="dot" style="background:var(--nous)"></span>Buts marqués</span>
-      <span><span class="dot" style="background:var(--eux)"></span>Buts encaissés</span>
-      <span style="color:var(--ink-soft)">minutes de jeu (tranches de 5') · pour les deux équipes : bleu = buts mis, rouge = buts pris</span>
+      <span><span class="dot" style="background:var(--nous)"></span>USML</span>
+      <span><span class="dot" style="background:var(--eux)"></span>__ADV_NAME__</span>
+      <span style="color:var(--ink-soft)">barre au-dessus de la ligne = écart positif, en dessous = négatif · valeur nette sous chaque tranche</span>
     </div>
     <p class="trline">__TR_USC__</p>
     <p class="trline">__TR_ADV__</p>
