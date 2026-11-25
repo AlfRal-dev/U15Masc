@@ -115,6 +115,35 @@ footer a{color:var(--nous)}
   .comp{grid-template-columns:1fr;gap:4px}
   .comp .side.rev{flex-direction:row}
 }
+
+.cles p{font-size:.92rem;margin-bottom:8px} .cles p:last-child{margin-bottom:0}
+.cles b.n{color:var(--nous)} .cles b.e{color:var(--eux)}
+.form small{display:block;font-weight:600;font-size:.62rem;line-height:1}
+.form:has(small){flex-direction:column;width:auto;min-width:44px;height:auto;padding:3px 6px}
+.share{display:flex;align-items:center;gap:6px;margin-top:3px}
+.share .track{height:6px;flex:1}
+.share em{font-style:normal;font-size:.7rem;color:var(--ink-soft);min-width:34px;text-align:right}
+.plist .track i{background:var(--nous)} .plist.eux .track i{background:var(--eux)}
+
+.val .tr{display:block;font-size:.62rem;font-weight:700;margin-top:-2px}
+.tr.ok{color:#15803d} .tr.ko{color:#b91c1c}
+@page{size:A4;margin:12mm}
+@media print{
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  body{background:#fff;padding:0;font-size:12px}
+  .terrain,details{display:none}
+  .card,.kpi{box-shadow:none;border:1px solid var(--line);break-inside:avoid}
+}
+
+.prob .probrow{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.probnum{font-size:2.6rem;font-weight:800;color:var(--nous);line-height:1}
+.probtxt{flex:1;min-width:220px;font-size:.92rem}
+.probbar{height:12px;border-radius:6px;background:var(--line);overflow:hidden;margin-top:12px}
+.probbar i{display:block;height:100%;background:var(--nous);border-radius:6px}
+
+.prob .cles{margin-top:16px;padding:14px 16px;background:var(--nous-soft);border-left:5px solid var(--nous);border-radius:8px}
+.prob .cles-t{font-size:.85rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--nous);margin-bottom:8px}
+.prob .cles p{font-size:.95rem}
 </style>
 </head>
 <body>
@@ -156,16 +185,24 @@ footer a{color:var(--nous)}
 <div class="kpi eux"><div class="label">Différentiel Versailles HBC (3)</div><div class="value">-146</div><div class="sub">98 marqués / 244 encaissés (7 matchs)</div></div>
   </div>
 
+  <section class="card prob">
+    <h3>Probabilité de victoire (USML)</h3>
+    <div class="probrow"><div class="probnum">91 %</div>
+    <div class="probtxt"><b>L'USML part favorite.</b> Principal facteur : l'écart de buts sur la saison (+8,1 par match pour l'USML contre -20,9 pour Versailles (3)).</div></div>
+    <div class="probbar"><i style="width:91%"></i></div>
+    <div class="cles"><div class="cles-t">Clés du match</div><p><b class="n">Frapper tôt :</b> notre meilleure tranche est 10–15′ (écart de +2,1 en moyenne). Versailles (3) est au plus fort entre 35 et 40′ (écart de -0,9 seulement), il faudra tenir à ce moment.</p><p><b class="n">Rester discipliné :</b> nous recevons 3,7 sanctions de 2′ par match contre 1,1 pour Versailles (3).</p><p><b class="e">Marquer les bons joueurs :</b> Devriese Alister signe 27 % de nos buts. Chez Versailles (3), Limare Arthur en signe 20 %, le jeu est moins concentré sur un seul joueur.</p><p class="note">Indication simple pour situer le match, pas une prévision. Calcul : écart de buts moyen, forme sur 5 matchs et avantage du domicile (+1,5 but). Le reste correspond à une défaite ou un nul. Confrontation directe non incluse (pas de données dans le rapport).</p>
+  </section>
+
   <section class="card">
-    <h3>Attaque &amp; Défense (moyennes / match)</h3>
-<div class="metric"><div class="mlabel">Buts marqués</div><div class="comp"><div class="side l"><span class="name">USML</span><span class="val">34,9</span><span class="track"><i style="width:87%"></i></span></div><div class="side r"><span class="track"><i style="width:35%"></i></span><span class="val">14,0</span><span class="name">Versailles (3)</span></div></div></div><div class="metric"><div class="mlabel">Buts encaissés</div><div class="comp"><div class="side l"><span class="name">USML</span><span class="val">26,7</span><span class="track"><i style="width:67%"></i></span></div><div class="side r"><span class="track"><i style="width:87%"></i></span><span class="val">34,9</span><span class="name">Versailles (3)</span></div></div></div><div class="metric"><div class="mlabel">Arrêts du gardien</div><div class="comp"><div class="side l"><span class="name">USML</span><span class="val">15,6</span><span class="track"><i style="width:87%"></i></span></div><div class="side r"><span class="track"><i style="width:69%"></i></span><span class="val">12,3</span><span class="name">Versailles (3)</span></div></div></div>
-    <p class="note">Moyennes calculées sur : 7 matchs pour l'USML, 7 pour Versailles HBC (3).</p>
+    <h3>Attaque &amp; Défense (moy. / match)</h3>
+<div class="comp" style="margin-bottom:6px"><div class="side l"><span class="name">USML</span></div><div class="side r" style="justify-content:flex-end"><span class="name">Versailles (3)</span></div></div><div class="metric"><div class="mlabel">Buts marqués</div><div class="comp"><div class="side l"><span class="val">34,9<small class="tr ok">↑ 36,8</small></span><span class="track"><i style="width:87%"></i></span></div><div class="side r"><span class="track"><i style="width:35%"></i></span><span class="val">14,0<small class="tr ok">↑ 16,6</small></span></div></div></div><div class="metric"><div class="mlabel">Buts encaissés</div><div class="comp"><div class="side l"><span class="val">26,7<small class="tr ko">↑ 28,2</small></span><span class="track"><i style="width:67%"></i></span></div><div class="side r"><span class="track"><i style="width:87%"></i></span><span class="val">34,9<small class="tr ko">↑ 38,2</small></span></div></div></div><div class="metric"><div class="mlabel">Arrêts du gardien</div><div class="comp"><div class="side l"><span class="val">15,6</span><span class="track"><i style="width:87%"></i></span></div><div class="side r"><span class="track"><i style="width:69%"></i></span><span class="val">12,3</span></div></div></div>
+    <p class="note">Moyennes calculées sur : 7 matchs pour l'USML, 7 pour Versailles HBC (3). Flèche = moyenne des 5 derniers matchs (vert : favorable, rouge : défavorable).</p>
   </section>
 
   <section class="card">
     <h3>Forme récente (5 derniers matchs)</h3>
-    <div class="formrow"><span class="who">USML Maisons-Laffitte</span><span class="formseries"><span class="form f-v">V</span><span class="form f-v">V</span><span class="form f-v">V</span><span class="form f-v">V</span><span class="form f-d">D</span></span></div>
-    <div class="formrow"><span class="who">Versailles HBC (3)</span><span class="formseries"><span class="form f-d">D</span><span class="form f-n">N</span><span class="form f-d">D</span><span class="form f-d">D</span><span class="form f-d">D</span></span></div>
+    <div class="formrow"><span class="who">USML Maisons-Laffitte</span><span class="formseries"><span class="form f-v">V<small>35-33</small></span><span class="form f-v">V<small>34-22</small></span><span class="form f-v">V<small>34-24</small></span><span class="form f-v">V<small>49-25</small></span><span class="form f-d">D<small>32-37</small></span></span></div>
+    <div class="formrow"><span class="who">Versailles HBC (3)</span><span class="formseries"><span class="form f-d">D<small>21-34</small></span><span class="form f-n">N<small>26-26</small></span><span class="form f-d">D<small>11-52</small></span><span class="form f-d">D<small>22-33</small></span><span class="form f-d">D<small>3-46</small></span></span></div>
     <div class="grid2" style="margin-top:12px">
       <details>
         <summary class="mlabel">USML — 5 derniers matchs (plus récents d'abord)</summary>
@@ -184,6 +221,19 @@ footer a{color:var(--nous)}
   </section>
 
   <section class="card">
+    <h3>Buteurs (top 5, part des buts de l'équipe)</h3>
+    <div class="grid2">
+      <div><div class="mlabel" style="color:var(--nous)">USML</div><ol class="plist">
+<li><span class="rank">1</span><span class="nm">Devriese Alister<span class="share"><span class="track"><i style="width:26.6%"></i></span><em>27 %</em></span></span><span class="pts">65 buts <small>· 9,3/match</small></span></li><li><span class="rank">2</span><span class="nm">Jeanjean Arthur<span class="share"><span class="track"><i style="width:19.7%"></i></span><em>20 %</em></span></span><span class="pts">48 buts <small>· 6,9/match</small></span></li><li><span class="rank">3</span><span class="nm">Hertel-Andrault Jules<span class="share"><span class="track"><i style="width:13.5%"></i></span><em>14 %</em></span></span><span class="pts">33 buts <small>· 4,7/match</small></span></li><li><span class="rank">4</span><span class="nm">Golaszewski Martin<span class="share"><span class="track"><i style="width:11.1%"></i></span><em>11 %</em></span></span><span class="pts">27 buts <small>· 3,9/match</small></span></li><li><span class="rank">5</span><span class="nm">Cazaoulou Axel<span class="share"><span class="track"><i style="width:9.4%"></i></span><em>9 %</em></span></span><span class="pts">23 buts <small>· 3,3/match</small></span></li>
+      </ol></div>
+      <div><div class="mlabel" style="color:var(--eux)">Versailles HBC (3)</div><ol class="plist eux">
+<li><span class="rank">1</span><span class="nm">Limare Arthur<span class="share"><span class="track"><i style="width:20.4%"></i></span><em>20 %</em></span></span><span class="pts">20 buts <small>· 2,9/match</small></span></li><li><span class="rank">2</span><span class="nm">Vade Antonin<span class="share"><span class="track"><i style="width:15.3%"></i></span><em>15 %</em></span></span><span class="pts">15 buts <small>· 2,1/match</small></span></li><li><span class="rank">3</span><span class="nm">Puchol Isaac<span class="share"><span class="track"><i style="width:10.2%"></i></span><em>10 %</em></span></span><span class="pts">10 buts <small>· 1,4/match</small></span></li><li><span class="rank">4</span><span class="nm">Trassard Jonathan<span class="share"><span class="track"><i style="width:9.2%"></i></span><em>9 %</em></span></span><span class="pts">9 buts <small>· 1,3/match</small></span></li><li><span class="rank">5</span><span class="nm">Commin Alexi<span class="share"><span class="track"><i style="width:8.2%"></i></span><em>8 %</em></span></span><span class="pts">8 buts <small>· 1,1/match</small></span></li>
+      </ol></div>
+    </div>
+    <p class="note">Total, moyenne par match et part des buts de l'équipe (7 matchs).</p>
+  </section>
+
+  <section class="card">
     <h3>Gardiens</h3>
     <div class="table-scroll">
     <table>
@@ -196,38 +246,8 @@ footer a{color:var(--nous)}
     <p class="note">Taux d'arrêt = arrêts / (arrêts + buts encaissés par l'équipe), réparti au prorata entre gardiens utilisés sur la même feuille. Les matchs 0-0 non renseignés (n.d.) sont exclus.</p>
   </section>
 
-  <section class="card">
-    <h3>Discipline (moyennes / match)</h3>
-    <div class="table-scroll">
-    <table>
-      <thead><tr><th class="team-h">&nbsp;</th><th>USML</th><th>Versailles HBC (3)</th></tr></thead>
-      <tbody>
-<tr><td class="team">2' reçues</td><td><b>3,7</b></td><td><b>1,1</b></td></tr><tr><td class="team">2' données</td><td><b>2,3</b></td><td><b>1,0</b></td></tr><tr><td class="team">7m marqués</td><td><b>2,1</b></td><td><b>0,9</b></td></tr><tr><td class="team">7m subis</td><td><b>2,4</b></td><td><b>1,6</b></td></tr>
-      </tbody>
-    </table>
-    </div>
-    <p class="note">L'USML se pénalise plus que son adversaire (3,7 contre 1,1 sanctions de 2' reçues par match).</p>
-  </section>
-
-  <div class="grid2">
-    <section class="card">
-      <h3>Nos joueurs clés (top 5 buteurs)</h3>
-      <ol class="plist">
-<li><span class="rank">1</span><span class="nm">Devriese Alister</span><span class="pts">65 buts <small>· 9,3/match</small></span></li><li><span class="rank">2</span><span class="nm">Jeanjean Arthur</span><span class="pts">48 buts <small>· 6,9/match</small></span></li><li><span class="rank">3</span><span class="nm">Hertel-Andrault Jules</span><span class="pts">33 buts <small>· 4,7/match</small></span></li><li><span class="rank">4</span><span class="nm">Golaszewski Martin</span><span class="pts">27 buts <small>· 3,9/match</small></span></li><li><span class="rank">5</span><span class="nm">Cazaoulou Axel</span><span class="pts">23 buts <small>· 3,3/match</small></span></li>
-      </ol>
-      <p class="note">Total et moyenne par match (7 matchs).</p>
-    </section>
-    <section class="card">
-      <h3 class="eux">Joueurs à surveiller — Versailles HBC (3)</h3>
-      <ol class="plist eux">
-<li><span class="rank">1</span><span class="nm">Limare Arthur</span><span class="pts">20 buts <small>· 2,9/match</small></span></li><li><span class="rank">2</span><span class="nm">Vade Antonin</span><span class="pts">15 buts <small>· 2,1/match</small></span></li><li><span class="rank">3</span><span class="nm">Puchol Isaac</span><span class="pts">10 buts <small>· 1,4/match</small></span></li><li><span class="rank">4</span><span class="nm">Trassard Jonathan</span><span class="pts">9 buts <small>· 1,3/match</small></span></li><li><span class="rank">5</span><span class="nm">Commin Alexi</span><span class="pts">8 buts <small>· 1,1/match</small></span></li>
-      </ol>
-      <p class="note">Total et moyenne par match (7 matchs).</p>
-    </section>
-  </div>
-
   <section class="card" style="margin-top:20px">
-    <h3>Écart de buts par tranche de 5 mn (moyenne par match)</h3>
+    <h3>Écart de buts par tranche de 5 mn (moy. / match)</h3>
     <div class="rhcols"><div class="rhcol"><div class="bars"><span class="barwrap"><i class="barv m" style="height:2px"></i></span><span class="barwrap"><i class="barv e neg" style="height:29px"></i></span></div><div class="rhvalue"><span class="vu">+0,1</span> <span class="va">-2,4</span></div><div class="rhlabel">0–5'</div></div><div class="rhcol"><div class="bars"><span class="barwrap"><i class="barv m" style="height:24px"></i></span><span class="barwrap"><i class="barv e neg" style="height:22px"></i></span></div><div class="rhvalue"><span class="vu">+2,0</span> <span class="va">-1,9</span></div><div class="rhlabel">5–10'</div></div><div class="rhcol"><div class="bars"><span class="barwrap"><i class="barv m" style="height:26px"></i></span><span class="barwrap"><i class="barv e neg" style="height:38px"></i></span></div><div class="rhvalue"><span class="vu">+2,1</span> <span class="va">-3,1</span></div><div class="rhlabel">10–15'</div></div><div class="rhcol"><div class="bars"><span class="barwrap"><i class="barv m" style="height:7px"></i></span><span class="barwrap"><i class="barv e neg" style="height:31px"></i></span></div><div class="rhvalue"><span class="vu">+0,6</span> <span class="va">-2,6</span></div><div class="rhlabel">15–20'</div></div><div class="rhcol"><div class="bars"><span class="barwrap"><i class="barv m neg" style="height:9px"></i></span><span class="barwrap"><i class="barv e neg" style="height:36px"></i></span></div><div class="rhvalue"><span class="vu">-0,7</span> <span class="va">-3,0</span></div><div class="rhlabel">20–25'</div></div><div class="rhcol"><div class="bars"><span class="barwrap"><i class="barv m" style="height:7px"></i></span><span class="barwrap"><i class="barv e neg" style="height:28px"></i></span></div><div class="rhvalue"><span class="vu">+0,6</span> <span class="va">-2,3</span></div><div class="rhlabel">25–30'</div></div><div class="rhcol"><div class="bars"><span class="barwrap"><i class="barv m" style="height:17px"></i></span><span class="barwrap"><i class="barv e neg" style="height:17px"></i></span></div><div class="rhvalue"><span class="vu">+1,4</span> <span class="va">-1,4</span></div><div class="rhlabel">30–35'</div></div><div class="rhcol"><div class="bars"><span class="barwrap"><i class="barv m" style="height:16px"></i></span><span class="barwrap"><i class="barv e neg" style="height:10px"></i></span></div><div class="rhvalue"><span class="vu">+1,3</span> <span class="va">-0,9</span></div><div class="rhlabel">35–40'</div></div><div class="rhcol"><div class="bars"><span class="barwrap"><i class="barv m" style="height:2px"></i></span><span class="barwrap"><i class="barv e neg" style="height:17px"></i></span></div><div class="rhvalue"><span class="vu">+0,1</span> <span class="va">-1,4</span></div><div class="rhlabel">40–45'</div></div><div class="rhcol"><div class="bars"><span class="barwrap"><i class="barv m" style="height:5px"></i></span><span class="barwrap"><i class="barv e neg" style="height:24px"></i></span></div><div class="rhvalue"><span class="vu">+0,4</span> <span class="va">-2,0</span></div><div class="rhlabel">45–50'</div></div></div>
     <div class="legende">
       <span><span class="dot" style="background:var(--nous)"></span>USML</span>
@@ -236,24 +256,36 @@ footer a{color:var(--nous)}
     </div>
     <p class="trline">USML — Meilleure tranche : <b>10–15′ (4,6 marqués / 2,4 encaissés)</b> · Pire tranche : <b>20–25′ (2,7 marqués / 3,4 encaissés)</b></p>
     <p class="trline">Versailles HBC (3) — Meilleure tranche : <b>35–40′ (1,0 marqués / 1,9 encaissés)</b> · Pire tranche : <b>10–15′ (0,9 marqués / 4,0 encaissés)</b></p>
-    <p class="trline"><b>À exploiter : frapper fort sur notre meilleure tranche (10–15′), et rester solides pendant leur pic de pression (35–40′).</b></p>
   </section>
 
-  <section class="card" style="margin-top:20px">
-    <h3>Résumé de la situation</h3>
+  <section class="card">
+    <h3>Discipline (moy. / match)</h3>
     <div class="table-scroll">
     <table>
       <thead><tr><th class="team-h">&nbsp;</th><th>USML</th><th>Versailles HBC (3)</th></tr></thead>
       <tbody>
-<tr><td class="team">Poule</td><td>3° / 4° div · poule 3</td><td>3° / 4° div · poule 3</td></tr><tr><td class="team">Classement</td><td>1ᵉʳ · 6 pts · 2 matchs</td><td>5ᵉ · 3 pts · 2 matchs</td></tr><tr><td class="team">Série en cours</td><td>4 victoire(s) consécutives</td><td>1 Dé consécutive</td></tr><tr><td class="team">Buts marqués / match</td><td>34,9</td><td>14,0</td></tr><tr><td class="team">Buts encaissés / match</td><td>26,7</td><td>34,9</td></tr><tr><td class="team">Arrêts / match</td><td>15,6</td><td>12,3</td></tr><tr><td class="team">2' reçues / match</td><td>3,7</td><td>1,1</td></tr><tr><td class="team">Gardien le plus utilisé</td><td>Boyer William — 109 arrêts · 7 m.</td><td>Giusiano Jegu Luca — 29 arrêts · 2 m.</td></tr><tr><td class="team">Meilleur buteur</td><td>Devriese Alister — 65 buts (9,3/m.)</td><td>Limare Arthur — 20 buts (2,9/m.)</td></tr>
+<tr><td class="team">2' reçues</td><td><b>3,7</b></td><td><b>1,1</b></td></tr><tr><td class="team">2' données</td><td><b>2,3</b></td><td><b>1,0</b></td></tr><tr><td class="team">7m marqués</td><td><b>2,1</b></td><td><b>0,9</b></td></tr><tr><td class="team">7m subis</td><td><b>2,4</b></td><td><b>1,6</b></td></tr><tr><td class="team">Écart net en supériorité</td><td><b>+0,3</b></td><td><b>0,0</b></td></tr><tr><td class="team">Écart net en infériorité</td><td><b>-0,3</b></td><td><b>-0,1</b></td></tr>
       </tbody>
     </table>
     </div>
-    <p class="note">Prochain match : Championnat · Journée 3 — dimanche 29 novembre 2026 · 09h30 · Domicile.</p>
+    <p class="note">L'USML se pénalise plus que son adversaire (3,7 contre 1,1 sanctions de 2' reçues par match).</p>
+  </section>
+
+  <section class="card">
+    <h3>Poule 3°/4° div. vs Toutes Compétitions (moy. / match)</h3>
+    <div class="table-scroll">
+    <table>
+      <thead><tr><th class="team-h">Marqués – encaissés (écart)</th><th>USML</th><th>Versailles HBC (3)</th></tr></thead>
+      <tbody>
+<tr><td class="team">Poule 3°/4° div.</td><td><b>34,0 – 23,0 (+11,0) · 2 m.</b></td><td><b>23,5 – 30,0 (-6,5) · 2 m.</b></td></tr><tr><td class="team">Toutes compétitions</td><td><b>36,8 – 28,2 (+8,6) · 5 m.</b></td><td><b>16,6 – 38,2 (-21,6) · 5 m.</b></td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="note">Basé sur les 5 derniers matchs de chaque équipe, échantillon très réduit. Toutes compétitions : poule, DHN et coupe confondues.</p>
   </section>
 
   <section class="card" style="margin-top:20px">
-    <h3>Annexe — Classement de notre poule (3°/4° division)</h3>
+    <h3>Classement de la poule (3°/4° division)</h3>
       <div class="table-scroll">
       <table>
         <thead><tr><th>#</th><th class="team-h">Équipe</th><th>Pts</th><th>J</th><th>V</th><th>N</th><th>D</th><th>BP</th><th>BC</th><th>Diff</th></tr></thead>
