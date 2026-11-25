@@ -94,6 +94,9 @@ def fmt_date_long(iso):
 def fmt_time(iso):
     return iso[11:16].replace(':', 'h')
 
+def tranche_lab(i):
+    return f"{i*5}–{(i+1)*5}"
+
 def played(r):
     s1, s2 = r.get('equipe1Score'), r.get('equipe2Score')
     return s1 not in (None, '') and s2 not in (None, '')
@@ -142,7 +145,11 @@ def poule_court(libelle):
         parts.append('poule ' + m1.group(1))
     return ' · '.join(parts) or (libelle or '')
 
-poule_usc_info = poule_court((data['competitions---poule-selector'].get('selected_poule') or {}).get('libelle',''))
+sel_poule_lib = (data['competitions---poule-selector'].get('selected_poule') or {}).get('libelle','')
+poule_usc_info = poule_court(sel_poule_lib)
+mdiv = re.search(r'DEL (.*?)\s*DIV', sel_poule_lib or '')
+poule_div = re.sub(r'\s*/\s*', '/', mdiv.group(1)).strip(' .') if mdiv else '3\u00b0/4\u00b0'
+poule_division = poule_div + ' division'
 adv_path2 = os.path.join(DD, 'blocks_adv.json')
 poule_adv_info = poule_usc_info if adv_row is not None else ''
 if not poule_adv_info and os.path.exists(adv_path2):
@@ -226,7 +233,7 @@ def agg_sheets(sheets):
     n = len(sheets)
     tot = {k: sum(s.get(k, 0) for s in sheets) for k in
            ('buts_marques', 'buts_encaisses', 'arrets', 'deux_reçues', 'deux_donnees',
-            'buts_7m', 'buts_7m_adv', 'avertissements')}
+            'buts_7m', 'buts_7m_adv', 'avertissements', 'buts_sup_num', 'buts_inf_num')}
     tm, tc = {}, {}
     for s in sheets:
         for k, v in s.get('tranches_m', {}).items():
@@ -269,21 +276,42 @@ kpis = '\n'.join([
     kpi_card(f'Différentiel {ADV_LABEL}', f'{dif_a:+d}', f"{TOT_A['buts_marques']} marqués / {TOT_A['buts_encaisses']} encaissés ({N_A} matchs)", 'eux'),
 ])
 
+# ------------------------------------------------- moyennes 5 derniers matchs FDME
+usc_l5 = sorted(USC_SHEETS, key=lambda s: s.get('date') or '')[-5:]
+adv_l5 = sorted(ADV_SHEETS, key=lambda s: s.get('date') or '')[-5:]
+
+def l5_avg(sheets, k):
+    n = len(sheets)
+    return sum(s.get(k, 0) for s in sheets) / n if n else 0.0
+
+def l5_ecart(sheets):
+    return l5_avg(sheets, 'buts_marques') - l5_avg(sheets, 'buts_encaisses')
+
 # ---- comparaison attaque / défense / arrêts
-def comp_row(label, vu, va, hint=''):
+def trend_small(t5, v, favorable_up):
+    if t5 > v:
+        ok, sym = favorable_up, '\u2191'
+    elif t5 < v:
+        ok, sym = not favorable_up, '\u2193'
+    else:
+        return ''
+    return f'<small class="tr {"ok" if ok else "ko"}">{sym} {fr(t5)}</small>'
+
+def comp_metric(label, vu, va, t5u=None, t5a=None, favorable_up=True):
     mx = max(vu, va, 0.001) * 1.15
-    hint = f' {hint}' if hint else ''
-    return (f'<div class="metric"><div class="mlabel">{esc(label)}{hint}</div>'
+    return (f'<div class="metric"><div class="mlabel">{esc(label)}</div>'
             f'<div class="comp">'
-            f'<div class="side l"><span class="name">USML</span><span class="val">{fr(vu)}</span>'
+            f'<div class="side l"><span class="val">{fr(vu)}{trend_small(t5u, vu, favorable_up) if t5u is not None else ""}</span>'
             f'<span class="track"><i style="width:{vu/mx*100:.0f}%"></i></span></div>'
             f'<div class="side r"><span class="track"><i style="width:{va/mx*100:.0f}%"></i></span>'
-            f'<span class="val">{fr(va)}</span><span class="name">{ADV_T}</span></div>'
+            f'<span class="val">{fr(va)}{trend_small(t5a, va, favorable_up) if t5a is not None else ""}</span></div>'
             f'</div></div>')
 
-comp_rows = (comp_row('Buts marqués', avg(TOT_U, 'buts_marques', N_U), avg(TOT_A, 'buts_marques', N_A))
-             + comp_row('Buts encaissés', avg(TOT_U, 'buts_encaisses', N_U), avg(TOT_A, 'buts_encaisses', N_A))
-             + comp_row('Arrêts du gardien', avg(TOT_U, 'arrets', N_U), avg(TOT_A, 'arrets', N_A)))
+comp_rows = (comp_metric('Buts marqués', avg(TOT_U, 'buts_marques', N_U), avg(TOT_A, 'buts_marques', N_A),
+                         l5_avg(usc_l5, 'buts_marques'), l5_avg(adv_l5, 'buts_marques'))
+             + comp_metric('Buts encaissés', avg(TOT_U, 'buts_encaisses', N_U), avg(TOT_A, 'buts_encaisses', N_A),
+                           l5_avg(usc_l5, 'buts_encaisses'), l5_avg(adv_l5, 'buts_encaisses'), False)
+             + comp_metric('Arrêts du gardien', avg(TOT_U, 'arrets', N_U), avg(TOT_A, 'arrets', N_A)))
 
 # ---- forme
 def res_letter(dp):
@@ -293,7 +321,8 @@ def res_letter(dp):
     return 'V' if s_me > s_adv else 'N' if s_me == s_adv else 'D'
 
 html_form = lambda five: ''.join(
-    f'<span class="form f-{res_letter(it["dp"]).lower()}">{res_letter(it["dp"])}</span>' for it in five)
+    f'<span class="form f-{res_letter(it["dp"]).lower()}">{res_letter(it["dp"])}'
+    f'<small>{it["dp"][2]}-{it["dp"][3]}</small></span>' for it in five)
 form_usc = html_form(usc_five)
 form_adv = html_form(opp_five)
 
@@ -357,79 +386,114 @@ gk_rows_all = gk_rows(USC_SHEETS, 'gk_our', 'buts_encaisses', 'USML', '') + \
               gk_rows(ADV_SHEETS, 'gk_our', 'buts_encaisses', ADV_T, 'tag-eux')
 
 # ---- discipline
-def disc_row(label, key, share_of=None):
-    vu = avg(TOT_U, key, N_U); va = avg(TOT_A, key, N_A)
-    def cell(v, base):
-        if not v:
-            return '<b>0</b>' + (' <small>0 %</small>' if base else '')
-        if base:
-            return f'<b>{fr(v)}</b> <small>{fr(v / base * 100, 0)} %</small>'
-        return f'<b>{fr(v)}</b>'
-    bu = avg(TOT_U, share_of, N_U) if share_of else None
-    ba_ = avg(TOT_A, share_of, N_A) if share_of else None
-    return (f'<tr><td class="team">{esc(label)}</td><td>{cell(vu, bu)}</td><td>{cell(va, ba_)}</td></tr>')
+def sfp(v):
+    s = f'{v:+.1f}'.replace('.', ',')
+    return '0,0' if s in ('+0,0', '-0,0') else s
 
-disc_rows = (disc_row("2' reçues", 'deux_reçues')
-             + disc_row("2' données", 'deux_donnees')
-             + disc_row('7m marqués', 'buts_7m')
-             + disc_row('7m subis', 'buts_7m_adv'))
+def drow(label, vu, va):
+    return f'<tr><td class="team">{esc(label)}</td><td><b>{vu}</b></td><td><b>{va}</b></td></tr>'
+
+def avg_signed(tot, key, n, neg=False):
+    return sfp(-avg(tot, key, n) if neg else avg(tot, key, n)) if n else '\u2014'
+
+disc_rows = (drow("2' reçues", fr(avg(TOT_U, 'deux_reçues', N_U)), fr(avg(TOT_A, 'deux_reçues', N_A)))
+             + drow("2' données", fr(avg(TOT_U, 'deux_donnees', N_U)), fr(avg(TOT_A, 'deux_donnees', N_A)))
+             + drow('7m marqués', fr(avg(TOT_U, 'buts_7m', N_U)), fr(avg(TOT_A, 'buts_7m', N_A)))
+             + drow('7m subis', fr(avg(TOT_U, 'buts_7m_adv', N_U)), fr(avg(TOT_A, 'buts_7m_adv', N_A)))
+             + drow('Écart net en supériorité', avg_signed(TOT_U, 'buts_sup_num', N_U), avg_signed(TOT_A, 'buts_sup_num', N_A))
+             + drow('Écart net en infériorité', avg_signed(TOT_U, 'buts_inf_num', N_U, neg=True), avg_signed(TOT_A, 'buts_inf_num', N_A, neg=True)))
 
 u2, a2 = avg(TOT_U, 'deux_reçues', N_U), avg(TOT_A, 'deux_reçues', N_A)
 p2_u = "L'USML se pénalise plus que son adversaire" if u2 > a2 else "L'USML est plus disciplinée que son adversaire"
 disc_note = f"{p2_u} ({fr(u2)} contre {fr(a2)} sanctions de 2' reçues par match)."
 
-# ---- joueurs clés
-def players_rows(buters, n, start=1):
+# ---- buteurs (part des buts de l'équipe)
+def but_rows(buters, n, total):
+    if not total:
+        return ''
     top = sorted(buters.items(), key=lambda kv: (-kv[1], kv[0]))[:5]
     return ''.join(
-        f'<li><span class="rank">{i}</span><span class="nm">{esc(nom(nmn))}</span>'
+        f'<li><span class="rank">{i}</span><span class="nm">{esc(nom(nmn))}'
+        f'<span class="share"><span class="track"><i style="width:{b/total*100:.1f}%"></i></span>'
+        f'<em>{fr(b/total*100, 0)} %</em></span></span>'
         f'<span class="pts">{b} but{"s" if b > 1 else ""} <small>· {fr(b/n)}/match</small></span></li>'
-        for i, (nmn, b) in enumerate(top, start))
+        for i, (nmn, b) in enumerate(top, 1))
 
-players_usc = players_rows(BUT_U, N_U)
-players_adv = players_rows(BUT_A, N_A)
+but_usc = but_rows(BUT_U, N_U, TOT_U['buts_marques'])
+but_adv = but_rows(BUT_A, N_A, TOT_A['buts_marques'])
+but_note = (f"Total, moyenne par match et part des buts de l'équipe ({N_U} matchs)."
+            if N_U == N_A else
+            f"Total, moyenne par match et part des buts de l'équipe ({N_U} matchs pour l'USML, {N_A} pour {ADV_LABEL}).")
 
-# ---- résumé de la situation
-def gk_top(sheets, gk_key, be_key):
-    acc = {}
-    for s in sheets:
-        tk = s.get(gk_key, {})
-        tot = sum(tk.values())
-        for nmn, k in tk.items():
-            e = acc.setdefault(nmn, [0, 0])
-            e[0] += k; e[1] += 1
-    if not acc:
-        return '—'
-    nmn, (a_, n_) = sorted(acc.items(), key=lambda kv: (-kv[1][1], -kv[1][0]))[0]
-    return f"{nom(nmn)} — {a_} arrêts · {n_} m."
+# ---- poule vs toutes compétitions
+def poule_cell(bp, bc, j):
+    if not j:
+        return '<b>\u2014</b>'
+    return f'<b>{fr(bp/j)} \u2013 {fr(bc/j)} ({sfp((bp-bc)/j)}) · {j} m.</b>'
 
-def srow(label, u, a):
-    return f'<tr><td class="team">{esc(label)}</td><td>{u}</td><td>{a}</td></tr>'
+def fdm_cell(sheets):
+    n = len(sheets)
+    if not n:
+        return '<b>\u2014</b>'
+    bm = sum(s.get('buts_marques', 0) for s in sheets)
+    bc = sum(s.get('buts_encaisses', 0) for s in sheets)
+    return f'<b>{fr(bm/n)} \u2013 {fr(bc/n)} ({sfp((bm-bc)/n)}) · {n} m.</b>'
 
-def top_buteur(buters, n):
-    if not buters:
-        return '—'
+bp_u, bc_u = int(stand_usc.get('butPlus', 0) or 0), int(stand_usc.get('butMoins', 0) or 0)
+j_u = int(stand_usc.get('joue', 0) or 0)
+bp_a, bc_a = int(adv_row.get('butPlus', 0) or 0), int(adv_row.get('butMoins', 0) or 0)
+j_a = int(adv_row.get('joue', 0) or 0)
+poule_rows = (f'<tr><td class="team">Poule {esc(poule_div)} div.</td><td>{poule_cell(bp_u, bc_u, j_u)}</td>'
+              f'<td>{poule_cell(bp_a, bc_a, j_a)}</td></tr>'
+              f'<tr><td class="team">Toutes compétitions</td><td>{fdm_cell(usc_l5)}</td>'
+              f'<td>{fdm_cell(adv_l5)}</td></tr>')
+
+# ---- probabilité de victoire
+ec_u = avg(TOT_U, 'buts_marques', N_U) - avg(TOT_U, 'buts_encaisses', N_U)
+ec_a = avg(TOT_A, 'buts_marques', N_A) - avg(TOT_A, 'buts_encaisses', N_A)
+form_u, form_a = l5_ecart(usc_l5), l5_ecart(adv_l5)
+next_home = next_items[0][3] if next_items else True
+prob_M = (ec_u - ec_a) + 0.5 * (form_u - form_a) + (1.5 if next_home else -1.5)
+prob = int(round(max(2, min(98, 50 + 0.9 * prob_M))))
+prob_titre = "L'USML part favorite." if prob >= 50 else "L'USML n'est pas favorite."
+prob_ecart = f"{sfp(ec_u)} par match pour l'USML contre {sfp(ec_a)} pour {ADV_T}"
+prob_bar = f'<i style="width:{prob}%"></i>'
+
+def top_buteur_share(buters, total):
+    if not buters or not total:
+        return '\u2014', 0
     nmn, b = max(buters.items(), key=lambda kv: kv[1])
-    return f"{esc(nom(nmn))} — {b} buts ({fr(b/n)}/m.)" if n else f"{esc(nom(nmn))} — {b} buts"
+    return esc(nom(nmn)), round(b / total * 100)
 
-situation_rows = (
-    srow('Poule', esc(poule_usc_info), esc(poule_adv_info or '3°/4° div'))
-    + srow('Classement', f"{kpi_usc['rang']} · {kpi_usc['pts']} pts · {kpi_usc['j']} matchs",
-           f"{kpi_adv['rang']} · {kpi_adv['pts']} pts · {kpi_adv['j']} matchs")
-    + srow('Série en cours', esc(serie(usc_five)), esc(serie(opp_five)))
-    + srow('Buts marqués / match', fr(avg(TOT_U, 'buts_marques', N_U)), fr(avg(TOT_A, 'buts_marques', N_A)))
-    + srow('Buts encaissés / match', fr(avg(TOT_U, 'buts_encaisses', N_U)), fr(avg(TOT_A, 'buts_encaisses', N_A)))
-    + srow('Arrêts / match', fr(avg(TOT_U, 'arrets', N_U)), fr(avg(TOT_A, 'arrets', N_A)))
-    + srow("2' reçues / match", fr(u2), fr(a2))
-    + srow('Gardien le plus utilisé', esc(gk_top(USC_SHEETS, 'gk_our', 'buts_encaisses')),
-           esc(gk_top(ADV_SHEETS, 'gk_our', 'buts_encaisses')))
-    + srow('Meilleur buteur', top_buteur(BUT_U, N_U), top_buteur(BUT_A, N_A))
-)
+def tranche_entre(i):
+    return f'entre {i*5} et {(i+1)*5}\u2032'
+
+cles_parts = []
+if N_U and N_A:
+    iu = max((i for i in TM_U if i < 10), key=lambda i: (TM_U.get(i, 0) - TC_U.get(i, 0)) / N_U)
+    ia = max((i for i in TM_A if i < 10), key=lambda i: (TM_A.get(i, 0) - TC_A.get(i, 0)) / N_A)
+    vu_e = (TM_U.get(iu, 0) - TC_U.get(iu, 0)) / N_U
+    va_e = (TM_A.get(ia, 0) - TC_A.get(ia, 0)) / N_A
+    titre_tr = 'Frapper tôt' if iu <= 3 else ('Frapper au cœur du match' if iu <= 6 else 'Frapper en fin de match')
+    nmu, mu = top_buteur_share(BUT_U, TOT_U['buts_marques'])
+    nma, ma = top_buteur_share(BUT_A, TOT_A['buts_marques'])
+    cles_parts.append(
+        f'<p><b class="n">{titre_tr} :</b> notre meilleure tranche est {tranche_lab(iu)}\u2032'
+        f' (écart de {sfp(vu_e)} en moyenne). {esc(ADV_T)} est au plus fort {tranche_entre(ia)}'
+        f' (écart de {sfp(va_e)}{" seulement" if va_e < 0 else ""}), il faudra tenir à ce moment.</p>')
+    cles_parts.append(
+        f'<p><b class="n">Rester discipliné :</b> nous recevons {fr(u2)} sanctions de 2\u2032 par match'
+        f' contre {fr(a2)} pour {esc(ADV_T)}.</p>')
+    if ma > mu:
+        fin = 'leur jeu est plus concentré sur un seul joueur.'
+    else:
+        fin = 'le jeu est moins concentré sur un seul joueur.'
+    cles_parts.append(
+        f'<p><b class="e">Marquer les bons joueurs :</b> {nmu} signe {mu} % de nos buts.'
+        f' Chez {esc(ADV_T)}, {nma} en signe {ma} %, {fin}</p>')
+prob_cles = ''.join(cles_parts)
 
 # ---- rythme par tranches de 5'
-def tranche_lab(i):
-    return f"{i*5}–{(i+1)*5}"
-
 def slice_maxes(pairs):
     m = 1.0
     for tm, tc, n in pairs:
@@ -474,10 +538,6 @@ ba, wa = best_worst(TM_A, TC_A, N_A)
 tr_usc = f"USML — {bu} · {wu}"
 tr_adv = f"{ADV_LABEL} — {ba} · {wa}"
 
-tr_tip = (f"À exploiter : frapper fort sur notre meilleure tranche "
-          f"({tranche_lab(max((i for i in TM_U if i < 10), key=lambda i: TM_U.get(i, 0) - TC_U.get(i, 0)))}′), et rester solides "
-          f"pendant leur pic de pression ({tranche_lab(max((i for i in TM_A if i < 10), key=lambda i: TM_A.get(i, 0) - TC_A.get(i, 0)))}′).")
-
 # ------------------------------------------------------------- classement/calendrier
 stand_rows = ''
 for c in classements:
@@ -510,9 +570,7 @@ if next_items:
 else:
     match_line1, match_line2 = 'Championnat', 'À venir'
     match_meta = 'Aucun match programmé dans les données'
-match_tag = f'{match_line1} · {match_line2}'
 
-situation_note = f"Prochain match : {match_tag} — {match_meta}."
 
 LOGO_BASE = 'https://media-logos-clubs.ffhandball.fr/128/'
 
@@ -533,10 +591,16 @@ html = (html
   .replace('__LOGO_USC__', logo_usc)
   .replace('__LOGO_ADV__', logo_adv)
   .replace('__ADV_NAME__', esc(ADV_LABEL))
+  .replace('__ADV_SMALL__', esc(ADV_T))
   .replace('__MATCH_LINE1__', esc(match_line1))
   .replace('__MATCH_LINE2__', esc(match_line2))
   .replace('__MATCH_META__', esc(match_meta))
   .replace('__KPIS__', kpis)
+  .replace('__PROB_NUM__', f'{prob} %')
+  .replace('__PROB_TITRE__', esc(prob_titre))
+  .replace('__PROB_ECART__', esc(prob_ecart))
+  .replace('__PROB_BAR__', prob_bar)
+  .replace('__PROB_CLES__', prob_cles)
   .replace('__COMP_ROWS__', comp_rows)
   .replace('__N_FDM_USC__', str(N_U))
   .replace('__N_FDM_ADV__', str(N_A))
@@ -548,15 +612,15 @@ html = (html
   .replace('__GK_ROWS__', gk_rows_all)
   .replace('__DISC_ROWS__', disc_rows)
   .replace('__DISC_NOTE__', esc(disc_note))
-  .replace('__PLAYERS_USC__', players_usc)
-  .replace('__PLAYERS_ADV__', players_adv)
   .replace('__RHYTHM__', rhythm)
   .replace('__TR_USC__', tr_usc)
   .replace('__TR_ADV__', tr_adv)
-  .replace('__TR_TIP__', esc(tr_tip))
+  .replace('__BUT_USC__', but_usc)
+  .replace('__BUT_ADV__', but_adv)
+  .replace('__BUT_NOTE__', esc(but_note))
+  .replace('__POULE_ROWS__', poule_rows)
+  .replace('__POULE_DIVISION__', esc(poule_division))
   .replace('__STAND_ROWS__', stand_rows)
-  .replace('__SITUATION_ROWS__', situation_rows)
-  .replace('__SITUATION_NOTE__', esc(situation_note))
   .replace('__GEN__', gen)
 )
 

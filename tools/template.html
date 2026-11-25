@@ -115,6 +115,35 @@ footer a{color:var(--nous)}
   .comp{grid-template-columns:1fr;gap:4px}
   .comp .side.rev{flex-direction:row}
 }
+
+.cles p{font-size:.92rem;margin-bottom:8px} .cles p:last-child{margin-bottom:0}
+.cles b.n{color:var(--nous)} .cles b.e{color:var(--eux)}
+.form small{display:block;font-weight:600;font-size:.62rem;line-height:1}
+.form:has(small){flex-direction:column;width:auto;min-width:44px;height:auto;padding:3px 6px}
+.share{display:flex;align-items:center;gap:6px;margin-top:3px}
+.share .track{height:6px;flex:1}
+.share em{font-style:normal;font-size:.7rem;color:var(--ink-soft);min-width:34px;text-align:right}
+.plist .track i{background:var(--nous)} .plist.eux .track i{background:var(--eux)}
+
+.val .tr{display:block;font-size:.62rem;font-weight:700;margin-top:-2px}
+.tr.ok{color:#15803d} .tr.ko{color:#b91c1c}
+@page{size:A4;margin:12mm}
+@media print{
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  body{background:#fff;padding:0;font-size:12px}
+  .terrain,details{display:none}
+  .card,.kpi{box-shadow:none;border:1px solid var(--line);break-inside:avoid}
+}
+
+.prob .probrow{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.probnum{font-size:2.6rem;font-weight:800;color:var(--nous);line-height:1}
+.probtxt{flex:1;min-width:220px;font-size:.92rem}
+.probbar{height:12px;border-radius:6px;background:var(--line);overflow:hidden;margin-top:12px}
+.probbar i{display:block;height:100%;background:var(--nous);border-radius:6px}
+
+.prob .cles{margin-top:16px;padding:14px 16px;background:var(--nous-soft);border-left:5px solid var(--nous);border-radius:8px}
+.prob .cles-t{font-size:.85rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--nous);margin-bottom:8px}
+.prob .cles p{font-size:.95rem}
 </style>
 </head>
 <body>
@@ -153,16 +182,24 @@ footer a{color:var(--nous)}
 __KPIS__
   </div>
 
+  <section class="card prob">
+    <h3>Probabilité de victoire (USML)</h3>
+    <div class="probrow"><div class="probnum">__PROB_NUM__</div>
+    <div class="probtxt"><b>__PROB_TITRE__</b> Principal facteur : l'écart de buts sur la saison (__PROB_ECART__).</div></div>
+    <div class="probbar">__PROB_BAR__</div>
+    <div class="cles"><div class="cles-t">Clés du match</div>__PROB_CLES__<p class="note">Indication simple pour situer le match, pas une prévision. Calcul : écart de buts moyen, forme sur 5 matchs et avantage du domicile (+1,5 but). Le reste correspond à une défaite ou un nul. Confrontation directe non incluse (pas de données dans le rapport).</p>
+  </section>
+
   <section class="card">
-    <h3>Attaque &amp; Défense (moyennes / match)</h3>
-__COMP_ROWS__
-    <p class="note">Moyennes calculées sur : __N_FDM_USC__ matchs pour l'USML, __N_FDM_ADV__ pour __ADV_NAME__.</p>
+    <h3>Attaque &amp; Défense (moy. / match)</h3>
+<div class="comp" style="margin-bottom:6px"><div class="side l"><span class="name">USML</span></div><div class="side r" style="justify-content:flex-end"><span class="name">__ADV_SMALL__</span></div></div>__COMP_ROWS__
+    <p class="note">Moyennes calculées sur : __N_FDM_USC__ matchs pour l'USML, __N_FDM_ADV__ pour __ADV_NAME__. Flèche = moyenne des 5 derniers matchs (vert : favorable, rouge : défavorable).</p>
   </section>
 
   <section class="card">
     <h3>Forme récente (5 derniers matchs)</h3>
     <div class="formrow"><span class="who">USML Maisons-Laffitte</span><span class="formseries">__FORM_USC__</span></div>
-    <div class="formrow"><span class="who">__ADV_NAME__</span><span class="formseries">__FORM_ADV__</span></div>
+    <div class="formrow"><span class="who">Versailles HBC (3)</span><span class="formseries">__FORM_ADV__</span></div>
     <div class="grid2" style="margin-top:12px">
       <details>
         <summary class="mlabel">USML — 5 derniers matchs (plus récents d'abord)</summary>
@@ -171,13 +208,26 @@ __USC_HIST__
         </ul>
       </details>
       <details>
-        <summary class="mlabel">__ADV_NAME__ — 5 derniers matchs (plus récents d'abord)</summary>
+        <summary class="mlabel">Versailles HBC (3) — 5 derniers matchs (plus récents d'abord)</summary>
         <ul class="plist" style="list-style:none">
 __ADV_HIST__
         </ul>
       </details>
     </div>
     <p class="note">__FORM_NOTE__</p>
+  </section>
+
+  <section class="card">
+    <h3>Buteurs (top 5, part des buts de l'équipe)</h3>
+    <div class="grid2">
+      <div><div class="mlabel" style="color:var(--nous)">USML</div><ol class="plist">
+__BUT_USC__
+      </ol></div>
+      <div><div class="mlabel" style="color:var(--eux)">__ADV_NAME__</div><ol class="plist eux">
+__BUT_ADV__
+      </ol></div>
+    </div>
+    <p class="note">__BUT_NOTE__</p>
   </section>
 
   <section class="card">
@@ -193,38 +243,8 @@ __GK_ROWS__
     <p class="note">Taux d'arrêt = arrêts / (arrêts + buts encaissés par l'équipe), réparti au prorata entre gardiens utilisés sur la même feuille. Les matchs 0-0 non renseignés (n.d.) sont exclus.</p>
   </section>
 
-  <section class="card">
-    <h3>Discipline (moyennes / match)</h3>
-    <div class="table-scroll">
-    <table>
-      <thead><tr><th class="team-h">&nbsp;</th><th>USML</th><th>__ADV_NAME__</th></tr></thead>
-      <tbody>
-__DISC_ROWS__
-      </tbody>
-    </table>
-    </div>
-    <p class="note">__DISC_NOTE__</p>
-  </section>
-
-  <div class="grid2">
-    <section class="card">
-      <h3>Nos joueurs clés (top 5 buteurs)</h3>
-      <ol class="plist">
-__PLAYERS_USC__
-      </ol>
-      <p class="note">Total et moyenne par match (__N_FDM_USC__ matchs).</p>
-    </section>
-    <section class="card">
-      <h3 class="eux">Joueurs à surveiller — __ADV_NAME__</h3>
-      <ol class="plist eux">
-__PLAYERS_ADV__
-      </ol>
-      <p class="note">Total et moyenne par match (__N_FDM_ADV__ matchs).</p>
-    </section>
-  </div>
-
   <section class="card" style="margin-top:20px">
-    <h3>Écart de buts par tranche de 5 mn (moyenne par match)</h3>
+    <h3>Écart de buts par tranche de 5 mn (moy. / match)</h3>
     <div class="rhcols">__RHYTHM__</div>
     <div class="legende">
       <span><span class="dot" style="background:var(--nous)"></span>USML</span>
@@ -233,24 +253,36 @@ __PLAYERS_ADV__
     </div>
     <p class="trline">__TR_USC__</p>
     <p class="trline">__TR_ADV__</p>
-    <p class="trline"><b>__TR_TIP__</b></p>
   </section>
 
-  <section class="card" style="margin-top:20px">
-    <h3>Résumé de la situation</h3>
+  <section class="card">
+    <h3>Discipline (moy. / match)</h3>
     <div class="table-scroll">
     <table>
-      <thead><tr><th class="team-h">&nbsp;</th><th>USML</th><th>__ADV_NAME__</th></tr></thead>
+      <thead><tr><th class="team-h">&nbsp;</th><th>USML</th><th>Versailles HBC (3)</th></tr></thead>
       <tbody>
-__SITUATION_ROWS__
+__DISC_ROWS__
       </tbody>
     </table>
     </div>
-    <p class="note">__SITUATION_NOTE__</p>
+    <p class="note">__DISC_NOTE__</p>
+  </section>
+
+  <section class="card">
+    <h3>Poule 3°/4° div. vs Toutes Compétitions (moy. / match)</h3>
+    <div class="table-scroll">
+    <table>
+      <thead><tr><th class="team-h">Marqués – encaissés (écart)</th><th>USML</th><th>__ADV_NAME__</th></tr></thead>
+      <tbody>
+__POULE_ROWS__
+      </tbody>
+    </table>
+    </div>
+    <p class="note">Basé sur les 5 derniers matchs de chaque équipe, échantillon très réduit. Toutes compétitions : poule, DHN et coupe confondues.</p>
   </section>
 
   <section class="card" style="margin-top:20px">
-    <h3>Annexe — Classement de notre poule (3°/4° division)</h3>
+    <h3>Classement de la poule (__POULE_DIVISION__)</h3>
       <div class="table-scroll">
       <table>
         <thead><tr><th>#</th><th class="team-h">Équipe</th><th>Pts</th><th>J</th><th>V</th><th>N</th><th>D</th><th>BP</th><th>BC</th><th>Diff</th></tr></thead>
