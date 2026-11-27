@@ -171,6 +171,13 @@ def compute(stats, our_label):
             gk[x['cote']][x['qui']] = gk[x['cote']].get(x['qui'], 0) + 1
     m['gk_our'] = gk[our]
     m['gk_opp'] = gk[opp]
+    # exclusions de 2' par joueur (pour « Sanctions de 2' par joueur »)
+    excl = {our: {}, opp: {}}
+    for x in a:
+        if x['type'] == 'excl2' and x['cote'] in excl:
+            excl[x['cote']][x['qui']] = excl[x['cote']].get(x['qui'], 0) + 1
+    m['excl_our'] = excl[our]
+    m['excl_opp'] = excl[opp]
     # supériorité / infériorité numériques
     susp = {'REC': [], 'VIS': []}
     sup = inf = 0

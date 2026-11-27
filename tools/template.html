@@ -2,6 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Rapport U15 M : USML vs __ADV_NAME__</title>
 <style>
@@ -22,18 +23,11 @@ header.hero{background:linear-gradient(135deg,#1e3a8a,#2563eb);color:#fff;border
 .team h2{font-size:1.3rem;margin:2px 0}
 .team .tinfo{font-size:.85rem;color:rgba(255,255,255,.9)}
 .team .logo{width:76px;height:76px;object-fit:contain;background:#fff;border-radius:10px;padding:5px;margin-bottom:10px}
-.vs{background:rgba(255,255,255,.15);border-radius:999px;padding:10px 18px;font-weight:700;font-size:1.1rem}
 .fight{flex:1;min-width:180px;display:flex;flex-direction:column;align-items:center;justify-content:center}
 .match-meta{text-align:center;font-size:.85rem;color:rgba(255,255,255,.9);margin-top:2px}
 .match-tag{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:rgba(255,255,255,.2);border-radius:999px;padding:10px 24px;text-transform:uppercase;font-weight:800;margin-bottom:6px}
 .mt1{font-size:1.5rem;line-height:1.25;letter-spacing:.03em}
 .mt2{font-size:1.3rem;line-height:1.25}
-.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:20px}
-.kpi{background:var(--card);border-radius:var(--radius);padding:16px 18px;box-shadow:0 1px 4px rgba(15,23,42,.08);text-align:center}
-.kpi .label{font-size:.72rem;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.05em}
-.kpi .value{font-size:1.9rem;font-weight:800;margin:4px 0}
-.kpi .sub{font-size:.78rem;color:var(--ink-soft)}
-.kpi.nous .value{color:var(--nous)} .kpi.eux .value{color:var(--eux)}
 .card{background:var(--card);border-radius:var(--radius);padding:18px 20px;box-shadow:0 1px 4px rgba(15,23,42,.08);margin-bottom:20px}
 .card h3{font-size:.95rem;text-transform:uppercase;letter-spacing:.04em;color:var(--ink);margin-bottom:14px;border-left:4px solid var(--nous);padding-left:10px}
 .card h3.eux{border-left-color:var(--eux)}
@@ -45,19 +39,15 @@ header.hero{background:linear-gradient(135deg,#1e3a8a,#2563eb);color:#fff;border
 summary.mlabel{cursor:pointer}
 .comp{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:center}
 .comp .side{display:flex;align-items:center;gap:8px}
-.comp .side.rev{flex-direction:row-reverse}
 .comp .name{font-weight:700;font-size:.82rem;white-space:nowrap}
 .comp .side.l .name,.comp .side.l .val{color:var(--nous)}
 .comp .side.r .name,.comp .side.r .val{color:var(--eux)}
 .comp .val{font-weight:800;font-size:.95rem;font-variant-numeric:tabular-nums;min-width:38px;text-align:right}
-.comp .side.rev .val{text-align:left}
 .track{flex:1;height:14px;border-radius:7px;background:var(--line);overflow:hidden}
 .track i{display:block;height:100%;border-radius:7px}
 .side.l .track i{background:var(--nous);margin-left:auto}
 .side.r .track i{background:var(--eux);margin-right:auto}
 /* forme */
-.formrow{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
-.formrow .who{font-weight:700;font-size:.9rem;min-width:170px}
 .form{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:8px;font-weight:800;font-size:.8rem;margin-right:4px}
 .f-v{background:#e6f7ee;color:var(--win)} .f-n{background:#fff6df;color:var(--draw)} .f-d{background:#fdeaea;color:var(--loss)}
 .formseries{display:flex;gap:0}
@@ -76,7 +66,6 @@ th{font-size:.68rem;text-transform:uppercase;letter-spacing:.05em;color:var(--in
 td.team,th.team-h{text-align:left}
 .nous td{background:var(--nous-soft)}
 .eux td{background:var(--eux-soft)}
-tr.tux td:first-child{border-left:3px solid var(--eux)}
 /* joueurs clés */
 .plist{list-style:none}
 .plist li{display:flex;align-items:center;gap:12px;padding:6px 0;border-bottom:1px dashed var(--line)}
@@ -88,33 +77,11 @@ tr.tux td:first-child{border-left:3px solid var(--eux)}
 .plist .pts{font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap}
 .plist .pts small{font-weight:400;color:var(--ink-soft)}
 /* rythme */
-.rh{margin-bottom:6px}
-.rh-title{font-weight:700;font-size:.86rem;margin-bottom:6px}
-.rh-title.usc{color:var(--nous)} .rh-title.eux{color:var(--eux)}
-.rhcols{display:flex;gap:6px;align-items:flex-end}
-.rhcol{flex:1;text-align:center;min-width:0}
-.bars{display:flex;gap:2px;align-items:stretch;justify-content:center;height:80px;position:relative}
-.bars::before{content:'';position:absolute;top:50%;left:-3px;right:-3px;height:1px;background:var(--ink-soft);opacity:.5}
-.barwrap{flex:1;position:relative}
-.barv{position:absolute;left:50%;transform:translateX(-50%);width:9px;border-radius:3px}
-.barv.m{background:var(--nous);bottom:40px}
-.barv.e{background:var(--eux);bottom:40px}
-.barv.neg{bottom:auto;top:40px}
-.rhvalue{font-size:.68rem;font-weight:700;white-space:nowrap}
-.rhvalue .vu{color:var(--nous)}
-.rhvalue .va{color:var(--eux)}
-.rhlabel{font-size:.62rem;color:var(--ink-soft);margin-top:3px}
-.legende{display:flex;gap:16px;margin-top:8px;font-size:.75rem;color:var(--ink-soft);flex-wrap:wrap}
 .dot{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
 .trline{font-size:.85rem;margin-top:8px}
 .trline b{color:var(--ink)}
 footer{text-align:center;font-size:.78rem;color:var(--ink-soft);padding:16px 8px 8px}
 footer a{color:var(--nous)}
-@media(max-width:700px){
-  .kpis{grid-template-columns:1fr 1fr}
-  .comp{grid-template-columns:1fr;gap:4px}
-  .comp .side.rev{flex-direction:row}
-}
 
 .cles p{font-size:.92rem;margin-bottom:8px} .cles p:last-child{margin-bottom:0}
 .cles b.n{color:var(--nous)} .cles b.e{color:var(--eux)}
@@ -125,39 +92,63 @@ footer a{color:var(--nous)}
 .share em{font-style:normal;font-size:.7rem;color:var(--ink-soft);min-width:34px;text-align:right}
 .plist .track i{background:var(--nous)} .plist.eux .track i{background:var(--eux)}
 
-.val .tr{display:block;font-size:.62rem;font-weight:700;margin-top:-2px}
-.tr.ok{color:#15803d} .tr.ko{color:#b91c1c}
 @page{size:A4;margin:12mm}
 @media print{
   *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
   body{background:#fff;padding:0;font-size:12px}
-  .terrain,details{display:none}
-  .card,.kpi{box-shadow:none;border:1px solid var(--line);break-inside:avoid}
+  .terrain{display:none}
+  .card{box-shadow:none;border:1px solid var(--line);break-inside:avoid}
 }
 
 .prob .probrow{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
 .probnum{font-size:2.6rem;font-weight:800;color:var(--nous);line-height:1}
-.probtxt{flex:1;min-width:220px;font-size:.92rem}
-.probbar{height:12px;border-radius:6px;background:var(--line);overflow:hidden;margin-top:12px}
-.probbar i{display:block;height:100%;background:var(--nous);border-radius:6px}
 
 .prob .cles{margin-top:16px;padding:14px 16px;background:var(--nous-soft);border-left:5px solid var(--nous);border-radius:8px}
-.prob .cles-t{font-size:.85rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--nous);margin-bottom:8px}
 .prob .cles p{font-size:.95rem}
+
+.fold>details>summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center}
+.fold>details>summary::-webkit-details-marker{display:none}
+.fold>details>summary h3{margin-bottom:0;flex:1}
+.fold>details>summary::after{content:"▾";color:var(--ink-soft);margin-left:8px}
+.fold>details[open]>summary::after{content:"▴"}
+.fold>details[open]>summary h3{margin-bottom:14px}
+.hsl{font-size:.68rem;color:var(--ink-soft);margin:6px 0 3px}
+.hs{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}
+.hc{display:flex;flex-direction:column;gap:3px}
+.hc span{border-radius:6px;padding:5px 2px;text-align:center}
+.hc small{text-align:center;font-size:.62rem;color:var(--ink-soft)}
+.hc b{font-size:.9rem;font-variant-numeric:tabular-nums}
+.hlegend{display:flex;gap:14px;flex-wrap:wrap;font-size:.75rem;color:var(--ink-soft);margin-bottom:4px}
+.sb{display:grid;gap:6px}
+.sbhead,.sbrow{display:grid;grid-template-columns:1fr 1.6fr 1fr;gap:8px;align-items:center;text-align:center}
+.sbhead{font-weight:800;font-size:.85rem}
+.sbf .formseries{display:flex;gap:2px;justify-content:center}
+.sbf .form:has(small){flex:1;min-width:0;width:auto;margin-right:0;padding:3px 0;border-radius:6px}
+.sbf .form small{font-size:.55rem}
+.sbl{font-size:.74rem;color:var(--ink-soft)}
+.sbv{padding:6px 4px;border-radius:8px;font-weight:700;font-variant-numeric:tabular-nums;background:var(--line);color:var(--ink-soft)}
+.sbv.l.edge{background:var(--nous-soft);color:var(--nous)} .sbv.r.edge{background:var(--eux-soft);color:var(--eux)}
+@media(max-width:700px){
+  .comp{grid-template-columns:1fr;gap:4px}
+  .hm{display:none}
+  .sbf .form small{display:none}
+  .sbf .form:has(small){padding:5px 0;font-size:.72rem}
+  th,td{padding:7px 6px}
+}
 </style>
 </head>
 <body>
 <svg class="terrain" viewBox="0 0 400 200" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-  <rect x="10" y="10" width="380" height="180" fill="none" stroke="#475569" stroke-width="2.5" rx="2"/>
-  <line x1="200" y1="10" x2="200" y2="190" stroke="#475569" stroke-width="2.5"/>
-  <path d="M 10 45 A 60 60 0 0 1 10 155" fill="none" stroke="#475569" stroke-width="2.5"/>
-  <path d="M 10 20 A 90 90 0 0 1 10 180" fill="none" stroke="#475569" stroke-width="2.5" stroke-dasharray="7 7"/>
-  <line x1="78" y1="95" x2="78" y2="105" stroke="#475569" stroke-width="2.5"/>
-  <rect x="10" y="85" width="5" height="30" fill="#475569" stroke="none"/>
-  <path d="M 390 45 A 60 60 0 0 0 390 155" fill="none" stroke="#475569" stroke-width="2.5"/>
-  <path d="M 390 20 A 90 90 0 0 0 390 180" fill="none" stroke="#475569" stroke-width="2.5" stroke-dasharray="7 7"/>
-  <line x1="322" y1="95" x2="322" y2="105" stroke="#475569" stroke-width="2.5"/>
-  <rect x="385" y="85" width="5" height="30" fill="#475569" stroke="none"/>
+  <rect x="10" y="10" width="380" height="180" fill="none" stroke="#475569" stroke-width="2.5" rx="2"></rect>
+  <line x1="200" y1="10" x2="200" y2="190" stroke="#475569" stroke-width="2.5"></line>
+  <path d="M 10 45 A 60 60 0 0 1 10 155" fill="none" stroke="#475569" stroke-width="2.5"></path>
+  <path d="M 10 20 A 90 90 0 0 1 10 180" fill="none" stroke="#475569" stroke-width="2.5" stroke-dasharray="7 7"></path>
+  <line x1="78" y1="95" x2="78" y2="105" stroke="#475569" stroke-width="2.5"></line>
+  <rect x="10" y="85" width="5" height="30" fill="#475569" stroke="none"></rect>
+  <path d="M 390 45 A 60 60 0 0 0 390 155" fill="none" stroke="#475569" stroke-width="2.5"></path>
+  <path d="M 390 20 A 90 90 0 0 0 390 180" fill="none" stroke="#475569" stroke-width="2.5" stroke-dasharray="7 7"></path>
+  <line x1="322" y1="95" x2="322" y2="105" stroke="#475569" stroke-width="2.5"></line>
+  <rect x="385" y="85" width="5" height="30" fill="#475569" stroke="none"></rect>
 </svg>
 <div class="wrap">
 
@@ -166,6 +157,7 @@ footer a{color:var(--nous)}
       __LOGO_USC__
       <h2>USML U15 M</h2>
       <div class="tinfo">__KPI_USC_RANK__</div>
+      <div class="tinfo">__TINFO_USC_DIFF__</div>
     </div>
     <div class="fight">
       <div class="match-tag"><span class="mt1">__MATCH_LINE1__</span><span class="mt2">__MATCH_LINE2__</span></div>
@@ -175,46 +167,28 @@ footer a{color:var(--nous)}
       __LOGO_ADV__
       <h2>__ADV_NAME__</h2>
       <div class="tinfo">__KPI_ADV_RANK__</div>
+      <div class="tinfo">__TINFO_ADV_DIFF__</div>
     </div>
   </header>
 
-  <div class="kpis">
-__KPIS__
-  </div>
+  <section class="card">
+    <h3>Face à face</h3>
+    <div class="sb">__FACEAFACE__</div>
+    <p class="note">Le côté en couleur a l'avantage sur chaque ligne (défense et discipline : le plus bas est le meilleur). V : victoire, N : nul, D : défaite, avec le score en dessous.</p>
+  </section>
 
   <section class="card prob">
-    <h3>Probabilité de victoire (USML)</h3>
-    <div class="probrow"><div class="probnum">__PROB_NUM__</div>
-    <div class="probtxt"><b>__PROB_TITRE__</b> Principal facteur : l'écart de buts sur la saison (__PROB_ECART__).</div></div>
-    <div class="probbar">__PROB_BAR__</div>
-    <div class="cles"><div class="cles-t">Clés du match</div>__PROB_CLES__<p class="note">Indication simple pour situer le match, pas une prévision. Calcul : écart de buts moyen, forme sur 5 matchs et avantage du domicile (+1,5 but). Le reste correspond à une défaite ou un nul. Confrontation directe non incluse (pas de données dans le rapport).</p>
+    <h3>Plan de match</h3>
+    <div class="cles">__PLAN_CLES__</div>
   </section>
 
-  <section class="card">
-    <h3>Attaque &amp; Défense (moy. / match)</h3>
-<div class="comp" style="margin-bottom:6px"><div class="side l"><span class="name">USML</span></div><div class="side r" style="justify-content:flex-end"><span class="name">__ADV_SMALL__</span></div></div>__COMP_ROWS__
-    <p class="note">Moyennes calculées sur : __N_FDM_USC__ matchs pour l'USML, __N_FDM_ADV__ pour __ADV_NAME__. Flèche = moyenne des 5 derniers matchs (vert : favorable, rouge : défavorable).</p>
-  </section>
-
-  <section class="card">
-    <h3>Forme récente (5 derniers matchs)</h3>
-    <div class="formrow"><span class="who">USML Maisons-Laffitte</span><span class="formseries">__FORM_USC__</span></div>
-    <div class="formrow"><span class="who">Versailles HBC (3)</span><span class="formseries">__FORM_ADV__</span></div>
-    <div class="grid2" style="margin-top:12px">
-      <details>
-        <summary class="mlabel">USML — 5 derniers matchs (plus récents d'abord)</summary>
-        <ul class="plist" style="list-style:none">
-__USC_HIST__
-        </ul>
-      </details>
-      <details>
-        <summary class="mlabel">Versailles HBC (3) — 5 derniers matchs (plus récents d'abord)</summary>
-        <ul class="plist" style="list-style:none">
-__ADV_HIST__
-        </ul>
-      </details>
-    </div>
-    <p class="note">__FORM_NOTE__</p>
+  <section class="card prob">
+    <h3>Score estimé</h3>
+    <div class="probrow"><div class="probnum" style="font-size:2rem">__SCORE_ESTIME__</div></div>
+    __SCORE_TRLINE__
+    __SCORE_NOTE__
+__H2H_DETAILS__
+__COMMUNS_DETAILS__
   </section>
 
   <section class="card">
@@ -230,33 +204,28 @@ __BUT_ADV__
     <p class="note">__BUT_NOTE__</p>
   </section>
 
-  <section class="card">
-    <h3>Gardiens</h3>
+  <section class="card fold"><details>
+    <summary><h3>Gardiens</h3></summary>
     <div class="table-scroll">
     <table>
-      <thead><tr><th class="team-h">Équipe</th><th class="team-h">Gardien</th><th>Arrêts</th><th>Arrêts / match joué</th><th>Taux d'arrêt</th></tr></thead>
+      <thead><tr><th class="team-h">Équipe</th><th class="team-h">Gardien</th><th>Arrêts</th><th class="hm">Arrêts / match joué</th><th>Taux d'arrêt</th></tr></thead>
       <tbody>
 __GK_ROWS__
       </tbody>
     </table>
     </div>
     <p class="note">Taux d'arrêt = arrêts / (arrêts + buts encaissés par l'équipe), réparti au prorata entre gardiens utilisés sur la même feuille. Les matchs 0-0 non renseignés (n.d.) sont exclus.</p>
-  </section>
+  </details></section>
 
-  <section class="card" style="margin-top:20px">
-    <h3>Écart de buts par tranche de 5 mn (moy. / match)</h3>
-    <div class="rhcols">__RHYTHM__</div>
-    <div class="legende">
-      <span><span class="dot" style="background:var(--nous)"></span>USML</span>
-      <span><span class="dot" style="background:var(--eux)"></span>__ADV_NAME__</span>
-      <span style="color:var(--ink-soft)">barre au-dessus de la ligne = écart positif, en dessous = négatif · valeur nette sous chaque tranche</span>
-    </div>
+  <section class="card fold" style="margin-top:20px"><details>
+    <summary><h3>Écart de buts par tranche de 5 mn (moy. / match)</h3></summary>
+    <div class="rhrows">__HEATMAP__<p class="note">Écart de buts par tranche de 5 min. Vert : tranche gagnée, rouge : tranche perdue. Plus la couleur est foncée, plus l'écart est grand.</p></div>
     <p class="trline">__TR_USC__</p>
     <p class="trline">__TR_ADV__</p>
-  </section>
+  </details></section>
 
-  <section class="card">
-    <h3>Discipline (moy. / match)</h3>
+  <section class="card fold"><details>
+    <summary><h3>Discipline (moy. / match)</h3></summary>
     <div class="table-scroll">
     <table>
       <thead><tr><th class="team-h">&nbsp;</th><th>USML</th><th>Versailles HBC (3)</th></tr></thead>
@@ -266,26 +235,31 @@ __DISC_ROWS__
     </table>
     </div>
     <p class="note">__DISC_NOTE__</p>
-  </section>
+  </details></section>
 
-  <section class="card">
-    <h3>Poule 3°/4° div. vs Toutes Compétitions (moy. / match)</h3>
-    <div class="table-scroll">
-    <table>
-      <thead><tr><th class="team-h">Marqués – encaissés (écart)</th><th>USML</th><th>__ADV_NAME__</th></tr></thead>
-      <tbody>
-__POULE_ROWS__
-      </tbody>
-    </table>
+  <section class="card fold"><details>
+    <summary><h3>Sanctions de 2' par joueur (top 3)</h3></summary>
+    <div class="grid2">
+      <div><div class="mlabel" style="color:var(--nous)">USML</div><ol class="plist">
+__SANCTIONS_USC__
+      </ol></div>
+      <div><div class="mlabel" style="color:var(--eux)">Versailles HBC (3)</div><ol class="plist eux">
+__SANCTIONS_ADV__
+      </ol></div>
     </div>
-    <p class="note">Basé sur les 5 derniers matchs de chaque équipe, échantillon très réduit. Toutes compétitions : poule, DHN et coupe confondues.</p>
-  </section>
+    <p class="note">__SANCTIONS_NOTE__</p>
+  </details></section>
+
+  <section class="card fold"><details>
+    <summary><h3>Domicile vs Extérieur (moy. / match)</h3></summary>
+    __DOMEXT__
+  </details></section>
 
   <section class="card" style="margin-top:20px">
-    <h3>Classement de la poule (__POULE_DIVISION__)</h3>
+    <h3>Classement de la poule (3°/4° division)</h3>
       <div class="table-scroll">
       <table>
-        <thead><tr><th>#</th><th class="team-h">Équipe</th><th>Pts</th><th>J</th><th>V</th><th>N</th><th>D</th><th>BP</th><th>BC</th><th>Diff</th></tr></thead>
+        <thead><tr><th>#</th><th class="team-h">Équipe</th><th>Pts</th><th>J</th><th>V</th><th>N</th><th>D</th><th class="hm">BP</th><th class="hm">BC</th><th>Diff</th></tr></thead>
         <tbody>
 __STAND_ROWS__
         </tbody>
@@ -298,5 +272,11 @@ __STAND_ROWS__
   </footer>
 
 </div>
-</body>
-</html>
+
+<script>
+(function(){var st=[];
+window.addEventListener('beforeprint',function(){st=[];document.querySelectorAll('details').forEach(function(d){st.push(d.open);d.open=true})});
+window.addEventListener('afterprint',function(){document.querySelectorAll('details').forEach(function(d,i){d.open=st[i]})});
+})();
+</script>
+</body></html>

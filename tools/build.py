@@ -264,17 +264,8 @@ kpi_adv = rank_kpi(adv_row, poule_adv_info or '3°/4° div', f'Classement {ADV_L
 dif_u = TOT_U['buts_marques'] - TOT_U['buts_encaisses']
 dif_a = TOT_A['buts_marques'] - TOT_A['buts_encaisses']
 
-def kpi_card(label, value, sub, cls=''):
-    c = f' {cls}' if cls else ''
-    return (f'<div class="kpi{c}"><div class="label">{esc(label)}</div>'
-            f'<div class="value">{esc(value)}</div><div class="sub">{sub}</div></div>')
-
-kpis = '\n'.join([
-    kpi_card('Classement USML', kpi_usc['rang'], f"{kpi_usc['pts']} pts · {kpi_usc['j']} matchs · {esc(kpi_usc['poule'])}", 'nous'),
-    kpi_card('Différentiel USML', f'{dif_u:+d}', f"{TOT_U['buts_marques']} marqués / {TOT_U['buts_encaisses']} encaissés ({N_U} matchs)", 'nous'),
-    kpi_card(f'Classement {ADV_LABEL}', kpi_adv['rang'], f"{kpi_adv['pts']} pts · {kpi_adv['j']} matchs · {esc(kpi_adv['poule'])}", 'eux'),
-    kpi_card(f'Différentiel {ADV_LABEL}', f'{dif_a:+d}', f"{TOT_A['buts_marques']} marqués / {TOT_A['buts_encaisses']} encaissés ({N_A} matchs)", 'eux'),
-])
+tinfo_usc = f"{dif_u:+d} ({TOT_U['buts_marques']} – {TOT_U['buts_encaisses']}, {N_U} matchs)"
+tinfo_adv = f"{dif_a:+d} ({TOT_A['buts_marques']} – {TOT_A['buts_encaisses']}, {N_A} matchs)"
 
 # ------------------------------------------------- moyennes 5 derniers matchs FDME
 usc_l5 = sorted(USC_SHEETS, key=lambda s: s.get('date') or '')[-5:]
@@ -286,32 +277,6 @@ def l5_avg(sheets, k):
 
 def l5_ecart(sheets):
     return l5_avg(sheets, 'buts_marques') - l5_avg(sheets, 'buts_encaisses')
-
-# ---- comparaison attaque / défense / arrêts
-def trend_small(t5, v, favorable_up):
-    if t5 > v:
-        ok, sym = favorable_up, '\u2191'
-    elif t5 < v:
-        ok, sym = not favorable_up, '\u2193'
-    else:
-        return ''
-    return f'<small class="tr {"ok" if ok else "ko"}">{sym} {fr(t5)}</small>'
-
-def comp_metric(label, vu, va, t5u=None, t5a=None, favorable_up=True):
-    mx = max(vu, va, 0.001) * 1.15
-    return (f'<div class="metric"><div class="mlabel">{esc(label)}</div>'
-            f'<div class="comp">'
-            f'<div class="side l"><span class="val">{fr(vu)}{trend_small(t5u, vu, favorable_up) if t5u is not None else ""}</span>'
-            f'<span class="track"><i style="width:{vu/mx*100:.0f}%"></i></span></div>'
-            f'<div class="side r"><span class="track"><i style="width:{va/mx*100:.0f}%"></i></span>'
-            f'<span class="val">{fr(va)}{trend_small(t5a, va, favorable_up) if t5a is not None else ""}</span></div>'
-            f'</div></div>')
-
-comp_rows = (comp_metric('Buts marqués', avg(TOT_U, 'buts_marques', N_U), avg(TOT_A, 'buts_marques', N_A),
-                         l5_avg(usc_l5, 'buts_marques'), l5_avg(adv_l5, 'buts_marques'))
-             + comp_metric('Buts encaissés', avg(TOT_U, 'buts_encaisses', N_U), avg(TOT_A, 'buts_encaisses', N_A),
-                           l5_avg(usc_l5, 'buts_encaisses'), l5_avg(adv_l5, 'buts_encaisses'), False)
-             + comp_metric('Arrêts du gardien', avg(TOT_U, 'arrets', N_U), avg(TOT_A, 'arrets', N_A)))
 
 # ---- forme
 def res_letter(dp):
@@ -325,40 +290,6 @@ html_form = lambda five: ''.join(
     f'<small>{it["dp"][2]}-{it["dp"][3]}</small></span>' for it in five)
 form_usc = html_form(usc_five)
 form_adv = html_form(opp_five)
-
-def serie(five):
-    if not five:
-        return 'aucun match avec feuille'
-    s0 = res_letter(five[0]['dp'])
-    k = 0
-    for it in five:
-        if res_letter(it['dp']) == s0:
-            k += 1
-        else:
-            break
-    mot = {'V': 'victoire(s)', 'N': 'nul(s)', 'D': 'défaite(s)'}[s0]
-    return f'{k} {mot} consécutives' if k > 1 else ('1 ' + mot[:1].upper() + mot[1:2] + (' consécutive' if k == 1 and s0 != 'N' else ''))
-
-def hist_rows(five):
-    out = []
-    for i, it in enumerate(five, 1):
-        r = it['r']
-        dom, advn, s_me, s_adv = it['dp']
-        if not played(r) or nd(r):
-            continue
-        res = res_letter(it['dp'])
-        out.append(
-            f'<li class="resline"><span class="badge badge-{res.lower()}">{res}</span>'
-            f'<span class="scoreline"><strong>{s_me}</strong> – <strong>{s_adv}</strong></span>'
-            f'<span class="vs2">{"Domicile" if dom else "Extérieur"} vs {esc(short(advn))}'
-            f'<em class="meta">{esc(short(r.get("poule","")))} · {fmt_date_long(r["date"])} · {fmt_time(r["date"])}</em></span></li>')
-    return ''.join(out)
-
-usc_hist_html = hist_rows(usc_five)
-adv_hist_html = hist_rows(opp_five)
-form_note = (f"Série en cours — USML : {serie(usc_five)} ; {ADV_LABEL} : {serie(opp_five)}. "
-             f"Les deux équipes ont déjà joué leur phase de délavage (pré-région puis DHN) avant la poule 3°/4° division."
-             )
 
 # ---- gardiens
 def gk_rows(sheets, gk_key, be_key, team_name, team_cls):
@@ -379,7 +310,7 @@ def gk_rows(sheets, gk_key, be_key, team_name, team_cls):
         nmn_disp = esc(nom(nmn))
         cell_taux = '—' if taux is None else f'{fr(taux, 0)} %'
         rows += (f'<tr><td class="team {team_cls}">{team_name}</td><td class="team">{nmn_disp}</td>'
-                 f'<td>{a_}</td><td>{fr(a_/s_)}</td><td>{cell_taux}</td></tr>')
+                 f'<td>{a_}</td><td class="hm">{fr(a_/s_)}</td><td>{cell_taux}</td></tr>')
     return rows
 
 gk_rows_all = gk_rows(USC_SHEETS, 'gk_our', 'buts_encaisses', 'USML', '') + \
@@ -425,48 +356,147 @@ but_note = (f"Total, moyenne par match et part des buts de l'équipe ({N_U} matc
             if N_U == N_A else
             f"Total, moyenne par match et part des buts de l'équipe ({N_U} matchs pour l'USML, {N_A} pour {ADV_LABEL}).")
 
-# ---- poule vs toutes compétitions
-def poule_cell(bp, bc, j):
-    if not j:
-        return '<b>\u2014</b>'
-    return f'<b>{fr(bp/j)} \u2013 {fr(bc/j)} ({sfp((bp-bc)/j)}) · {j} m.</b>'
-
-def fdm_cell(sheets):
-    n = len(sheets)
-    if not n:
-        return '<b>\u2014</b>'
-    bm = sum(s.get('buts_marques', 0) for s in sheets)
-    bc = sum(s.get('buts_encaisses', 0) for s in sheets)
-    return f'<b>{fr(bm/n)} \u2013 {fr(bc/n)} ({sfp((bm-bc)/n)}) · {n} m.</b>'
-
 bp_u, bc_u = int(stand_usc.get('butPlus', 0) or 0), int(stand_usc.get('butMoins', 0) or 0)
 j_u = int(stand_usc.get('joue', 0) or 0)
 bp_a, bc_a = int(adv_row.get('butPlus', 0) or 0), int(adv_row.get('butMoins', 0) or 0)
 j_a = int(adv_row.get('joue', 0) or 0)
-poule_rows = (f'<tr><td class="team">Poule {esc(poule_div)} div.</td><td>{poule_cell(bp_u, bc_u, j_u)}</td>'
-              f'<td>{poule_cell(bp_a, bc_a, j_a)}</td></tr>'
-              f'<tr><td class="team">Toutes compétitions</td><td>{fdm_cell(usc_l5)}</td>'
-              f'<td>{fdm_cell(adv_l5)}</td></tr>')
 
-# ---- probabilité de victoire
-ec_u = avg(TOT_U, 'buts_marques', N_U) - avg(TOT_U, 'buts_encaisses', N_U)
-ec_a = avg(TOT_A, 'buts_marques', N_A) - avg(TOT_A, 'buts_encaisses', N_A)
-form_u, form_a = l5_ecart(usc_l5), l5_ecart(adv_l5)
-next_home = next_items[0][3] if next_items else True
-prob_M = (ec_u - ec_a) + 0.5 * (form_u - form_a) + (1.5 if next_home else -1.5)
-prob = int(round(max(2, min(98, 50 + 0.9 * prob_M))))
-prob_titre = "L'USML part favorite." if prob >= 50 else "L'USML n'est pas favorite."
-prob_ecart = f"{sfp(ec_u)} par match pour l'USML contre {sfp(ec_a)} pour {ADV_T}"
-prob_bar = f'<i style="width:{prob}%"></i>'
+# ---- plan de match, score estimé, confrontations directes et communes
+def median(vals):
+    v = sorted(vals)
+    n = len(v)
+    if not n:
+        return 0.0
+    return v[n // 2] if n % 2 else (v[n // 2 - 1] + v[n // 2]) / 2
 
-def top_buteur_share(buters, total):
+def sfv(v):
+    s = sfp(v)
+    return s[:-2] if s.endswith(',0') else s
+
+def sfi(v):
+    s = f'{round(v):+d}'
+    return '0' if s in ('+0', '-0') else s
+
+def ec_txt(v):
+    return '0' if v == 0 else f'{v:+d}'
+
+def comp_kw(sheets):
+    kws = []
+    for s in sheets:
+        t = ((s.get('poule', '') or '') + ' ' + (s.get('competition', '') or '')).upper()
+        if 'DHN' in t:
+            kw = 'DHN'
+        elif 'COUPE' in t or 'CDY' in t:
+            kw = 'coupe'
+        elif 'DPR' in t or 'PRE REGION' in t:
+            kw = 'pré-région'
+        else:
+            kw = 'poule'
+        if kw not in kws:
+            kws.append(kw)
+    if not kws:
+        return 'poule'
+    if len(kws) == 1:
+        return kws[0]
+    return ', '.join(kws[:-1]) + ' et ' + kws[-1]
+
+def top_scorer(buters, total):
     if not buters or not total:
-        return '\u2014', 0
+        return None, 0
     nmn, b = max(buters.items(), key=lambda kv: kv[1])
-    return esc(nom(nmn)), round(b / total * 100)
+    return nmn, round(b / total * 100)
 
-def tranche_entre(i):
-    return f'entre {i*5} et {(i+1)*5}\u2032'
+INV = {'V': 'D', 'N': 'N', 'D': 'V'}
+RES_COLOR = {'V': 'var(--win)', 'N': 'var(--draw)', 'D': 'var(--loss)'}
+
+def resline(res, s_me, s_adv, name, name_cls, lieu, meta, ecart):
+    return (f'<div class="resline"><span class="badge badge-{res.lower()}">{res}</span>'
+            f'<span class="scoreline"><strong>{s_me}</strong> \u2013 <strong>{s_adv}</strong></span>'
+            f'<span class="vs2" style="flex:1"><b style="color:{name_cls}">{name}</b> \u00b7 {lieu}'
+            f'<em class="meta">{meta}</em></span>'
+            f'<b style="color:{RES_COLOR[res]}">{ecart}</b></div>')
+
+h2h_list = [it for it in usc_hist if it['dp'][2] is not None and it['dp'][3] is not None
+            and not nd(it['r']) and ADV_RE.search(it['dp'][1] or '')]
+
+marg_u = [s.get('buts_marques', 0) - s.get('buts_encaisses', 0) for s in usc_l5]
+marg_a = [s.get('buts_marques', 0) - s.get('buts_encaisses', 0) for s in adv_l5]
+moy_u = sum(marg_u) / len(marg_u) if marg_u else 0.0
+moy_a = sum(marg_a) / len(marg_a) if marg_a else 0.0
+med_u, med_a = median(marg_u), median(marg_a)
+ec_moy = (moy_u - moy_a) / 2
+ec_med = (med_u - med_a) / 2
+ec_ret = (ec_moy + ec_med) / 2
+h2h_sentence = ''
+if h2h_list:
+    s_me, s_adv = h2h_list[-1]['dp'][2], h2h_list[-1]['dp'][3]
+    ec_dir = s_me - s_adv
+    ec_final = 0.8 * ec_ret + 0.2 * ec_dir
+    h2h_sentence = (f" La confrontation directe ({sfi(ec_dir)}) compte pour 20 % de l'écart retenu,"
+                    f" ce qui le porte à {sfv(round(ec_final, 1))}.")
+else:
+    ec_final = ec_ret
+base_v = (l5_avg(adv_l5, 'buts_marques') + l5_avg(usc_l5, 'buts_encaisses')) / 2
+score_estime = f'\u2248 {round(base_v + ec_final)} \u2013 {round(base_v)}'
+score_trline = ('<p class="trline"><b>Pondéré par les marges :</b> sur leurs 5 derniers matchs, '
+                f"l'USML a une marge moyenne de {sfv(moy_u)} (médiane {sfv(med_u)}) et {esc(ADV_T)} "
+                f"de {sfv(moy_a)} (médiane {sfv(med_a)}). L'écart retenu ({sfi(ec_ret)}) est la moyenne "
+                f"entre l'écart calculé avec les moyennes ({sfi(ec_moy)}) et celui calculé avec les "
+                f"médianes ({sfv(ec_med)}), pour limiter le poids des gros scores.{h2h_sentence}</p>")
+score_note = ('<p class="note">Estimation simple, pas une prévision. Les 5 derniers matchs '
+              f'mélangent {comp_kw(usc_l5 + adv_l5)}.</p>')
+
+if h2h_list:
+    parts = [f'<details style="margin-top:16px"><summary class="mlabel">Confrontation directe ({len(h2h_list)})</summary>']
+    for it in h2h_list[-5:]:
+        dom, advn, s_me, s_adv = it['dp']
+        r = it['r']
+        meta = f"{esc(short(r.get('poule', '')))} \u00b7 {fmt_date_long(r['date'])}"
+        res_u = res_letter(it['dp'])
+        parts.append(resline(res_u, s_me, s_adv, 'USML', 'var(--nous)',
+                             'Domicile' if dom else 'Extérieur', meta, ec_txt(s_me - s_adv)))
+        parts.append(resline(INV[res_u], s_adv, s_me, esc(ADV_T), 'var(--eux)',
+                             'Domicile' if dom else 'Extérieur', meta, ec_txt(s_adv - s_me)))
+    parts.append('    </details>')
+    h2h_details = '\n      '.join(parts)
+else:
+    h2h_details = ('<details style="margin-top:16px"><summary class="mlabel">Confrontation directe (0)</summary>\n'
+                   '      <p class="note">Aucune confrontation directe trouvée dans les données (poule, DHN, coupe).</p>\n'
+                   '    </details>')
+
+def by_opp(hist):
+    d = {}
+    for it in hist:
+        dom, advn, s_me, s_adv = it['dp']
+        if s_me is None or (s_me == 0 and s_adv == 0) or USC_RE.search(advn or ''):
+            continue
+        d[advn] = it
+    return d
+
+usc_by_opp, adv_by_opp = by_opp(usc_hist), by_opp(opp_hist)
+communs = sorted(set(usc_by_opp) & set(adv_by_opp))
+if communs:
+    parts = [f'<details style="margin-top:16px"><summary class="mlabel">Adversaires communs ({len(communs)})</summary>']
+    for k, opp in enumerate(communs):
+        st = 'margin-top:10px' if k == 0 else 'margin-top:12px;border-top:2px dashed var(--line);padding-top:10px'
+        parts.append(f'\n      <div class="mlabel" style="{st}">{esc(short(opp))}</div>')
+        for it, side in ((usc_by_opp[opp], 'us'), (adv_by_opp[opp], 'them')):
+            dom, advn, s_me, s_adv = it['dp']
+            r = it['r']
+            meta = f"{esc(short(r.get('poule', '')))} \u00b7 {fmt_date_long(r['date'])}"
+            if side == 'us':
+                parts.append(resline(res_letter(it['dp']), s_me, s_adv, 'USML', 'var(--nous)',
+                                     'Domicile' if dom else 'Extérieur', meta, ec_txt(s_me - s_adv)))
+            else:
+                res_a = INV[res_letter(it['dp'])]
+                parts.append(resline(res_a, s_adv, s_me, esc(ADV_T), 'var(--eux)',
+                                     'Domicile' if dom else 'Extérieur', meta, ec_txt(s_adv - s_me)))
+    parts.append('\n      <p class="note">Très peu de matchs : à nuancer, et les lieux diffèrent selon les équipes.</p>\n    </details>')
+    communs_details = ''.join(parts)
+else:
+    communs_details = ('<details style="margin-top:16px"><summary class="mlabel">Adversaires communs (0)</summary>\n'
+                       '      <p class="note">Aucun adversaire commun trouvé dans les données.</p>\n'
+                       '    </details>')
 
 cles_parts = []
 if N_U and N_A:
@@ -475,52 +505,147 @@ if N_U and N_A:
     vu_e = (TM_U.get(iu, 0) - TC_U.get(iu, 0)) / N_U
     va_e = (TM_A.get(ia, 0) - TC_A.get(ia, 0)) / N_A
     titre_tr = 'Frapper tôt' if iu <= 3 else ('Frapper au cœur du match' if iu <= 6 else 'Frapper en fin de match')
-    nmu, mu = top_buteur_share(BUT_U, TOT_U['buts_marques'])
-    nma, ma = top_buteur_share(BUT_A, TOT_A['buts_marques'])
     cles_parts.append(
         f'<p><b class="n">{titre_tr} :</b> notre meilleure tranche est {tranche_lab(iu)}\u2032'
-        f' (écart de {sfp(vu_e)} en moyenne). {esc(ADV_T)} est au plus fort {tranche_entre(ia)}'
-        f' (écart de {sfp(va_e)}{" seulement" if va_e < 0 else ""}), il faudra tenir à ce moment.</p>')
+        f' ({sfp(vu_e)} en moyenne). {esc(ADV_T)} est le plus fort entre {ia*5} et {(ia+1)*5}\u2032'
+        f' ({sfp(va_e)}{" seulement" if va_e < 0 else ""}) : il faudra tenir à ce moment.</p>')
     cles_parts.append(
-        f'<p><b class="n">Rester discipliné :</b> nous recevons {fr(u2)} sanctions de 2\u2032 par match'
-        f' contre {fr(a2)} pour {esc(ADV_T)}.</p>')
-    if ma > mu:
-        fin = 'leur jeu est plus concentré sur un seul joueur.'
+        f"<p><b class=\"n\">Rester discipliné :</b> nous recevons {fr(u2)} sanctions de 2\u2032 par match"
+        f" contre {fr(a2)} pour {esc(ADV_T)}.</p>")
+    nmu, mu = top_scorer(BUT_U, TOT_U['buts_marques'])
+    nma, ma = top_scorer(BUT_A, TOT_A['buts_marques'])
+    keepers_usc, keepers_adv = set(), set()
+    for s in USC_SHEETS:
+        keepers_usc |= set(s.get('gk_our', {}).keys())
+    for s in ADV_SHEETS:
+        keepers_adv |= set(s.get('gk_our', {}).keys())
+    note_adv = ' et joue aussi dans les buts' if nma in keepers_adv else ''
+    note_usc = ' et joue aussi dans les buts' if nmu in keepers_usc else ''
+    cles_parts.append(
+        f'<p><b class="e">Stopper {esc(nom(nma))} :</b> il signe {ma} % des buts de {esc(ADV_T)}{note_adv}.'
+        f' Chez nous, {esc(nom(nmu))} signe {mu} % des buts{note_usc} : à protéger.</p>')
+plan_cles = ''.join(cles_parts)
+
+# ---- face à face (tableau d'égalité)
+def sbrow(label, vu, va, better):
+    if vu == va:
+        cl = cr = ''
+    elif (vu > va) == (better == 'high'):
+        cl, cr = ' edge', ''
     else:
-        fin = 'le jeu est moins concentré sur un seul joueur.'
-    cles_parts.append(
-        f'<p><b class="e">Marquer les bons joueurs :</b> {nmu} signe {mu} % de nos buts.'
-        f' Chez {esc(ADV_T)}, {nma} en signe {ma} %, {fin}</p>')
-prob_cles = ''.join(cles_parts)
+        cl, cr = '', ' edge'
+    return (f'<div class="sbrow"><span class="sbv l{cl}">{vu}</span>'
+            f'<span class="sbl">{label}</span><span class="sbv r{cr}">{va}</span></div>')
 
-# ---- rythme par tranches de 5'
-def slice_maxes(pairs):
-    m = 1.0
-    for tm, tc, n in pairs:
-        for i in range(10):
-            m = max(m, abs((tm.get(i, 0) - tc.get(i, 0)) / n) if n else 0)
-    return m
+att_u, att_a = avg(TOT_U, 'buts_marques', N_U), avg(TOT_A, 'buts_marques', N_A)
+def_u, def_a = avg(TOT_U, 'buts_encaisses', N_U), avg(TOT_A, 'buts_encaisses', N_A)
+gar_u, gar_a = avg(TOT_U, 'arrets', N_U), avg(TOT_A, 'arrets', N_A)
+faceafacesb = ('<div class="sbhead"><span style="color:var(--nous)">USML</span><span></span>'
+               f'<span style="color:var(--eux)">{esc(ADV_T)}</span></div>'
+               + sbrow('Attaque (buts / match)', fr(att_u), fr(att_a), 'high')
+               + sbrow('Défense (encaissés / match)', fr(def_u), fr(def_a), 'low')
+               + sbrow('Gardien (arrêts / match)', fr(gar_u), fr(gar_a), 'high')
+               + sbrow("Discipline (2' reçues / match)", fr(u2), fr(a2), 'low'))
+if h2h_list:
+    it = h2h_list[-1]
+    dom, advn, s_me, s_adv = it['dp']
+    d = datetime.date.fromisoformat(it['r']['date'][:10])
+    lbl = f"Dernière confrontation \u00b7 {d.day} {MOIS[str(d.month)][:3]}."
+    faceafacesb += sbrow(lbl, s_me, s_adv, 'high')
+faceafacesb += ('<div class="sbrow sbf"><div><span class="formseries">' + form_usc + '</span></div>'
+                '<span class="sbl">Forme récente (5 derniers)</span>'
+                '<div><span class="formseries">' + form_adv + '</span></div></div>')
 
-def rhythm_html(tmu, tcu, nu, tma, tca, na, mx):
-    def val(d):
-        s = f'{d:+.1f}'.replace('.', ',')
-        return '0,0' if s in ('+0,0', '-0,0') else s
-    cols = ''
-    for i in range(10):
-        du = (tmu.get(i, 0) - tcu.get(i, 0)) / nu if nu else 0
-        da = (tma.get(i, 0) - tca.get(i, 0)) / na if na else 0
-        hm = round(abs(du) / mx * 38) if mx else 0
-        ha = round(abs(da) / mx * 38) if mx else 0
-        cols += (f'<div class="rhcol"><div class="bars">'
-                 f'<span class="barwrap"><i class="barv m{" neg" if du < 0 else ""}" style="height:{max(hm, 2)}px"></i></span>'
-                 f'<span class="barwrap"><i class="barv e{" neg" if da < 0 else ""}" style="height:{max(ha, 2)}px"></i></span>'
-                 f'</div><div class="rhvalue"><span class="vu">{val(du)}</span>'
-                 f' <span class="va">{val(da)}</span></div>'
-                 f'<div class="rhlabel">{tranche_lab(i)}\'</div></div>')
-    return cols
+# ---- heatmap écart par tranche de 5'
+def heat_cell(v, var):
+    if v > 0:
+        bg = f'rgba(26,158,92,{min(0.85, round(0.08 + 0.187 * v, 2)):.2f})'
+    elif v < 0:
+        bg = f'rgba(210,60,60,{min(0.85, round(0.08 + 0.187 * abs(v), 2)):.2f})'
+    else:
+        bg = 'var(--line)'
+    return f'<span style="background:{bg};border-top:3px solid {var}"><b>{sfp(round(v, 1))}</b></span>'
 
-MX = slice_maxes([(TM_U, TC_U, N_U), (TM_A, TC_A, N_A)])
-rhythm = rhythm_html(TM_U, TC_U, N_U, TM_A, TC_A, N_A, MX)
+heatmap = ('<div class="hlegend"><span><i class="dot" style="background:var(--nous)"></i>USML (ligne du haut)</span>'
+           f'<span><i class="dot" style="background:var(--eux)"></i>{esc(ADV_T)} (ligne du bas)</span></div>')
+for demi, lo in (('1re mi-temps', 0), ('2e mi-temps', 5)):
+    cells = ''
+    for i in range(lo, lo + 5):
+        du = (TM_U.get(i, 0) - TC_U.get(i, 0)) / N_U if N_U else 0
+        da = (TM_A.get(i, 0) - TC_A.get(i, 0)) / N_A if N_A else 0
+        cells += (f'<div class="hc"><small>{tranche_lab(i)}\'</small>'
+                  f'{heat_cell(du, "var(--nous)")}{heat_cell(da, "var(--eux)")}</div>')
+    heatmap += f'<div class="hsl">{demi}</div><div class="hs">{cells}</div>'
+
+# ---- sanctions de 2' par joueur
+def excl_rows(sheets, key, n, total):
+    tot = {}
+    for s in sheets:
+        for nmn, k in s.get(key, {}).items():
+            tot[nmn] = tot.get(nmn, 0) + k
+    top = sorted(tot.items(), key=lambda kv: (-kv[1], kv[0]))[:3]
+    if not total:
+        return ''
+    return ''.join(
+        f'<li><span class="rank">{i}</span><span class="nm">{esc(nom(nmn))}'
+        f'<span class="share"><span class="track"><i style="width:{b/total*100:.0f}%"></i></span>'
+        f'<em>{fr(b/total*100, 0)} %</em></span></span>'
+        f'<span class="pts">{b} <small>\u00b7 {fr(b/n)}/match</small></span></li>'
+        for i, (nmn, b) in enumerate(top, 1))
+
+sanctions_usc = excl_rows(USC_SHEETS, 'excl_our', N_U, TOT_U['deux_re\u00e7ues'])
+sanctions_adv = excl_rows(ADV_SHEETS, 'excl_our', N_A, TOT_A['deux_re\u00e7ues'])
+if N_U == N_A:
+    sanctions_note = f"Part = part des sanctions de 2' de l'équipe sur {N_U} matchs."
+else:
+    sanctions_note = (f"Part = part des sanctions de 2' de l'équipe ({N_U} matchs pour l'USML, "
+                      f"{N_A} pour {ADV_LABEL}).")
+
+# ---- domicile vs extérieur (5 derniers matchs)
+def venue_split(sheets):
+    dom, ext = [], []
+    for s in sheets:
+        rec = (s.get('score') or [' ', ' '])[0]
+        (dom if (USC_RE.search(rec) or ADV_RE.search(rec)) else ext).append(s)
+    return dom, ext
+
+def side_avg(sheets, k):
+    return sum(s.get(k, 0) for s in sheets) / len(sheets) if sheets else 0.0
+
+def dom_metric(label, vu, va, signed=False):
+    mx = max(abs(vu), abs(va)) * 1.15 or 1
+    fu = sfp(vu) if signed else fr(vu)
+    fa = sfp(va) if signed else fr(va)
+    return (f'<div class="metric"><div class="mlabel">{label}</div><div class="comp">'
+            f'<div class="side l"><span class="val">{fu}</span>'
+            f'<span class="track"><i style="width:{abs(vu)/mx*100:.0f}%"></i></span></div>'
+            f'<div class="side r"><span class="track"><i style="width:{abs(va)/mx*100:.0f}%"></i></span>'
+            f'<span class="val">{fa}</span></div></div></div>')
+
+usc_dom, usc_ext = venue_split(usc_l5)
+adv_dom, adv_ext = venue_split(adv_l5)
+u_ec = side_avg(usc_dom, 'buts_marques') - side_avg(usc_dom, 'buts_encaisses')
+a_ec = side_avg(adv_ext, 'buts_marques') - side_avg(adv_ext, 'buts_encaisses')
+domext = (f'<div class="comp" style="margin-bottom:6px"><div class="side l"><span class="name">USML à domicile</span></div>'
+          f'<div class="side r" style="justify-content:flex-end"><span class="name">{esc(ADV_T)} à l\'extérieur</span></div></div>'
+          + dom_metric('Buts marqués', side_avg(usc_dom, 'buts_marques'), side_avg(adv_ext, 'buts_marques'))
+          + dom_metric('Buts encaissés', side_avg(usc_dom, 'buts_encaisses'), side_avg(adv_ext, 'buts_encaisses'))
+          + dom_metric('Écart de buts', u_ec, a_ec, signed=True))
+ue_m, ue_c = side_avg(usc_ext, 'buts_marques'), side_avg(usc_ext, 'buts_encaisses')
+ad_m, ad_c = side_avg(adv_dom, 'buts_marques'), side_avg(adv_dom, 'buts_encaisses')
+domext += (f"<p class=\"trline\">Pour comparaison : USML à l'extérieur <b>{fr(ue_m)} \u2013 {fr(ue_c)} ({sfp(ue_m-ue_c)})</b>"
+           f" \u00b7 {esc(ADV_T)} à domicile <b>{fr(ad_m)} \u2013 {fr(ad_c)} ({sfp(ad_m-ad_c)})</b></p>")
+poule_note = ''
+if j_u and j_a:
+    if j_u == j_a:
+        nj = f'({j_u} matchs chacun)'
+    else:
+        nj = f'({j_u} pour l\'USML, {j_a} pour {ADV_LABEL})'
+    poule_note = (f' En poule {esc(poule_div)} div. seulement {nj} : USML {sfp((bp_u-bc_u)/j_u)}, '
+                  f'{esc(ADV_T)} {sfp((bp_a-bc_a)/j_a)}.')
+domext += (f"<p class=\"note\">Moyennes par match sur les 5 derniers matchs : USML {len(usc_dom)} à domicile et "
+           f"{len(usc_ext)} à l'extérieur, {esc(ADV_T)} {len(adv_dom)} à domicile et {len(adv_ext)} à l'extérieur. "
+           f"Échantillon très réduit.{poule_note}</p>")
 
 def best_worst(tm, tc, n):
     if not n:
@@ -548,14 +673,8 @@ for c in classements:
     d = int(c['diff'])
     stand_rows += (f'<tr{cls}><td>{c["place"]}</td><td class="team {"" if nous else ""}">{nnm}</td>'
                    f'<td>{c["point"]}</td><td>{c["joue"]}</td><td>{c["gagne"]}</td><td>{c["nul"]}</td>'
-                   f'<td>{c["perdu"]}</td><td>{c["butPlus"]}</td><td>{c["butMoins"]}</td>'
+                   f'<td>{c["perdu"]}</td><td class="hm">{c["butPlus"]}</td><td class="hm">{c["butMoins"]}</td>'
                    f'<td>{d:+d}</td></tr>')
-
-def outcome(s1, s2):
-    if not played({'equipe1Score': s1, 'equipe2Score': s2}):
-        return None
-    a, b = int(s1), int(s2)
-    return 'H' if a > b else 'A' if a < b else 'N'
 
 # ------------------------------------------------------------------- prochain match
 if next_items:
@@ -586,44 +705,40 @@ gen = datetime.date.today().strftime('%d/%m/%Y')
 
 html = open(os.path.join(HERE, 'template.html')).read()
 html = (html
-  .replace('__KPI_USC_RANK__', f"{rang(stand_usc['place'])} · {stand_usc['point']} pts · {esc(poule_usc_info)}")
-  .replace('__KPI_ADV_RANK__', f"{rang(adv_row['place'])} · {adv_row['point']} pts · {esc(poule_adv_info or '3°/4° div')}")
+  .replace('__KPI_USC_RANK__', f"{rang(stand_usc['place'])} \u00b7 {stand_usc['point']} pts \u00b7 {esc(poule_usc_info)}")
+  .replace('__KPI_ADV_RANK__', f"{rang(adv_row['place'])} \u00b7 {adv_row['point']} pts \u00b7 {esc(poule_adv_info or '3\u00b0/4\u00b0 div')}")
   .replace('__LOGO_USC__', logo_usc)
   .replace('__LOGO_ADV__', logo_adv)
   .replace('__ADV_NAME__', esc(ADV_LABEL))
-  .replace('__ADV_SMALL__', esc(ADV_T))
   .replace('__MATCH_LINE1__', esc(match_line1))
   .replace('__MATCH_LINE2__', esc(match_line2))
   .replace('__MATCH_META__', esc(match_meta))
-  .replace('__KPIS__', kpis)
-  .replace('__PROB_NUM__', f'{prob} %')
-  .replace('__PROB_TITRE__', esc(prob_titre))
-  .replace('__PROB_ECART__', esc(prob_ecart))
-  .replace('__PROB_BAR__', prob_bar)
-  .replace('__PROB_CLES__', prob_cles)
-  .replace('__COMP_ROWS__', comp_rows)
-  .replace('__N_FDM_USC__', str(N_U))
-  .replace('__N_FDM_ADV__', str(N_A))
-  .replace('__FORM_USC__', form_usc)
-  .replace('__FORM_ADV__', form_adv)
-  .replace('__USC_HIST__', usc_hist_html)
-  .replace('__ADV_HIST__', adv_hist_html)
-  .replace('__FORM_NOTE__', esc(form_note))
-  .replace('__GK_ROWS__', gk_rows_all)
-  .replace('__DISC_ROWS__', disc_rows)
-  .replace('__DISC_NOTE__', esc(disc_note))
-  .replace('__RHYTHM__', rhythm)
-  .replace('__TR_USC__', tr_usc)
-  .replace('__TR_ADV__', tr_adv)
+  .replace('__TINFO_USC_DIFF__', esc(tinfo_usc))
+  .replace('__TINFO_ADV_DIFF__', esc(tinfo_adv))
+  .replace('__FACEAFACE__', faceafacesb)
+  .replace('__PLAN_CLES__', plan_cles)
+  .replace('__SCORE_ESTIME__', score_estime)
+  .replace('__SCORE_TRLINE__', score_trline)
+  .replace('__SCORE_NOTE__', score_note)
+  .replace('__H2H_DETAILS__', h2h_details)
+  .replace('__COMMUNS_DETAILS__', communs_details)
   .replace('__BUT_USC__', but_usc)
   .replace('__BUT_ADV__', but_adv)
   .replace('__BUT_NOTE__', esc(but_note))
-  .replace('__POULE_ROWS__', poule_rows)
-  .replace('__POULE_DIVISION__', esc(poule_division))
+  .replace('__GK_ROWS__', gk_rows_all)
+  .replace('__DISC_ROWS__', disc_rows)
+  .replace('__DISC_NOTE__', esc(disc_note))
+  .replace('__HEATMAP__', heatmap)
+  .replace('__TR_USC__', tr_usc)
+  .replace('__TR_ADV__', tr_adv)
+  .replace('__SANCTIONS_USC__', sanctions_usc)
+  .replace('__SANCTIONS_ADV__', sanctions_adv)
+  .replace('__SANCTIONS_NOTE__', esc(sanctions_note))
+  .replace('__DOMEXT__', domext)
   .replace('__STAND_ROWS__', stand_rows)
   .replace('__GEN__', gen)
 )
 
 out_path = os.path.join(os.path.dirname(HERE), 'index.html')
 open(out_path, 'w').write(html)
-print('index.html généré,', len(html), 'octets')
+print('index.html g\u00e9n\u00e9r\u00e9,', len(html), 'octets')

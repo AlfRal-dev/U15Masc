@@ -62,6 +62,14 @@
     "COADOUR Guillaume": 14,
     "TRABELSI Yassine": 3
    },
+   "excl_our": {
+    "HERTEL-ANDRAULT Jules": 1,
+    "JEANJEAN Arthur": 2,
+    "GOLASZEWSKI Martin": 1
+   },
+   "excl_opp": {
+    "VEDEL Antonin": 1
+   },
    "buts_sup_num": 0,
    "buts_inf_num": 0,
    "buteurs": {
@@ -143,6 +151,17 @@
    },
    "gk_opp": {
     "ARIFET Ismael": 9
+   },
+   "excl_our": {
+    "GOLASZEWSKI Martin": 3,
+    "THILL Nicolas": 1,
+    "BIDAULT Valentin": 1,
+    "MARTIN Theo": 1
+   },
+   "excl_opp": {
+    "LOCILLA Jeremy": 1,
+    "PACIOS Taig": 2,
+    "MERLIER Enzo": 1
    },
    "buts_sup_num": 1,
    "buts_inf_num": 1,
@@ -226,6 +245,16 @@
    "gk_opp": {
     "ADES DE PINSUN Louis (Né.e ADES DE PINSUL)": 11
    },
+   "excl_our": {
+    "HERTEL-ANDRAULT Jules": 1,
+    "GOLASZEWSKI Martin": 2,
+    "GUILLAUME Hugo": 1,
+    "DEVRIESE Alister": 1
+   },
+   "excl_opp": {
+    "ESCOMEL Mael": 2,
+    "GAJDAD Aymane": 1
+   },
    "buts_sup_num": 0,
    "buts_inf_num": 0,
    "buteurs": {
@@ -307,6 +336,16 @@
    },
    "gk_opp": {
     "TOURET LE MAUX Lubin": 10
+   },
+   "excl_our": {
+    "DEVRIESE Alister": 1,
+    "HERTEL-ANDRAULT Jules": 1,
+    "JEANJEAN Arthur": 1,
+    "BIDAULT Valentin": 1
+   },
+   "excl_opp": {
+    "LARROQUE Mylan": 1,
+    "DINIS DRECOURT Gabi": 1
    },
    "buts_sup_num": 0,
    "buts_inf_num": 0,
@@ -391,6 +430,11 @@
    "gk_opp": {
     "BURON PELLAUMAIL Adrian": 25
    },
+   "excl_our": {
+    "DEVRIESE Alister": 2,
+    "HERTEL-ANDRAULT Jules": 1
+   },
+   "excl_opp": {},
    "buts_sup_num": 0,
    "buts_inf_num": 0,
    "buteurs": {
@@ -473,6 +517,13 @@
    "gk_opp": {
     "COTE Alistair": 10
    },
+   "excl_our": {
+    "BIDAULT Valentin": 2,
+    "ESKINI Kyan": 1
+   },
+   "excl_opp": {
+    "MANCEL DARGENT Joseph (Né.e MANCEL D'ARGENT)": 1
+   },
    "buts_sup_num": 0,
    "buts_inf_num": 1,
    "buteurs": {
@@ -553,6 +604,15 @@
    "gk_opp": {
     "ROMDHANE Saden": 4,
     "LEROY Maxence": 2
+   },
+   "excl_our": {
+    "DEVRIESE Alister": 1
+   },
+   "excl_opp": {
+    "MACAU Timeo": 1,
+    "ANDRE DURAND Noam": 1,
+    "JOLY Axel": 2,
+    "BEN OTHMANE Yanis": 1
    },
    "buts_sup_num": 1,
    "buts_inf_num": 0,
@@ -638,6 +698,8 @@
     "AUGUSTIN Lyan": 1,
     "DEUFFIC-ARDAILLON Eloi (Né.e DEUFFIC)": 3
    },
+   "excl_our": {},
+   "excl_opp": {},
    "buts_sup_num": 0,
    "buts_inf_num": 0,
    "buteurs": {
@@ -717,6 +779,10 @@
    },
    "gk_opp": {
     "LAIB Omar": 9
+   },
+   "excl_our": {},
+   "excl_opp": {
+    "VALAT Noe": 1
    },
    "buts_sup_num": 0,
    "buts_inf_num": 0,
@@ -798,6 +864,14 @@
    "gk_opp": {
     "VINOTH KUMAR Virochan": 19
    },
+   "excl_our": {
+    "LACROIX Thomas": 1,
+    "LAIGUILLON Alexandre": 1
+   },
+   "excl_opp": {
+    "CARRE Felicien": 1,
+    "TUAILLON Paul": 1
+   },
    "buts_sup_num": 0,
    "buts_inf_num": 0,
    "buteurs": {
@@ -875,6 +949,13 @@
    },
    "gk_opp": {
     "SZULC Augustin": 14
+   },
+   "excl_our": {
+    "LOCHE Nathan": 1
+   },
+   "excl_opp": {
+    "GONZALEZ BAUDET Adam": 1,
+    "AUBE Mathieu": 1
    },
    "buts_sup_num": 0,
    "buts_inf_num": 0,
@@ -961,6 +1042,12 @@
     "BENNOUR Ibrahim": 7,
     "DEUFFIC-ARDAILLON Eloi (Né.e DEUFFIC)": 3
    },
+   "excl_our": {
+    "SOW Iyane": 1
+   },
+   "excl_opp": {
+    "BONNAIRE Leandre": 1
+   },
    "buts_sup_num": 0,
    "buts_inf_num": 0,
    "buteurs": {
@@ -1038,6 +1125,12 @@
    },
    "gk_opp": {
     "BURON PELLAUMAIL Adrian": 22
+   },
+   "excl_our": {
+    "LAIGUILLON Alexandre": 1
+   },
+   "excl_opp": {
+    "SARAIVA Owen": 1
    },
    "buts_sup_num": 0,
    "buts_inf_num": 0,
@@ -1121,6 +1214,12 @@
     "BOURDON BERTHELOT Maxence": 8,
     "ROBIN Enzo": 1
    },
+   "excl_our": {
+    "VADE Antonin": 1,
+    "PUCHOL Isaac (Né.e FLOUTIER PUCHOL)": 1,
+    "VERBEURGT Gabin": 1
+   },
+   "excl_opp": {},
    "buts_sup_num": 0,
    "buts_inf_num": 1,
    "buteurs": {
